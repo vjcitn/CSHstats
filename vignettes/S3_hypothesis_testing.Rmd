@@ -1,0 +1,69 @@
+---
+title: "S3_inference: Definitions and exercises"
+shorttitle: "inference for CSHL"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S3_inference: Definitions and exercises}
+  %\VignetteEncoding{UTF-8}
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 2
+    number_sections: FALSE
+pkgdown:
+  as_is: true
+---
+
+# Inference
+
+## The fairness hypothesis
+
+Let $C_1$ denote the suit of the top card revealed after a fair shuffle.
+We can state a hypothesis about the fairness of the deck
+under repeated draws of top card after shuffling as
+
+```{r defs, echo=FALSE}
+spade_sign = function() "\U2660"
+diamond_sign = function() "\U2662"
+club_sign = function() "\U2663"
+```
+
+$$
+H_0: Pr(C_1 = \heartsuit) = Pr(C_1 = \diamondsuit) = Pr(C_1 = \clubsuit) = Pr(C_1 = \spadesuit) = 1/4
+$$
+
+In a frequentist framework for statistical inference, we
+define procedures for testing (null) hypotheses with specified
+error probabilities.  
+
+- A **Type I error** occurs when the
+null hypothesis is true but the test results in the assertion that it is
+false.  Traditionally we try to keep the probability of Type I errors
+below 5\%.
+
+- A **Type II error** occurs when the
+null hypothesis is false but the test does not result in an
+assertion that it is false.  Traditionally we try to keep the
+probability of Type II errors below 20\%.
+
+### Exercises
+
+**14: Propose a test of $H_0$ as given above.  Assume you have
+the results of top card draws from 100 shuffles.**
+
+**15: Consider this approach to testing $H_0$ on the basis
+of top card draws from $N$ shuffles:**
+
+# Neyman-Pearson paradigm: Type I and Type II errors
+
+## Power curve
+
+## Criteria for selecting test procedures: "most powerful for fixed Type I error rate"
+
+# Confidence intervals
+
+# Robustness
+
+# Bayesian inference

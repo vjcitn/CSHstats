@@ -1,0 +1,41 @@
+---
+title: "S4_inference: Linear models and GLMs"
+shorttitle: "linear models for CSHL"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S4_models: Linear models and GLMs}
+  %\VignetteEncoding{UTF-8}
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 2
+    number_sections: FALSE
+pkgdown:
+  as_is: true
+---
+
+# Linear models
+
+## Confounding
+
+## Re-expressing the two-sample test
+
+## Analysis of variance: F test
+
+## Linear regression, parameter estimation, goodness of fit
+
+### Model equation: Data = Fit + Residual
+
+### Design matrix
+
+### Algebra of least-squares estimates
+
+## GLMs: binary, counted, non-Gaussian responses
+
+## Hierarchical models: alternatives to independence
+
+### Random effects models for clustered observations
+
+

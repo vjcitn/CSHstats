@@ -1,0 +1,20 @@
+Package: CSHstats
+Title: discussions and exercises on classical statistics for CSHL 2022
+Version: 0.0.3
+Authors@R:
+    person(given = "Vince",
+           family = "Carey",
+           role = c("aut", "cre"),
+           email = "stvjc@channing.harvard.edu",
+           comment = c(ORCID = "0000-0003-4046-0063"))
+Description: Discussions and exercises on classical statistics for CSHL 2022.
+Depends: R (>= 4.0.0), tools, utils
+Suggests: knitr, BiocStyle, testthat, rmarkdown
+License: Artistic-2.0
+VignetteBuilder: knitr
+biocViews: StatisticalMethod
+Remotes: github::vjcitn/play4YES
+RoxygenNote: 7.1.2
+Encoding: UTF-8
+BugReports: https://github.com/vjcitn/CSHstats/issues
+URL: https://github.com/vjcitn/CSHstats

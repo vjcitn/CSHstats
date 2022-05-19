@@ -1,0 +1,384 @@
+---
+title: "S1_probability: Definitions and exercises"
+shorttitle: "probability for CSHL"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S1_probability: Definitions and exercises}
+  %\VignetteEncoding{UTF-8}
+output: 
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 2
+    number_sections: FALSE
+pkgdown:
+  as_is: true
+---
+
+```{r setup, echo=FALSE, results="hide"}
+suppressMessages({
+ suppressPackageStartupMessages({
+  library(CSHstats)
+  })
+ })
+```
+
+# Overview
+
+Our concept of probability is that of "long run relative frequency".
+
+We'll work with several models of random events to make this more concrete.
+
+# The probability of a 0-1 (binary or dichotomous) event
+
+## Simulating shuffled playing cards
+
+### Random permutations with `sample()`
+
+We'll take for granted that `sample(x, size=length(x), replace=FALSE)` in R
+achieves a goal of "shuffling" elements of `x`.  Thus we assume that,
+if `x` is a vector in R, and
+```
+s1 = sample(x, size=length(x), replace=FALSE)
+s2 = sample(x, size=length(x), replace=FALSE)
+```
+then no aspect of the ordering of elements in 
+`s1` can be used to predict anything about the ordering of elements of `s2`.
+
+In other words, `sample(x, size, replace=FALSE)` is taken as a primitive operation
+that permutes the elements of `x` in a "random" way.
+
+```{r demo1a}
+set.seed(5432) # initialize, for reproducibility, the random number generator
+sample(1:5, replace=FALSE) # permute (1,2,3,4,5)
+sample(1:5, replace=FALSE) # a new, unpredictable, permutation
+```
+
+#### Exercises
+
+**1: Why is the second permutation produced above termed "unpredictable"?**
+
+**2: Predict the outcome of `sample(1:5, replace=FALSE)`, run just
+after the one shown above.**
+
+### Card deck definitions and operations
+
+Our card deck is a vector with 52 elements.  Unicode characters encode the "suits".
+
+```{r getli}
+library(CSHstats)
+d = build_deck()
+d
+unique(suits(d))
+unique(faces(d))
+table(suits(d), faces(d))
+```
+
+A fair deck has one card for each combination of "face" and "suit".
+
+#### Exercises
+
+**3: Write the code that produces a new deck that is
+fair except that it has two copies
+of the ten of hearts.  Verify that your new deck has this property.**
+
+### Shuffling the deck
+
+A reproducible shuffling event can be programmed as follows:
+
+```{r doshuf}
+set.seed(1234)  # any numeric seed will do but you need to record it
+shuffle_deck = function(d) sample(d, size=length(d), replace=FALSE)
+head(d)         # top 6 cards
+head(shuffle_deck(d))
+```
+
+### The top card after a shuffle
+
+```{r lktop}
+top_draw = function(d) shuffle_deck(d)[1]
+top_draw(d)
+top_draw(d)
+```
+
+#### Exercises 
+**4: What is the top card in the next shuffle?**
+
+**5: Write code to get the third card.**
+
+**6: What is the probability that the top draw of a shuffled fair deck is a heart?**
+
+## Estimating the probability of an event
+
+### A simulation process: repeated shuffles and draws
+
+Here's a simple way of estimating the probability, construed as long run frequency.
+
+We'll simulate 100 shuffles and save the results of testing the suit of the top card.
+```{r doh}
+heart_sign = function() "\U2661"  # unicode U2661, prepend backslash
+heart_sign()
+res = rep(NA, 100)
+for (i in 1:100) {
+ res[i] = (suits(top_draw(d)) == heart_sign()) # TRUE if top card is a heart
+}
+head(res)
+### relative frequency of the event "suit of top card is 'heart'"
+sum(res)/length(res)  
+```
+
+A more concise approach with R is:
+```{r do2}
+mean(replicate( 100, suits(top_draw(d)) == heart_sign()) )
+```
+
+#### Exercises
+
+**7: How do we interpret the difference between the two probability estimates given here?**
+
+### Replicating the estimation process
+
+Let's intensify our investigation with an aim
+of understanding the uncertainty of estimation.
+
+We'll define a variable that gives the size of our "experiment": we are shuffling
+100 times and we'll refer to this as the sample size, `SSIZE`
+
+```{r ssizedef}
+SSIZE = 100
+```
+
+We will study the estimation procedure by replicating the experiment `N_REPLICATION` times.
+
+```{r nrepdef}
+N_REPLICATION = 500
+```
+
+```{r do3, eval=FALSE}
+set.seed(10101) # initialize, for reproducibility, the random number generator
+doubsim = replicate(N_REPLICATION, 
+    mean(replicate( SSIZE, suits(top_draw(d)) == heart_sign()) )
+    )
+```
+```{r do3real,echo=FALSE}
+data(doubsim)
+```
+```{r lkhist1}
+hist(doubsim, xlim=c(0,1))
+```
+
+#### Exercises
+
+**8: How can we make the estimate of the probability of the event "suit of top card is 'heart'" more precise?**
+
+Answer: increase `SSIZE`.
+
+```{r do4, eval=FALSE}
+SSIZE = 500
+set.seed(101012)
+doubsim2 = replicate(N_REPLICATION, 
+    mean(replicate( SSIZE, suits(top_draw(d)) == heart_sign()) )
+    )
+```
+```{r doret,echo=FALSE}
+data(doubsim2)
+```
+```{r lkhj}
+hist(doubsim2, xlim=c(0,1))
+```
+
+With an increased "sample size",
+we have reduced variation in our experiment-to-experiment estimates of the probability 
+of heart as suit of top card.
+
+## Formal probability models
+
+Intuitively, the probability of drawing a heart from a well-shuffled
+fair deck is 1/4.  If we repeat the shuffling and drawing one hundred times,
+we expect **around** 25 draws to reveal a heart.
+
+Formal probability models enable us to reason systematically about
+what we mean by **around** in our description of our expectation.
+With these models we can also create accurate predictions of likely outcomes in
+more complex events.
+
+### Using the binomial probability model
+
+A series of independent dichotomous events (true or false, zero or one, heart or non-heart)
+can be modeled using a **probability mass function** for the binomial distribution.  There are two parameters,
+$p$ and $n$, where $p$ is the (unobservable) probability of the event (say "suit of top card is 'heart'")
+and $n$ is the number of **independent** trials in which the random dichotomy is observed.  In $n$ "trials",
+if the event has probability $p$, the probability of seeing the event $x$ times is
+$$
+Pr(X = x; n, p) = {\binom{n}{x}} p^x(1-p)^{n-x}
+$$
+where have written $X$ to denote the random quantity and $x$ to denote its realization.
+
+So for a single draw, with $X$ the count of hearts seen in the draw, we have
+$$
+Pr(X=0; 1, 1/4) = 1-1/4 = 3/4
+$$
+$$
+Pr(X=1; 1, 1/4) = 1/4
+$$
+
+
+
+
+#### Exercises
+
+**9: Modify the production of `doubsim2` so that the $x$-axis for the
+histogram has units "number of times the top card is a heart".**
+
+```{r do5, eval=FALSE}
+set.seed(43212)
+doubsim3 = replicate(N_REPLICATION, 
+    sum(replicate( SSIZE, suits(top_draw(d)) == heart_sign()) )
+    )
+```
+```{r ret3,echo=FALSE}
+data(doubsim3)
+```
+```{r dodou3h}
+hist(doubsim3, xlim=c(.15*500,.35*500), xlab="count of draws with heart as suit of top card")
+```
+
+### Visualizing the model and the data
+
+The formula given above tells us how frequently we will observe a given count.  The
+R function `dbinom` can compute the probability, which we multiply by the number
+of realizations to get the height of the histogram.
+
+```{r sketch}
+hist(doubsim3, xlim=c(.15*500,.35*500), 
+   xlab="count of draws with heart as suit of top card", ylim=c(0,115))
+points(80:160, 2500*dbinom(80:160, 500, 13/52), pch=19, cex=.5)
+legend(78, 110, pch=19, legend="scaled dbinom(x, 500, .25)", bty="n", cex=.85)
+```
+
+Notice that the histogram, by virtue of its binning of the counts, does
+not seem to reflect the shape of the theoretical frequency function given by the dots.
+This can be remedied by increasing the number of replicates used.  
+
+There is considerable research regarding the design of histogram displays.
+See `?nclass.Sturges` for references.  One unpleasant feature of the
+display for doubsim2 is that it seems to imply an asymmetric distribution.
+Another is the way it "cuts off" at the extremes.
+
+#### Exercises
+
+**10: Write a couple of sentences carefully distinguishing the
+displays of doubsim2 and doubsim3 above.  Explain the choice of
+the heuristic name "doubsim".**
+
+## A biased deck
+
+Recall the layout of the fair deck:
+```{r dobi}
+table(suits(d), faces(d))
+```
+We will make a copy of one card and remove one:
+```{r dobi2}
+bd = d
+bd[18] = bd[3]
+table(suits(bd), faces(bd))
+```
+
+### Exercises
+
+**11: What is the probability that the top card drawn after
+a fair shuffle of `bd` is a heart?**
+
+**12: What is the probability that the top card drawn after
+a fair shuffle of `bd` is a club?**
+
+# Probability models for categorical outcomes
+
+Thus far we have focused on the dichotomy: top draw is heart or not.
+We can consider all the possible suits as a 4-valued response.
+
+## A contingency table
+
+Let's simulate the process of drawing the top card after
+shuffling, and tabulate the suits observed.
+
+```{r dotab1}
+set.seed(4321)
+table( tops <- replicate(500, suits(top_draw(bd))) )
+```
+
+### Exercises
+
+**13: What would you expect for the counts for suits in the table above
+if the deck were fair?**
+
+## Multinomial model and simulation
+
+We adopted the binomial model for the number of top draws
+with suit "heart" in a fixed number of shuffles:
+
+$$
+Pr(X = x; n, p) = {\binom{n}{x}} p^x(1-p)^{n-x}
+$$
+
+With the fair deck, we have $p= 1/4$.  A generalization
+to a vector of responses is the multinomial model.  We
+can use this for the (ordered) vector of counts of
+top draws yielding different suits.  For this problem
+we have parameters $N$ (number of trials), $k$ (number
+of categories), and $p_1, \ldots, p_k$, the category-specific
+probabilities.  The realizations are denoted $x_1, \ldots, x_k$
+and we have $\sum_i x_i = N$.
+
+Now the probability model is defined in terms of random
+vectors and vectors of probabilities:
+
+$$
+Pr(X_1 = x_1, \ldots, X_k = x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}
+$$
+
+This provides a more elegant way of producing frequency distributions
+of the suit of the top draw.  
+
+```{r lkmn}
+NREP = 10000
+SSIZE = 500
+mnmat = rmultinom(NREP, SSIZE, rep(.25,4))
+rownames(mnmat) = c("\U2661", "\U2662", "\U2663", "\U2664")
+mnmat[,1]  # one draw
+apply(mnmat,1,mean)
+```
+
+Notice that we did not really use the deck `d` in producing this matrix
+of counts.  Previously we applied `sample()` to the 52-vector of
+cards.  Now we use the model to develop the data
+of interest.
+
+### Exercise
+
+**14: Modify the call to `rmultinom` to obtain distributions of
+top card suits for the biased deck `bd`.  
+Hint: Change the part of the call involving `rep()`.**
+
+## Additional discrete distributions (Poisson, Zipf, NB, ...)
+
+# Models for continuous outcomes
+
+## Univariate response
+
+### Histogram, probability density function
+
+### Moments, parameters
+
+### Gaussian model
+
+### Exponential and Gamma models for survival data
+
+## Multivariate response
+
+### Probabilistic independence and dependence
+
+### Measures of correlation
+
+# Bayesian concepts of probability (following McElreath, Statistical Rethinking?)

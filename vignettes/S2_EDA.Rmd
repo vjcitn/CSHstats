@@ -1,0 +1,25 @@
+---
+title: "S2_EDA: Exploratory data analysis and visualization"
+shorttitle: "inference for CSHL"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S2_EDA: Exploratory data analysis and visualization}
+  %\VignetteEncoding{UTF-8}
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 2
+    number_sections: FALSE
+pkgdown:
+  as_is: true
+---
+
+# EDA: Exploratory data analysis
+
+## Assessing distributional shape
+
+## Comparing batches of numbers: Boxplots and beyond
+
+## Transformations; handling "outliers"
