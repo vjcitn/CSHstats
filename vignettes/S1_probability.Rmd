@@ -113,7 +113,8 @@ top_draw(d)
 
 ### A simulation process: repeated shuffles and draws
 
-Here's a simple way of estimating the probability, construed as long run frequency.
+Here's a simple way of estimating the probability
+that the top draw of a shuffled fair deck is a heart, construed as long run frequency.
 
 We'll simulate 100 shuffles and save the results of testing the suit of the top card.
 ```{r doh}
@@ -202,6 +203,16 @@ Formal probability models enable us to reason systematically about
 what we mean by **around** in our description of our expectation.
 With these models we can also create accurate predictions of likely outcomes in
 more complex events.
+
+It is useful to define the **sample space** for a probability model,
+which is a set of possible outcomes of the random process being
+modeled.  For our top-card-drawn example, the sample space 
+is the set of suits.  For the fair deck, each point
+in the sample space has probability $1/4$.
+Events of interest are "top card is a heart"
+and "top card is not a heart".  The probabilities of
+these events are derivable from the probabilities of
+the constituent outcomes.
 
 ### Using the binomial probability model
 
@@ -365,15 +376,33 @@ Hint: Change the part of the call involving `rep()`.**
 
 # Models for continuous outcomes
 
+The models we've considered thus far are for discrete
+responses -- the sample space is either finite or countably infinite.
+
+For continuous responses, the sample space is uncountably
+infinite.  The sample space may be an interval of the real line,
+or the whole real line.  We will discuss how to
+define probabilities for subsets of the sample space.
+
 ## Univariate response
+
+For concreteness, we will use RNA-seq data derived
+from The Cancer Genome Atlas.  We'll focus on the
+expression of YY1 in adrenocortical carcinoma.
+
+### Cumulative distribution function
 
 ### Histogram, probability density function
 
 ### Moments, parameters
 
-### Gaussian model
+### Some widely used models for continuous responses
 
-### Exponential and Gamma models for survival data
+#### Uniform distribution
+
+#### Gaussian model
+
+#### Exponential and Gamma models for survival data
 
 ## Multivariate response
 
