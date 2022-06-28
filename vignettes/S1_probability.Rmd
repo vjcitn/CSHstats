@@ -122,6 +122,7 @@ head(shuffle_deck(d))
 ### The top card after a shuffle
 
 ```{r lktop}
+set.seed(4141)
 top_draw = function(d) shuffle_deck(d)[1]
 top_draw(d)
 top_draw(d)
@@ -401,10 +402,87 @@ Hint: Change the part of the call involving `rep()`.**
 
 ## The Poisson distribution
 
+### Modeling collections of counts
+
 Outcomes taking the form of integer counts arise in many
-appications.  For example, counts of cases of COVID-19 infection
-are recorded on a daily basis and presented and interpreted
-in various formats.
+appications.  As an example, a quarry floor is divided into
+squares about one meter on the side.  30 squares were searched
+for a fossil and the number of specimens per square is recorded.
+No square had 5 or more specimens.  (Example from _Probability
+Models and Applications_, I. Olkin, L. Gleser, C. Derman, ch 6.3.)
+
+The table below includes `nspec`, the number of specimens in
+a square, `freq`, the number of squares having the corresponding
+number of specimens, and `pred`, a predicted number of specimens
+based on the Poisson model with mean parameter 0.73 specimens
+per square.
+```{r lkfoss}
+foss = data.frame(nspec=0:4, freq=c(16,9,3,1,1), pred=round(30*dpois(0:4, 0.73), 2))
+foss
+```
+
+To derive the quantities `pred`, we used `dpois` for the counts per square,
+with mean parameter set at 0.73.  To derive this, we use 
+```{r lksum}
+sum(foss$nspec * foss$freq)/30
+```
+to obtain the average number of fossils per square.  The Poisson model with
+mean $\lambda$ is
+$$
+Pr(X = x; \lambda) = \frac{e^{-\lambda}\lambda^k}{k!}
+$$
+
+### Exercise
+
+**15: Use the formula above to explain the prediction of 14.46 squares with zero fossils.**
+
+### A countably infinite sample space
+
+The binomial and multinomial models discussed above have finite
+discrete sample spaces.  The sample space for the Poisson model 
+is the set of non-negative integers.  The mass function arises
+from the fact that $e^\lambda = \sum \lambda^k/k!$, the sum
+taken over all non-negative integers.
+
+## The negative binomial model
+
+The mass function is
+$$
+p(x; \theta, \mu) = \frac{\Gamma(\theta + x)}{\Gamma(\theta)y!} 
+   \frac{\mu^y \theta^\theta}{(\mu + \theta)^{\theta + y}}
+$$
+
+This will be useful for later material.  
+
+
+## Mean, variance
+
+The sample mean for the vector $x = (x_1, \ldots, x_n)$
+is defined as $\bar{x} = n^{-1}\sum_i x_i$.  The (unbiased estimator
+of the) sample variance
+is $(n-1)^{-1}\sum_i (x_i = \bar{x})^2$.
+
+We will sometimes refer to mean and
+variance in the context of probability models
+rather than samples.  The mean for a continuous
+distribution is defined as
+
+For a discrete distribution with probability
+mass function $p$ the mean is
+
+$$
+E(x) = \sum x p(x),
+$$
+The sum here is taken over the sample space
+for the associated model.
+
+Writing $\mu$ for the mean value of the distribution
+under study, the variance of a discrete distribution
+is 
+$$
+V(x) = \sum (x-\mu)^2 p(x) dx.
+$$
+
 
 # Models for continuous outcomes
 
@@ -473,7 +551,7 @@ of the distribution of our YY1 vector is about 1584.
 
 ### Exercise
 
-**15:  Show that the proportion of YY1 observations 
+**16:  Show that the proportion of YY1 observations 
 exceeding 1584 is approximately 20%.**
 
 ### Histogram, probability density function
@@ -502,27 +580,22 @@ illustration:
 plot(density(yy1_ex))
 ```
 
-### Mean, variance
+It is of some interest to use `approxfun` and numerical
+integration with the density estimate given above,
+to estimate the probability that YY1
+expression lies in a given interval.
 
-The sample mean for the vector $x = (x_1, \ldots, x_n)$
-is defined as $\bar{x} = n^{-1}\sum_i x_i.  The sample variance
-is $(n-1)^{-1}\sum_i (x_i = \bar{x})^2$.
+```{r doapprox}
+dfun = approxfun(dd$x, dd$y)
+integrate(dfun, 1000, 1500)  # density-based
+mean(yy1_ex >=1000 & yy1_ex <= 1500) # empirical
+```
 
-We will sometimes refer to mean and
-variance in the context of probability models
-rather than samples.  The mean for a continuous
-distribution is defined as
+Is this acceptable?  Could changing the bandwidth for the
+density estimator produce better results?  Is there
+a potential overfitting problem?
 
-$$
-E(x) = \int x f(x) dx
-$$
 
-while for a discrete distribution with probability
-mass function $p$ it is
-
-$$
-E(x) = \sum x p(x)
-$$
 
 
 ### Some widely used models for continuous responses
@@ -541,7 +614,7 @@ hist(runif(10000, 0, 1), prob=TRUE)
 
 ##### Exercise
 
-**16:  Use code like the above to obtain
+**17:  Use code like that above to obtain
 the value of the density of a random
 variable with uniform density on the interval [0, 2].**
 
@@ -584,16 +657,31 @@ mean of the distribution is then $1/\lambda$.
 
 ##### Exercise
 
-**17:  How close is the median of the exponential model
+**18:  How close is the median of the exponential model
 with rate 1/1045 to the sample median of the myeloma
 survival times?  How does this relate to the interpretation of
 the plot above?**
 
+## Mean and variance for continuous models
+
+For continuous distributions, the mean value is
+$$
+E(x) = \int x f(x) dx.
+$$
+Writing $\mu$ for the mean value of the distribution
+under study, the variance of a continuous distribution
+is 
+$$
+V(x) = \int (x-\mu)^2 f(x) dx.
+$$
+
+
 
 ## Multivariate response
+
+
 
 ### Probabilistic independence and dependence
 
 ### Measures of correlation
 
-# Bayesian concepts of probability (following McElreath, Statistical Rethinking?)
