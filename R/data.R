@@ -12,3 +12,8 @@
 #' @docType data
 #' @format character vector
 "doubsim3"
+
+#' read depth for 50 positions on pasilla chr4, from example(coverage) for GenomicAlignments
+#' @docType data
+#' @format numeric vector
+"c50"

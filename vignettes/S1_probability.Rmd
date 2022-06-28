@@ -20,9 +20,34 @@ pkgdown:
 suppressMessages({
  suppressPackageStartupMessages({
   library(CSHstats)
+  library(survival)
+  library(SummarizedExperiment)
+#  library(curatedTCGAData)
   })
  })
 ```
+
+# Learning objectives
+
+- Gain familiarity with concepts of simulation in R using sampling from
+specified sets (e.g., a deck of cards) and using random number generation
+    - understand the use of `sample()`
+    - understand how to use `set.seed()` to control the behavior of random number generation
+- Estimate event probabilities for specified experimental setups
+    - distinguish the sample size of an experiment and the replication size of a simulation
+- Explain the relationship between precision of a probability estimate and the sample
+size of the associated experiment
+- Define and use probability mass functions for discrete outcomes
+    - for binomially distributed outcomes
+    - for outcomes governed by the Poisson and Negative Binomial models
+    - in general
+- Understand how to simulate data under null (e.g., fair deck) and alternative (e.g.,
+biased deck) conditions
+- Understand the difference between finite, countably infinite, and uncountably
+infinite sample spaces
+- Define and use probability density functions and cumulative distribution functions
+for continuous outcomes
+
 
 # Overview
 
@@ -205,9 +230,10 @@ With these models we can also create accurate predictions of likely outcomes in
 more complex events.
 
 It is useful to define the **sample space** for a probability model,
-which is a set of possible outcomes of the random process being
+which is the set of all possible outcomes of the random process being
 modeled.  For our top-card-drawn example, the sample space 
-is the set of suits.  For the fair deck, each point
+is the set of suits, because we disregard the
+face value.  For the fair deck, each point
 in the sample space has probability $1/4$.
 Events of interest are "top card is a heart"
 and "top card is not a heart".  The probabilities of
@@ -242,7 +268,7 @@ $$
 **9: Modify the production of `doubsim2` so that the $x$-axis for the
 histogram has units "number of times the top card is a heart".**
 
-```{r do5, eval=FALSE}
+```{r do5, eval=FALSE, echo=FALSE}
 set.seed(43212)
 doubsim3 = replicate(N_REPLICATION, 
     sum(replicate( SSIZE, suits(top_draw(d)) == heart_sign()) )
@@ -299,10 +325,10 @@ table(suits(bd), faces(bd))
 ### Exercises
 
 **11: What is the probability that the top card drawn after
-a fair shuffle of `bd` is a heart?**
+a shuffle of `bd` is a heart?**
 
 **12: What is the probability that the top card drawn after
-a fair shuffle of `bd` is a club?**
+a shuffle of `bd` is a club?**
 
 # Probability models for categorical outcomes
 
@@ -350,7 +376,8 @@ Pr(X_1 = x_1, \ldots, X_k = x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots 
 $$
 
 This provides a more elegant way of producing frequency distributions
-of the suit of the top draw.  
+of the suit of the top draw.  Here we introduce pseudorandom number
+generation from the multinomial model, using `rmultinom`.
 
 ```{r lkmn}
 NREP = 10000
@@ -361,7 +388,7 @@ mnmat[,1]  # one draw
 apply(mnmat,1,mean)
 ```
 
-Notice that we did not really use the deck `d` in producing this matrix
+Notice that we did not use the deck `d` in producing this matrix
 of counts.  Previously we applied `sample()` to the 52-vector of
 cards.  Now we use the model to develop the data
 of interest.
@@ -372,7 +399,12 @@ of interest.
 top card suits for the biased deck `bd`.  
 Hint: Change the part of the call involving `rep()`.**
 
-## Additional discrete distributions (Poisson, Zipf, NB, ...)
+## The Poisson distribution
+
+Outcomes taking the form of integer counts arise in many
+appications.  For example, counts of cases of COVID-19 infection
+are recorded on a daily basis and presented and interpreted
+in various formats.
 
 # Models for continuous outcomes
 
@@ -387,22 +419,176 @@ define probabilities for subsets of the sample space.
 ## Univariate response
 
 For concreteness, we will use RNA-seq data derived
-from The Cancer Genome Atlas.  We'll focus on the
+from The Cancer Genome Atlas.  We'll focus on `r {data(yy1_ex); length(yy1_ex)}`
+values of normalized RSEM-based estimates of
 expression of YY1 in adrenocortical carcinoma.
 
-### Cumulative distribution function
+
+```{r lkacc1, eval=FALSE, echo=FALSE}
+accex = curatedTCGAData("ACC", "RNASeq2GeneNorm",version="2.0.1", dry.run=FALSE)
+```
+```{r getdacc, echo=FALSE, echo=FALSE}
+data(accex)
+```
+```{r lkaccex, echo=FALSE, eval=FALSE}
+accex
+accrna = experiments(accex)[[1]]
+yy1_ex = assay(accrna["YY1",])
+class(yy1_ex)
+```
+```{r lkacc2}
+data(yy1_ex)
+head(yy1_ex)
+```
+
+We will refer to this as a vector of "real valued" outcomes.
+
+
+### Cumulative distribution function; quantiles
+
+We'll use capital letters to denote random variables.
+The formal definition of "random variable" is given
+in textbooks; we will use the term informally to
+refer to quantities we regard as random.
+
+The function $F(x) = \mbox{Pr}(X < x)$ is called
+the cumulative distribution function (CDF) for 
+the random variable $X$.  For the
+YY1 measures, we can produce a visualization of
+the associated CDF:
+
+```{r lkecdf}
+plot(ecdf(yy1_ex))
+abline(h=.8, lty=2)
+arrows(1583, .8, 1583, 0, lty=2)
+```
+
+The quantiles of a distribution are given by
+the inverse of the CDF.  The quantile function
+takes a number $p$ between 0 and 1 and returns
+the number $F^{-1}(p)$.
+
+The graph above shows that the 0.80 quantile
+of the distribution of our YY1 vector is about 1584.
+
+### Exercise
+
+**15:  Show that the proportion of YY1 observations 
+exceeding 1584 is approximately 20%.**
 
 ### Histogram, probability density function
 
-### Moments, parameters
+The histogram is a tunable display of the relative
+frequencies of values in a vector.
+
+```{r lkhi}
+par(mfrow=c(2,1), mar=c(4,3,1,1))
+hist(yy1_ex, xlim=c(400, 2600))
+hist(yy1_ex, breaks=20, xlim=c(400, 2600))
+```
+
+The probability density function for a
+continuous random variable $X$ satisfies
+
+$$
+\int_a^b f(x) dx = \mbox{Pr}(a < X < b)
+$$
+
+We can estimate the density function for a
+sample in various ways.  Here is a simple
+illustration:
+
+```{r lkden}
+plot(density(yy1_ex))
+```
+
+### Mean, variance
+
+The sample mean for the vector $x = (x_1, \ldots, x_n)$
+is defined as $\bar{x} = n^{-1}\sum_i x_i.  The sample variance
+is $(n-1)^{-1}\sum_i (x_i = \bar{x})^2$.
+
+We will sometimes refer to mean and
+variance in the context of probability models
+rather than samples.  The mean for a continuous
+distribution is defined as
+
+$$
+E(x) = \int x f(x) dx
+$$
+
+while for a discrete distribution with probability
+mass function $p$ it is
+
+$$
+E(x) = \sum x p(x)
+$$
+
 
 ### Some widely used models for continuous responses
 
-#### Uniform distribution
+We'll use simulation to illustrate the shapes of
+various distributions.  R makes this very simple with
+a family of functions whose names begin with `r`.
+
+#### Uniform distribution on [0,1]
+
+The density function is $f(x) = 1$.
+
+```{r lkunif}
+hist(runif(10000, 0, 1), prob=TRUE)
+```
+
+##### Exercise
+
+**16:  Use code like the above to obtain
+the value of the density of a random
+variable with uniform density on the interval [0, 2].**
 
 #### Gaussian model
 
+The Gaussian distribution is also called "normal".
+Its shape and position on the real line are determined
+by its mean and variance.  Symbolically, 
+the model is often written $N(\mu, \sigma^2)$, and
+the density function is 
+$$
+f(x) = \frac{1}{\sqrt{2\pi \sigma^2} e^{\frac{(x-\mu)^2}{2 \sigma^2}}
+$$
+
+```{r lknorm}
+hist(rnorm(10000, 0, 1), prob=TRUE)
+lines(seq(-4,4,len=100), dnorm(seq(-4,4,len=100)))
+```
+
 #### Exponential and Gamma models for survival data
+
+The exponential model (not to be confused with
+exponential family models) is defined for random
+variables with positive values.  An example
+is survival times.  We'll use a dataset from the survival
+package to illustrate.
+
+```{r lkmd}
+library(survival) # use myeloma records from Mayo clinic, remove censored times
+md = myeloma$futime[myeloma$death==1 & myeloma$entry == 0]
+hist(md, breaks=20, prob=TRUE, ylim=c(0,.001))
+mean(md)
+ss = seq(0,8000,.1)
+lines(ss, dexp(ss, rate=1/mean(md)))
+```
+
+The density function for the exponential model is $f(x) = \lambda e ^ {-\lambda x}$.
+In this formulation, $\lambda$ is referred to as the rate parameter.  The
+mean of the distribution is then $1/\lambda$.
+
+##### Exercise
+
+**17:  How close is the median of the exponential model
+with rate 1/1045 to the sample median of the myeloma
+survival times?  How does this relate to the interpretation of
+the plot above?**
+
 
 ## Multivariate response
 
