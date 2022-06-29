@@ -1,66 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/S1_probability.html</loc>
+    <loc>/articles/S1_probability.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/S2_EDA.html</loc>
+    <loc>/articles/S2_EDA.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/S2_hypothesis_testing.html</loc>
+    <loc>/articles/S2_hypothesis_testing.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/S3_hypothesis_testing.html</loc>
+    <loc>/articles/S3_hypothesis_testing.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/S3_linear_models.html</loc>
+    <loc>/articles/S3_linear_models.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/S4_linear_models.html</loc>
+    <loc>/articles/S4_linear_models.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/articles/index.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/build_deck.html</loc>
+    <loc>/reference/build_deck.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/doubsim.html</loc>
+    <loc>/reference/c5000.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/doubsim2.html</loc>
+    <loc>/reference/doubsim.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/doubsim3.html</loc>
+    <loc>/reference/doubsim2.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/faces.html</loc>
+    <loc>/reference/doubsim3.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/full_house.html</loc>
+    <loc>/reference/egr1_ex.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/index.html</loc>
+    <loc>/reference/faces.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/is_flush.html</loc>
+    <loc>/reference/fos_ex.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/one_pair.html</loc>
+    <loc>/reference/full_house.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/suits.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://github.com/vjcitn/CSHstats/reference/two_pairs.html</loc>
+    <loc>/reference/is_flush.html</loc>
+  </url>
+  <url>
+    <loc>/reference/one_pair.html</loc>
+  </url>
+  <url>
+    <loc>/reference/suits.html</loc>
+  </url>
+  <url>
+    <loc>/reference/two_pairs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/yy1_ex.html</loc>
   </url>
 </urlset>

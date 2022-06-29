@@ -13,7 +13,22 @@
 #' @format character vector
 "doubsim3"
 
-#' read depth for 50 positions on pasilla chr4, from example(coverage) for GenomicAlignments
+#' read depth for 5000 positions on pasilla chr4, from example(coverage) for GenomicAlignments
 #' @docType data
 #' @format numeric vector
-"c50"
+"c5000"
+
+#' RNASeq2GeneNorm measures for YY1 from TCGA ACC samples
+#' @docType data
+#' @format numeric vector
+"yy1_ex"
+
+#' RNASeq2GeneNorm measures for FOS from TCGA ACC samples
+#' @docType data
+#' @format numeric vector
+"fos_ex"
+
+#' RNASeq2GeneNorm measures for EGR1 from TCGA ACC samples
+#' @docType data
+#' @format numeric vector
+"egr1_ex"

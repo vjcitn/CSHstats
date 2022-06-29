@@ -22,6 +22,7 @@ suppressMessages({
   library(CSHstats)
   library(survival)
   library(SummarizedExperiment)
+  library(ggplot2)
 #  library(curatedTCGAData)
   })
  })
@@ -577,7 +578,7 @@ sample in various ways.  Here is a simple
 illustration:
 
 ```{r lkden}
-plot(density(yy1_ex))
+plot(dd <- density(yy1_ex))
 ```
 
 It is of some interest to use `approxfun` and numerical
@@ -679,6 +680,25 @@ $$
 
 ## Multivariate response
 
+We've seen that the use of univariate probability models has
+many facets.
+The concept of *joint distribution* of *multiple* random quantities
+is central to reasoning about interactions among components
+of complicated processes.
+
+In the following example, we have obtained normalized expression measures 
+for EGR1 and FOS in adrenocortical carcinoma tumors studied
+in TCGA.  We'll use built-in bivariate density estimation to
+show the relationship between expression of these two
+transcription factors in ACC.
+
+```{r lkcont}
+data(fos_ex)
+data(egr1_ex)
+bivdf = data.frame(fos_ex, egr1_ex)
+library(ggplot2)
+ggplot(bivdf, aes(x=log(fos_ex), y=log(egr1_ex))) + geom_point() + geom_density_2d()
+```
 
 
 ### Probabilistic independence and dependence

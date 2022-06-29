@@ -18,8 +18,25 @@ pkgdown:
 
 # EDA: Exploratory data analysis
 
-## Assessing distributional shape
+The field of EDA has changed, thanks to advances in computational
+and visualization technology.  Classical EDA addressed
 
-## Comparing batches of numbers: Boxplots and beyond
+- Assessing distributional shape
 
-## Transformations; handling "outliers"
+- Comparing batches of numbers: Boxplots and beyond
+
+- Transformations; handling "outliers"
+
+More recently, we can consider exploratory data activities that use
+
+- interactive tables
+
+- interactive graphics
+
+- purpose-built graphical user interfaces
+
+We will explore all of these concerns.  Our principles include
+
+- always be prepared to "look at the data"
+
+- every facet of your data should be accessible to exploration and summarization
