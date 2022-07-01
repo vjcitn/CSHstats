@@ -715,6 +715,7 @@ So, for log FOS and log EGR1, we can evaluate $F(7,7)$ as follows:
 ```{r lkjcdf}
 mean(log(fos_ex)<7 & log(egr1_ex)<7)
 ```
+We will call this the empirical estimate of $F(7,7)$.
 
 ### Covariance matrix, bivariate case
 
@@ -754,9 +755,34 @@ The estimate of $F(7,7)$ using this model is
 ```{r do77}
 pmvnorm(upper=c(7,7), mean=bmean, sigma=covmat)
 ```
+We'll call this the model-based estimate of $F(7,7)$.
+
+#### Exercise
+
+**19: Obtain empirical and model-based estimates of $F(6,5)$
+for (log FOS, log EGR1).**
 
 
 ### Probabilistic independence and dependence
 
+The "tilted contour ellipses" shown just above indicate that
+knowledge of the value of log FOS tells us about variation in values
+of log EGR1.  If log FOS is 6, the value of log EGR1 is much more likely
+to be around 6 than it is to be around 9.  We use the concept of
+conditional distribution to address this concept, and denote this
+conditional distribution function $F(x|y)$, with the vertical bar
+denoting conditioning.  Specifically,
+$F(x|Y=y)$ = Pr($X<x$) **given that** $Y = y$.
+
+Probabilistic independence of two random quantities can be formulated
+as the condition that $F(x|y) = F(x)$: knowledge of the value of $Y$
+provides no information on the distribution of $X$.
+
 ### Measures of correlation
 
+The correlation coefficient for two random quantities is the ratio of
+their covariance to the square root of the product of their variances.
+
+**20: Use the elements of covmat computed above to produce
+an estimate of the correlation between log FOS and log EGR1, and
+compare to cor() in R for (log FOS, log EGR1).**

@@ -776,6 +776,7 @@ So, for log FOS and log EGR1, we can evaluate <span class="math inline">\(F(7,7)
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span><span class="op">&lt;</span><span class="fl">7</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span><span class="op">&lt;</span><span class="fl">7</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] 0.278481</span></code></pre>
+<p>We will call this the empirical estimate of <span class="math inline">\(F(7,7)\)</span>.</p>
 </div>
 <div class="section level4">
 <h4 id="covariance-matrix-bivariate-case">Covariance matrix, bivariate case<a class="anchor" aria-label="anchor" href="#covariance-matrix-bivariate-case"></a>
@@ -823,14 +824,37 @@ as opposed to the wiggly contours we saw above.</p>
 <span class="co">## [1] 1e-15</span>
 <span class="co">## attr(,"msg")</span>
 <span class="co">## [1] "Normal Completion"</span></code></pre>
+<p>We’ll call this the model-based estimate of <span class="math inline">\(F(7,7)\)</span>.</p>
+<div class="section level5">
+<h5 id="exercise-5">Exercise<a class="anchor" aria-label="anchor" href="#exercise-5"></a>
+</h5>
+<p><strong>19: Obtain empirical and model-based estimates of <span class="math inline">\(F(6,5)\)</span>
+for (log FOS, log EGR1).</strong></p>
+</div>
 </div>
 <div class="section level4">
 <h4 id="probabilistic-independence-and-dependence">Probabilistic independence and dependence<a class="anchor" aria-label="anchor" href="#probabilistic-independence-and-dependence"></a>
 </h4>
+<p>The “tilted contour ellipses” shown just above indicate that
+knowledge of the value of log FOS tells us about variation in values
+of log EGR1. If log FOS is 6, the value of log EGR1 is much more likely
+to be around 6 than it is to be around 9. We use the concept of
+conditional distribution to address this concept, and denote this
+conditional distribution function <span class="math inline">\(F(x|y)\)</span>, with the vertical bar
+denoting conditioning. Specifically,
+<span class="math inline">\(F(x|Y=y)\)</span> = Pr(<span class="math inline">\(X&lt;x\)</span>) <strong>given that</strong> <span class="math inline">\(Y = y\)</span>.</p>
+<p>Probabilistic independence of two random quantities can be formulated
+as the condition that <span class="math inline">\(F(x|y) = F(x)\)</span>: knowledge of the value of <span class="math inline">\(Y\)</span>
+provides no information on the distribution of <span class="math inline">\(X\)</span>.</p>
 </div>
 <div class="section level4">
 <h4 id="measures-of-correlation">Measures of correlation<a class="anchor" aria-label="anchor" href="#measures-of-correlation"></a>
 </h4>
+<p>The correlation coefficient for two random quantities is the ratio of
+their covariance to the square root of the product of their variances.</p>
+<p><strong>20: Use the elements of covmat computed above to produce
+an estimate of the correlation between log FOS and log EGR1, and
+compare to cor() in R for (log FOS, log EGR1).</strong></p>
 </div>
 </div>
 </div>
