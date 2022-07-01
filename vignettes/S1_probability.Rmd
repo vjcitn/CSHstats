@@ -471,7 +471,7 @@ This will be useful for later material.
 The sample mean for the vector $x = (x_1, \ldots, x_n)$
 is defined as $\bar{x} = n^{-1}\sum_i x_i$.  The (unbiased estimator
 of the) sample variance
-is $(n-1)^{-1}\sum_i (x_i = \bar{x})^2$.
+is $(n-1)^{-1}\sum_i (x_i - \bar{x})^2$.
 
 We will sometimes refer to mean and
 variance in the context of probability models
