@@ -16,6 +16,15 @@ pkgdown:
   as_is: true
 ---
 
+```{r dosetup, echo=FALSE}
+suppressPackageStartupMessages({
+suppressMessages({
+library(CSHstats)
+library(MASS)
+})
+})
+```
+
 # EDA: Exploratory data analysis
 
 The field of EDA has changed, thanks to advances in computational
@@ -40,3 +49,59 @@ We will explore all of these concerns.  Our principles include
 - always be prepared to "look at the data"
 
 - every facet of your data should be accessible to exploration and summarization
+
+# Distributional shape
+
+## Univariate
+
+The mode of a distribution is the "most common value".  The peak
+of a histogram would correspond to the mode of the corresponding
+distribution for a discrete random variable.  For continuous
+random variables, the mode is given by the peak of the density function.
+
+A basic question about a univariate dataset is: Could it have
+a multimodal distribution?
+
+To get a sense of what is involved, use R studio's File control to produce
+a new "Shiny app", and give it the name "modality".  Then use "Run app"
+control.
+
+The slider controls the number of bins used to summarize the values
+of times of geyser eruption.  How many modes might the underlying
+distribution have?
+
+## Transformation
+
+```{r lktx}
+library(CSHstats)
+data(fos)
+par(mfrow=c(1,2))
+hist(fos)
+hist(log(fos))
+```
+
+To search for a transformation that best symmetrizes a skewed distribution,
+the `boxcox` function from the MASS library can be used.
+
+```{r doboxc}
+
+
+## Bivariate
+
+We can use density estimation in the plane to reason about
+multimodality in bivariate data.  This is from `example(geom_density_2d)`:
+
+```{r dobiv}
+library(datasets)
+data(faithful)
+m <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  geom_point() + xlim(0.5, 6) + ylim(40, 110)
+# contour lines
+m + geom_density_2d()
+```
+
+### Exercise
+
+**1 (advanced): Produce a shiny app that has a controller for the
+bandwidth of the density estimator for viewing the 
+bivariate structure of the `faithful` data.**
