@@ -48,6 +48,10 @@ biased deck) conditions
 infinite sample spaces
 - Define and use probability density functions and cumulative distribution functions
 for continuous outcomes
+- Develop some basic concepts of multivariate probability distributions
+    - joint probability distribution for two random quantities
+    - contours of a bivariate density: empirical and model-based
+    - covariance and correlation
 
 
 # Overview
