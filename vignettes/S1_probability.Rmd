@@ -21,7 +21,6 @@ suppressMessages({
  suppressPackageStartupMessages({
   library(CSHstats)
   library(survival)
-  library(SummarizedExperiment)
   library(ggplot2)
 library(mvtnorm)
 #  library(curatedTCGAData)
@@ -92,6 +91,12 @@ after the one shown above.**
 ### Card deck definitions and operations
 
 Our card deck is a vector with 52 elements.  Unicode characters encode the "suits".
+
+If you have not already installed CSHstats (or did so a long time ago) use
+```
+BiocManager::install("vjcitn/CSHstats")  # install.packages("BiocManager") if necessary
+```
+to get access to the software needed to do the computations in this document.
 
 ```{r getli}
 library(CSHstats)

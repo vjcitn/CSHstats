@@ -32,3 +32,13 @@
 #' @docType data
 #' @format numeric vector
 "egr1_ex"
+
+#' meaningless integers
+#' @docType data
+#' @format numeric vector
+"c50"
+
+#' MultiAssayExperiment instance for ACC
+#' @docType data
+#' @format MultiAssayExperiment
+"accex"
