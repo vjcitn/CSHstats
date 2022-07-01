@@ -23,6 +23,7 @@ suppressMessages({
   library(survival)
   library(SummarizedExperiment)
   library(ggplot2)
+library(mvtnorm)
 #  library(curatedTCGAData)
   })
  })
@@ -607,7 +608,7 @@ a family of functions whose names begin with `r`.
 
 #### Uniform distribution on [0,1]
 
-The density function is $f(x) = 1$.
+The density function is $f(x) = 1$  if $x \in [0,1]$ and 0 otherwise.
 
 ```{r lkunif}
 hist(runif(10000, 0, 1), prob=TRUE)
@@ -626,9 +627,7 @@ Its shape and position on the real line are determined
 by its mean and variance.  Symbolically, 
 the model is often written $N(\mu, \sigma^2)$, and
 the density function is 
-$$
-f(x) = \frac{1}{\sqrt{2\pi \sigma^2} e^{\frac{(x-\mu)^2}{2 \sigma^2}}
-$$
+$f(x) = 1/\sqrt{2\pi \sigma^2} \exp\{(x-\mu)^2/2 \sigma^2\}$.
 
 ```{r lknorm}
 hist(rnorm(10000, 0, 1), prob=TRUE)
@@ -698,6 +697,57 @@ data(egr1_ex)
 bivdf = data.frame(fos_ex, egr1_ex)
 library(ggplot2)
 ggplot(bivdf, aes(x=log(fos_ex), y=log(egr1_ex))) + geom_point() + geom_density_2d()
+```
+
+### Joint cumulative distribution function
+
+We'll focus on the case of continuous bivariate response denoted $(X,Y)$.  The joint cumulative
+distribution function (cdf) is
+$$
+F(x,y) = Pr(X < x, Y < y)
+$$
+So, for log FOS and log EGR1, we can evaluate $F(7,7)$ as follows:
+```{r lkjcdf}
+mean(log(fos_ex)<7 & log(egr1_ex)<7)
+```
+
+### Covariance matrix, bivariate case
+
+The covariance between two random variables is $Cov(X,Y) = EXY - (EX)(EY)$;
+the covariance matrix is symmetric, has the variances on the diagonal,
+and the covariance off the diagonal.
+```{r lkcov}
+var(log(fos_ex)) # univariate
+covmat = var(cbind(log(fos_ex), log(egr1_ex))) # matrix
+covmat
+```
+
+### Using the bivariate normal model
+
+Given estimates of the bivariate mean and covariance, we can use
+the multivariate normal cumulative density function to produce
+contours of the distribution that will have elliptical shapes,
+as opposed to the wiggly contours we saw above.
+
+```{r getdf}
+bmean = c(mean(log(fos_ex)), mean(log(egr1_ex)))
+library(mvtnorm)
+xgrid = seq(3,10,.05)
+ygrid = seq(3,10,.05)
+ngrid = length(xgrid)
+nd = matrix(NA, ngrid, ngrid)
+for (i in 1:ngrid) {  # inefficient!
+ for (j in 1:ngrid) {
+  nd[i,j] = dmvnorm(c(xgrid[i],ygrid[j]), bmean, covmat)
+  }
+ }
+contour(xgrid, ygrid, nd, ylab="log EGR1", xlab="log FOS")
+points(log(fos_ex), log(egr1_ex), col="gray", pch=19)
+```
+
+The estimate of $F(7,7)$ using this model is
+```{r do77}
+pmvnorm(upper=c(7,7), mean=bmean, sigma=covmat)
 ```
 
 

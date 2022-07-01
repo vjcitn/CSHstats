@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
       <img src="" class="logo" alt=""><h1>S1_probability: Definitions and exercises</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">June 29, 2022</h4>
+            <h4 data-toc-skip class="date">June 30, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S1_probability.Rmd" class="external-link"><code>vignettes/S1_probability.Rmd</code></a></small>
       <div class="d-none name"><code>S1_probability.Rmd</code></div>
@@ -669,7 +669,7 @@ a family of functions whose names begin with <code>r</code>.</p>
 <div class="section level5">
 <h5 id="uniform-distribution-on-01">Uniform distribution on [0,1]<a class="anchor" aria-label="anchor" href="#uniform-distribution-on-01"></a>
 </h5>
-<p>The density function is <span class="math inline">\(f(x) = 1\)</span>.</p>
+<p>The density function is <span class="math inline">\(f(x) = 1\)</span> if <span class="math inline">\(x \in [0,1]\)</span> and 0 otherwise.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, prob<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="S1_probability_files/figure-html/lkunif-1.png" width="672"></p>
@@ -689,9 +689,7 @@ Its shape and position on the real line are determined
 by its mean and variance. Symbolically,
 the model is often written <span class="math inline">\(N(\mu, \sigma^2)\)</span>, and
 the density function is
-<span class="math display">\[
-f(x) = \frac{1}{\sqrt{2\pi \sigma^2} e^{\frac{(x-\mu)^2}{2 \sigma^2}}
-\]</span></p>
+<span class="math inline">\(f(x) = 1/\sqrt{2\pi \sigma^2} \exp\{(x-\mu)^2/2 \sigma^2\}\)</span>.</p>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, prob<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>,<span class="fl">4</span>,len<span class="op">=</span><span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>,<span class="fl">4</span>,len<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -763,6 +761,66 @@ transcription factors in ACC.</p>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">bivdf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>, y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html" class="external-link">geom_density_2d</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="S1_probability_files/figure-html/lkcont-1.png" width="672"></p>
+<div class="section level4">
+<h4 id="joint-cumulative-distribution-function">Joint cumulative distribution function<a class="anchor" aria-label="anchor" href="#joint-cumulative-distribution-function"></a>
+</h4>
+<p>We’ll focus on the case of continuous bivariate response denoted <span class="math inline">\((X,Y)\)</span>. The joint cumulative
+distribution function (cdf) is
+<span class="math display">\[
+F(x,y) = Pr(X &lt; x, Y &lt; y)
+\]</span>
+So, for log FOS and log EGR1, we can evaluate <span class="math inline">\(F(7,7)\)</span> as follows:</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span><span class="op">&lt;</span><span class="fl">7</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span><span class="op">&lt;</span><span class="fl">7</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.278481</span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="covariance-matrix-bivariate-case">Covariance matrix, bivariate case<a class="anchor" aria-label="anchor" href="#covariance-matrix-bivariate-case"></a>
+</h4>
+<p>The covariance between two random variables is <span class="math inline">\(Cov(X,Y) = EXY - (EX)(EY)\)</span>;
+the covariance matrix is symmetric, has the variances on the diagonal,
+and the covariance off the diagonal.</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span><span class="op">)</span> <span class="co"># univariate</span></code></pre></div>
+<pre><code><span class="co">## [1] 1.194019</span></code></pre>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">covmat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># matrix</span>
+<span class="va">covmat</span></code></pre></div>
+<pre><code><span class="co">##           [,1]      [,2]</span>
+<span class="co">## [1,] 1.1940188 0.9746936</span>
+<span class="co">## [2,] 0.9746936 1.4137188</span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="using-the-bivariate-normal-model">Using the bivariate normal model<a class="anchor" aria-label="anchor" href="#using-the-bivariate-normal-model"></a>
+</h4>
+<p>Given estimates of the bivariate mean and covariance, we can use
+the multivariate normal cumulative density function to produce
+contours of the distribution that will have elliptical shapes,
+as opposed to the wiggly contours we saw above.</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">bmean</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://mvtnorm.R-forge.R-project.org" class="external-link">mvtnorm</a></span><span class="op">)</span>
+<span class="va">xgrid</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">10</span>,<span class="fl">.05</span><span class="op">)</span>
+<span class="va">ygrid</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">10</span>,<span class="fl">.05</span><span class="op">)</span>
+<span class="va">ngrid</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xgrid</span><span class="op">)</span>
+<span class="va">nd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">ngrid</span>, <span class="va">ngrid</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">ngrid</span><span class="op">)</span> <span class="op">{</span>  <span class="co"># inefficient!</span>
+ <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">ngrid</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">nd</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">dmvnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">xgrid</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,<span class="va">ygrid</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">)</span>, <span class="va">bmean</span>, <span class="va">covmat</span><span class="op">)</span>
+  <span class="op">}</span>
+ <span class="op">}</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/contour.html" class="external-link">contour</a></span><span class="op">(</span><span class="va">xgrid</span>, <span class="va">ygrid</span>, <span class="va">nd</span>, ylab<span class="op">=</span><span class="st">"log EGR1"</span>, xlab<span class="op">=</span><span class="st">"log FOS"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span>, col<span class="op">=</span><span class="st">"gray"</span>, pch<span class="op">=</span><span class="fl">19</span><span class="op">)</span></code></pre></div>
+<p><img src="S1_probability_files/figure-html/getdf-1.png" width="672"></p>
+<p>The estimate of <span class="math inline">\(F(7,7)\)</span> using this model is</p>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>upper<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">7</span><span class="op">)</span>, mean<span class="op">=</span><span class="va">bmean</span>, sigma<span class="op">=</span><span class="va">covmat</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.3368775</span>
+<span class="co">## attr(,"error")</span>
+<span class="co">## [1] 1e-15</span>
+<span class="co">## attr(,"msg")</span>
+<span class="co">## [1] "Normal Completion"</span></code></pre>
+</div>
 <div class="section level4">
 <h4 id="probabilistic-independence-and-dependence">Probabilistic independence and dependence<a class="anchor" aria-label="anchor" href="#probabilistic-independence-and-dependence"></a>
 </h4>
