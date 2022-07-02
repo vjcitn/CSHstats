@@ -74,7 +74,7 @@
       <img src="" class="logo" alt=""><h1>S2_EDA: Exploratory data analysis and visualization</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">July 01, 2022</h4>
+            <h4 data-toc-skip class="date">July 02, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S2_EDA.Rmd" class="external-link"><code>vignettes/S2_EDA.Rmd</code></a></small>
       <div class="d-none name"><code>S2_EDA.Rmd</code></div>
@@ -100,9 +100,207 @@ and visualization technology. Classical EDA addressed</p>
 </ul>
 <p>We will explore all of these concerns. Our principles include</p>
 <ul>
-<li><p>always be prepared to “look at the data”</p></li>
-<li><p>every facet of your data should be accessible to exploration and summarization</p></li>
+<li>always be prepared to “look at the data”
+<ul>
+<li>when very high volumes are involved, sampling and dimension reduction
+are relevant</li>
 </ul>
+</li>
+<li>every facet of your data should be accessible to exploration and summarization</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="anscombes-quartet-statistics-that-miss-the-point">Anscombe’s quartet: statistics that miss the point<a class="anchor" aria-label="anchor" href="#anscombes-quartet-statistics-that-miss-the-point"></a>
+</h2>
+<p>In 1973 Francis Anscombe constructed four bivariate
+datasets. The four datasets
+of interest are the pairs of columns (x1, y1), (x2, y2), ….</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">anscombe</span><span class="op">)</span></code></pre></div>
+<div id="htmlwidget-c03a07fef8ff55bad244" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c03a07fef8ff55bad244">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[10,8,13,9,11,14,6,4,12,7,5],[10,8,13,9,11,14,6,4,12,7,5],[10,8,13,9,11,14,6,4,12,7,5],[8,8,8,8,8,8,8,19,8,8,8],[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68],[9.14,8.14,8.74,8.77,9.26,8.1,6.13,3.1,9.13,7.26,4.74],[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73],[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.5,5.56,7.91,6.89]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>x1<\/th>\n      <th>x2<\/th>\n      <th>x3<\/th>\n      <th>x4<\/th>\n      <th>y1<\/th>\n      <th>y2<\/th>\n      <th>y3<\/th>\n      <th>y4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>In our discussion of probability we provided definitions of
+mean, variance, covariance, correlation. Here is a quick check
+on the means of the variables in the quartet.</p>
+<ul>
+<li>We use the <code>apply</code> function which has general arguments</li>
+</ul>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">X</span>, <span class="va">MARGIN</span>, <span class="va">FUN</span>, <span class="va">...</span>, simplify<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre>
+<p>where <code>X</code> is some array-like entity, <code>MARGIN</code> defines
+the dimension along with <code>FUN</code> will be computed
+with additional arguments possibly provided in <code>...</code>.</p>
+<ul>
+<li><p>When <code>MARGIN</code> is 1, <code>FUN</code> is computed on each “row”,
+when <code>MARGIN</code> is 2, <code>FUN</code> is computed on each “column”.</p></li>
+<li><p>We also introduce a helper function <code>rounded_stat</code> which
+rounds the result of a univariate statistic.</p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rounded_stat</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">stat</span><span class="op">=</span><span class="va">mean</span>, <span class="va">ndig</span><span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">stat</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">ndig</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">anscombe</span>, <span class="fl">2</span>, <span class="va">rounded_stat</span>, stat<span class="op">=</span><span class="va">mean</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##  x1  x2  x3  x4  y1  y2  y3  y4 </span>
+<span class="co">## 9.0 9.0 9.0 9.0 7.5 7.5 7.5 7.5</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">anscombe</span>, <span class="fl">2</span>, <span class="va">rounded_stat</span>, stat<span class="op">=</span><span class="va">sd</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   x1   x2   x3   x4   y1   y2   y3   y4 </span>
+<span class="co">## 3.32 3.32 3.32 3.32 2.03 2.03 2.03 2.03</span></code></pre>
+<p>This code demonstrates that the x and y variables have identical means
+and standard deviations.</p>
+<p>Nevertheless, when the variables are plotted against one another, we have:</p>
+<p><img src="S2_EDA_files/figure-html/lkda-1.png" width="672"></p>
+<div class="section level4">
+<h4 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h4>
+<p><strong>1. Show that the four correlation coefficients for (x1, y1), …, (x4, y4)
+are identical (up to rounding).</strong></p>
+<p><strong>2. This <a href="https://www.njtierney.com/post/2020/06/01/tidy-anscombe/" class="external-link">blog post</a>
+addresses the tidyverse approach to handling the data.
+Read the blog post and try to get comfortable with the various steps
+towards producing and using a “tidy” representation.</strong></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># use BiocManager::install("tidyverse") if necessary</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
+<span class="va">tidy_anscombe</span> <span class="op">&lt;-</span> <span class="va">anscombe</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+ <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,
+              names_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".value"</span>, <span class="st">"set"</span><span class="op">)</span>,
+              names_pattern <span class="op">=</span> <span class="st">"(.)(.)"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tidy_anscombe</span>,
+       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>,
+           y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">set</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## `geom_smooth()` using formula 'y ~ x'</span></code></pre>
+<p><img src="S2_EDA_files/figure-html/doansc-1.png" width="672"></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="exploring-distributional-shape">Exploring distributional shape<a class="anchor" aria-label="anchor" href="#exploring-distributional-shape"></a>
+</h2>
+<div class="section level3">
+<h3 id="univariate">Univariate<a class="anchor" aria-label="anchor" href="#univariate"></a>
+</h3>
+<p>The mode of a distribution is the “most common value”. The peak
+of a histogram would correspond to the mode of the corresponding
+distribution for a discrete random variable. For continuous
+random variables, the mode is given by the peak of the density function.</p>
+<p>A basic question about a univariate dataset is: Could it have
+a multimodal distribution?</p>
+<p><strong>Live Exercise: programming interactive exploration.</strong></p>
+<p><strong>Use R studio’s File control to produce
+a new “Shiny app”, and give it the name “modality”. Then use “Run app”
+control.</strong></p>
+<p><strong>The slider controls the number of bins used to summarize the values
+of times of geyser eruption. How many modes might the underlying
+distribution have?</strong></p>
+</div>
+<div class="section level3">
+<h3 id="transformation">Transformation<a class="anchor" aria-label="anchor" href="#transformation"></a>
+</h3>
+<p>To search for a transformation that best symmetrizes a skewed distribution,
+the <code>boxcox</code> function from the MASS library can be used.
+The origins of the procedure were reported to the Royal Statistical
+Society in 1964.</p>
+<div class="figure">
+<img src="boxcoxJRSS.jpg" alt="JRSS paper"><p class="caption">JRSS paper</p>
+</div>
+<p>The basic idea is that we can construct a series of functional
+transformations of a random variable to produce a distribution
+(on the transformed scale) that is approximately normal. The
+Box-Cox family of transformations is indexed by a single parameter,
+<span class="math inline">\(\lambda\)</span>. The transformation of the variable <span class="math inline">\(y\)</span> to
+<span class="math inline">\(y^*(\lambda) = \lambda^{-1}(y^\lambda-1)\)</span> (if <span class="math inline">\(\lambda \neq 0\)</span>) and
+log <span class="math inline">\(y\)</span> if <span class="math inline">\(\lambda = 0\)</span> provides a smooth
+traversal of (fractional) power, logarithm, and reciprocal power
+operations on <span class="math inline">\(y\)</span>. If <span class="math inline">\(\lambda\)</span> is 1, no transformation is indicated.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">opar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">fos_ex</span>, main<span class="op">=</span><span class="st">"raw"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>, main<span class="op">=</span><span class="st">"sqrt"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">^</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"square"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>, main<span class="op">=</span><span class="st">"log"</span><span class="op">)</span></code></pre></div>
+<p><img src="S2_EDA_files/figure-html/doboxc-1.png" width="672"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></code></pre></div>
+<p>The boxcox function in the MASS library will trace the likelihood
+function that is maximized when the distribution of <span class="math inline">\(y^*(\lambda)\)</span> is
+as close to Gaussian as possible.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/MASS/man/boxcox.html" class="external-link">boxcox</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">~</span><span class="fl">1</span><span class="op">)</span> <span class="co"># must use formula</span></code></pre></div>
+<p><img src="S2_EDA_files/figure-html/doboco-1.png" width="672"></p>
+<div class="section level4">
+<h4 id="exercise">Exercise<a class="anchor" aria-label="anchor" href="#exercise"></a>
+</h4>
+<p><strong>3. What transformation does boxcox() recommend when applied to <code>log(egr1_ex)</code>?</strong></p>
+<p><strong>4. What transformation does boxcox() recommend when applied to the geyser data
+that we started out with?</strong></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="is-it-gaussian">Is it Gaussian?<a class="anchor" aria-label="anchor" href="#is-it-gaussian"></a>
+</h3>
+<p>The concept of the Q-Q plot (quantile-quantile plot) is used to
+compare a given data vector to a reference distribution (or to
+the distribution of some other data vector).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html" class="external-link">qqnorm</a></span><span class="op">(</span><span class="va">fos_ex</span>, main<span class="op">=</span><span class="st">"Compare FOS to Gaussian distribution"</span><span class="op">)</span></code></pre></div>
+<p><img src="S2_EDA_files/figure-html/lkqqp-1.png" width="672"></p>
+<p>If the configuration of points in the Q-Q plot does not
+form a straight line, the reference distribution is probably
+not appropriate.</p>
+<div class="section level4">
+<h4 id="exercises-1">Exercises<a class="anchor" aria-label="anchor" href="#exercises-1"></a>
+</h4>
+<p><strong>5. Use qqnorm with the log(fos_ex) and comment.</strong></p>
+<p><strong>6. <code>zsc = function(x) (x - mean(x))/sd(x)</code>. What is special
+about <code>qqnorm(zsc(log(fos_ex)))</code>?</strong></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="bivariate">Bivariate<a class="anchor" aria-label="anchor" href="#bivariate"></a>
+</h3>
+<p>We can use density estimation in the plane to reason about
+multimodality in bivariate data. This is from <code>example(geom_density_2d)</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">)</span>
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">faithful</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">eruptions</span>, y <span class="op">=</span> <span class="va">waiting</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">6</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">110</span><span class="op">)</span>
+<span class="co"># contour lines</span>
+<span class="va">m</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html" class="external-link">geom_density_2d</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="S2_EDA_files/figure-html/dobiv-1.png" width="672"></p>
+<div class="section level4">
+<h4 id="exercise-1">Exercise<a class="anchor" aria-label="anchor" href="#exercise-1"></a>
+</h4>
+<p><strong>7. Comment on the meaning of “local modes” in these “marginal” displays.</strong></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">opar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">$</span><span class="va">erup</span>, <span class="fl">.08</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">faithful</span><span class="op">$</span><span class="va">wait</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="S2_EDA_files/figure-html/lksmoo-1.png" width="672"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="exercise-2">Exercise<a class="anchor" aria-label="anchor" href="#exercise-2"></a>
+</h4>
+<p><strong>8. (advanced): Produce a shiny app that has a controller for the
+bandwidth of the density estimator for viewing the
+bivariate structure of the <code>faithful</code> data.</strong>
+```</p>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="visualizing-data-in-the-context-of-the-genome">Visualizing data in the context of the genome<a class="anchor" aria-label="anchor" href="#visualizing-data-in-the-context-of-the-genome"></a>
+</h2>
+<p>We will use <code>https://vjcitn.shinyapps.io/tnt4dn8</code> to look at
+GWAS and eQTL data jointly.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

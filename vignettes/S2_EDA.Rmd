@@ -147,7 +147,7 @@ ggplot(tidy_anscombe,
 
 
 
-# Distributional shape
+# Exploring distributional shape
 
 ## Univariate
 
@@ -159,13 +159,15 @@ random variables, the mode is given by the peak of the density function.
 A basic question about a univariate dataset is: Could it have
 a multimodal distribution?
 
-To get a sense of what is involved, use R studio's File control to produce
-a new "Shiny app", and give it the name "modality".  Then use "Run app"
-control.
+**Live Exercise: programming interactive exploration.**
 
-The slider controls the number of bins used to summarize the values
+**Use R studio's File control to produce
+a new "Shiny app", and give it the name "modality".  Then use "Run app"
+control.**
+
+**The slider controls the number of bins used to summarize the values
 of times of geyser eruption.  How many modes might the underlying
-distribution have?
+distribution have?**
 
 ## Transformation
 
@@ -182,14 +184,15 @@ transformations of a random variable to produce a distribution
 (on the transformed scale) that is approximately normal.  The
 Box-Cox family of transformations is indexed by a single parameter,
 $\lambda$. The transformation of the variable $y$ to
-$\lambda^{-1}(y^\lambda-1)$ (if $\lambda \neq 0$) and
+$y^*(\lambda) = \lambda^{-1}(y^\lambda-1)$ (if $\lambda \neq 0$) and
 log $y$ if $\lambda = 0$ provides a smooth
 traversal of (fractional) power, logarithm, and reciprocal power
-operations on $y$.
+operations on $y$.  If $\lambda$ is 1, no transformation is indicated.
 
 ```{r doboxc}
 opar = par(no.readonly=TRUE)
 par(mfrow=c(2,2), mar=c(3,2,1,1))
+data(fos_ex)
 hist(fos_ex, main="raw")
 hist(sqrt(fos_ex), main="sqrt")
 hist(fos_ex^2, main="square")
@@ -198,7 +201,41 @@ par(opar)
 ```
 
 The boxcox function in the MASS library will trace the likelihood
-function
+function that is maximized when the distribution of $y^*(\lambda)$ is
+as close to Gaussian as possible.
+
+```{r doboco}
+library(MASS)
+boxcox(fos_ex~1) # must use formula
+```
+
+### Exercise
+
+**3. What transformation does boxcox() recommend when applied to `log(egr1_ex)`?**
+
+**4. What transformation does boxcox() recommend when applied to the geyser data
+that we started out with?**
+
+## Is it Gaussian?
+
+The concept of the Q-Q plot (quantile-quantile plot) is used to
+compare a given data vector to a reference distribution (or to
+the distribution of some other data vector).
+
+```{r lkqqp}
+qqnorm(fos_ex, main="Compare FOS to Gaussian distribution")
+```
+
+If the configuration of points in the Q-Q plot does not
+form a straight line, the reference distribution is probably
+not appropriate.
+
+### Exercises
+
+**5. Use qqnorm with the log(fos_ex) and comment.**
+
+**6. `zsc = function(x) (x - mean(x))/sd(x)`.  What is special
+about `qqnorm(zsc(log(fos_ex)))`?**
 
 
 ## Bivariate
@@ -217,6 +254,24 @@ m + geom_density_2d()
 
 ### Exercise
 
-**1 (advanced): Produce a shiny app that has a controller for the
+**7. Comment on the meaning of "local modes" in these "marginal" displays.**
+
+```{r lksmoo}
+opar = par(no.readonly=TRUE)
+par(mfrow=c(1,2), mar=c(3,2,1,1))
+plot(density(faithful$erup, .08))
+plot(density(faithful$wait, 1.4))
+par(opar)
+```
+
+### Exercise
+
+**8. (advanced): Produce a shiny app that has a controller for the
 bandwidth of the density estimator for viewing the 
 bivariate structure of the `faithful` data.**
+```
+
+# Visualizing data in the context of the genome
+
+We will use `https://vjcitn.shinyapps.io/tnt4dn8` to look at
+GWAS and eQTL data jointly.
