@@ -1,11 +1,11 @@
 ---
-title: "S4_inference: Linear models and GLMs"
+title: "S5_inference: Linear models and GLMs"
 shorttitle: "linear models for CSHL"
 author: "Vincent J. Carey, stvjc at channing.harvard.edu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{S4_models: Linear models and GLMs}
+  %\VignetteIndexEntry{S5_inference: Linear models and GLMs}
   %\VignetteEncoding{UTF-8}
 output:
   bookdown::html_document2:

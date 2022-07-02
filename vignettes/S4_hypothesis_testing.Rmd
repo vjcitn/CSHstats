@@ -1,11 +1,11 @@
 ---
-title: "S3_inference: Definitions and exercises"
+title: "S4_inference: Definitions and exercises"
 shorttitle: "inference for CSHL"
 author: "Vincent J. Carey, stvjc at channing.harvard.edu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{S3_inference: Definitions and exercises}
+  %\VignetteIndexEntry{S4_inference: Definitions and exercises}
   %\VignetteEncoding{UTF-8}
 output:
   bookdown::html_document2:
