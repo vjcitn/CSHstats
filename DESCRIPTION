@@ -1,6 +1,6 @@
 Package: CSHstats
 Title: discussions and exercises on classical statistics for CSHL 2022
-Version: 0.0.11
+Version: 0.0.13
 Authors@R:
     person(given = "Vince",
            family = "Carey",

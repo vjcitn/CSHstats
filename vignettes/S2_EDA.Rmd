@@ -54,6 +54,19 @@ are relevant
 
 - every facet of your data should be accessible to exploration and summarization
 
+# Learning objectives
+
+- Know and propagate knowledge of Anscombe's quartet
+    - simple statistics may fail to disclose structure
+    - visualization should always be conducted
+- Many exploratory tools are tunable and the tuning affects interpretation
+    - understand how you might use shiny to explore tunable data visualization
+- Data transformations can be useful for allowing the use of classical methods
+    - The Box-Cox transformation family provides clues for choosing a transformation
+- QQplots help us reason about the suitability of reference distributions
+    - We only look at qqnorm, but qqplot allows more general comparisons
+- Shiny + TnT allow exploration of data in the context of linear genome annotation
+
 
 # Anscombe's quartet: statistics that miss the point
 
