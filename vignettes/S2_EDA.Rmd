@@ -21,6 +21,8 @@ suppressPackageStartupMessages({
 suppressMessages({
 library(CSHstats)
 library(MASS)
+library(DT)
+library(tidyverse)
 })
 })
 ```
@@ -47,8 +49,103 @@ More recently, we can consider exploratory data activities that use
 We will explore all of these concerns.  Our principles include
 
 - always be prepared to "look at the data"
+    - when very high volumes are involved, sampling and dimension reduction
+are relevant
 
 - every facet of your data should be accessible to exploration and summarization
+
+
+# Anscombe's quartet: statistics that miss the point
+
+In 1973 Francis Anscombe constructed four bivariate
+datasets.  The four datasets
+of interest are the pairs of columns (x1, y1), (x2, y2), ....
+
+```{r lkans}
+library(DT)
+datatable(anscombe)
+```
+
+In our discussion of probability we provided definitions of
+mean, variance, covariance, correlation.  Here is a quick check
+on the means of the variables in the quartet.  
+
+- We use the `apply` function which has general arguments
+```
+apply(X, MARGIN, FUN, ..., simplify=TRUE)
+```
+where `X` is some array-like entity, `MARGIN` defines
+the dimension along with `FUN` will be computed
+with additional arguments possibly provided in `...`.
+
+- When `MARGIN` is 1, `FUN` is computed on each "row",
+when `MARGIN` is 2, `FUN` is computed on each "column".
+
+- We also introduce a helper function `rounded_stat` which
+rounds the result of a univariate statistic.
+
+```{r lkmn, eval=FALSE, echo=FALSE}
+vapply(paste0("x", 1:4), function(z) mean(anscombe[[z]]), numeric(1))
+```
+
+```{r lkmn2}
+rounded_stat = function(x, stat=mean, ndig=2) round(stat(x), ndig)
+apply(anscombe, 2, rounded_stat, stat=mean)
+apply(anscombe, 2, rounded_stat, stat=sd)
+```
+
+This code demonstrates that the x and y variables have identical means
+and standard deviations.
+
+Nevertheless, when the variables are plotted against one another, we have:
+
+```{r lkda, echo=FALSE}
+     ff = y~x   # from ?anscombe
+     mods <- setNames(as.list(1:4), paste0("lm", 1:4))
+     for(i in 1:4) {
+       ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+       ## or   ff[[2]] <- as.name(paste0("y", i))
+       ##      ff[[3]] <- as.name(paste0("x", i))
+       mods[[i]] <- lmi <- lm(ff, data = anscombe)
+       }
+     op <- par(mfrow = c(2, 2), mar = 0.1+c(4,4,1,1), oma =  c(0, 0, 2, 0))
+     for(i in 1:4) {
+       ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+       plot(ff, data = anscombe, col = "red", pch = 21, bg = "orange", cex = 1.2,
+            xlim = c(3, 19), ylim = c(3, 13))
+       abline(mods[[i]], col = "blue")
+     }
+     mtext("Anscombe's 4 Regression data sets", outer = TRUE, cex = 1.5)
+     par(op)
+```
+
+### Exercises
+
+**1. Show that the four correlation coefficients for (x1, y1), ..., (x4, y4)
+are identical (up to rounding).**
+
+**2. This [blog post](https://www.njtierney.com/post/2020/06/01/tidy-anscombe/) 
+addresses the tidyverse approach to handling the data.
+Read the blog post and try to get comfortable with the various steps
+towards producing and using a "tidy" representation.**
+
+```{r doansc}
+# use BiocManager::install("tidyverse") if necessary
+library(tidyverse)
+tidy_anscombe <- anscombe %>%
+ pivot_longer(cols = everything(),
+              names_to = c(".value", "set"),
+              names_pattern = "(.)(.)")
+library(ggplot2)
+ggplot(tidy_anscombe,
+       aes(x = x,
+           y = y)) +
+  geom_point() + 
+  facet_wrap(~set) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
 
 # Distributional shape
 
@@ -72,18 +169,36 @@ distribution have?
 
 ## Transformation
 
-```{r lktx}
-library(CSHstats)
-data(fos)
-par(mfrow=c(1,2))
-hist(fos)
-hist(log(fos))
-```
 
 To search for a transformation that best symmetrizes a skewed distribution,
 the `boxcox` function from the MASS library can be used.
+The origins of the procedure were reported to the Royal Statistical
+Society in 1964.
+
+![JRSS paper](boxcoxJRSS.jpg)
+
+The basic idea is that we can construct a series of functional
+transformations of a random variable to produce a distribution
+(on the transformed scale) that is approximately normal.  The
+Box-Cox family of transformations is indexed by a single parameter,
+$\lambda$. The transformation of the variable $y$ to
+$\lambda^{-1}(y^\lambda-1)$ (if $\lambda \neq 0$) and
+log $y$ if $\lambda = 0$ provides a smooth
+traversal of (fractional) power, logarithm, and reciprocal power
+operations on $y$.
 
 ```{r doboxc}
+opar = par(no.readonly=TRUE)
+par(mfrow=c(2,2), mar=c(3,2,1,1))
+hist(fos_ex, main="raw")
+hist(sqrt(fos_ex), main="sqrt")
+hist(fos_ex^2, main="square")
+hist(log(fos_ex), main="log")
+par(opar)
+```
+
+The boxcox function in the MASS library will trace the likelihood
+function
 
 
 ## Bivariate
