@@ -54,7 +54,11 @@ probability of Type II errors below 20\%.
 the results of top card draws from N shuffles.  What would such a procedure look like?**
 
 ```{r dosim}
+suppressPackageStartupMessages({
+suppressMessages({
 library(CSHstats)
+})
+})
 d = build_deck()
 shuffle_deck = function(d) sample(d, size=length(d), replace=FALSE)
 heart_sign = function() "\U2661"
