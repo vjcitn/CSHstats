@@ -48,22 +48,105 @@ null hypothesis is false but the test does not result in an
 assertion that it is false.  Traditionally we try to keep the
 probability of Type II errors below 20\%.
 
-### Exercises
+### Exercise
 
-**14: Propose a test of $H_0$ as given above.  Assume you have
-the results of top card draws from 100 shuffles.**
+**1: Propose a procedure for testing $H_0: Pr(C_1 = \heartsuit) = 1/4$.  Assume you have
+the results of top card draws from N shuffles.  What would such a procedure look like?**
 
-**15: Consider this approach to testing $H_0$ on the basis
-of top card draws from $N$ shuffles:**
+```{r dosim}
+library(CSHstats)
+d = build_deck()
+shuffle_deck = function(d) sample(d, size=length(d), replace=FALSE)
+heart_sign = function() "\U2661"
+set.seed(4141)
+top_draw = function(d) shuffle_deck(d)[1]
+N = 100
+mydat = replicate(N, suits(top_draw(d))==heart_sign())
+phat = function(dat) sum(dat)/length(dat)
+phat(mydat)
+```
+With 100 shuffles we have an estimate of the probability of a
+heart.  Is our experimental result consistent with $H_0$?
 
-# Neyman-Pearson paradigm: Type I and Type II errors
+With a larger sample size:
+```{r dolar}
+N = 1000
+mydat = replicate(N, suits(top_draw(d))==heart_sign())
+sum(mydat)/length(mydat)
+```
 
-## Power curve
+Let's use the procedure `|phat(dat)-.25|>.01` as our criterion for
+rejecting $H_0 : $Pr(C_1 = \heartsuit)$.  What is the Type I error rate
+for a fair deck for the experiment based on 100 shuffles?
 
-## Criteria for selecting test procedures: "most powerful for fixed Type I error rate"
+```{r chknull, cache=TRUE}
+N = 100
+NSIM = 1000
+tsts = replicate(NSIM,
+   abs(mean(replicate(N, suits(top_draw(d))==heart_sign()))-.25)>.01)
+mean(tsts)
+```
 
-# Confidence intervals
+Parameterize the "delta", which was 0.01 in the previous run.  Let's
+get the rejection rate estimates for two sample sizes:
 
-# Robustness
+```{r lkdel,cache=TRUE}
+prej = function(delta=.01, nullval=.25, NSIM, N) {
+ mean(replicate(NSIM,
+   abs(mean(replicate(N, suits(top_draw(d))==heart_sign()))-nullval)>delta))
+}
+prej(delta=.02, NSIM=1000, N=100)
+prej(delta=.02, NSIM=1000, N=500)
+```
 
-# Bayesian inference
+Our home-cooked test has a Type I error rate that is much too high
+for standard practice, and depends on the sample size.
+
+Let's instead use the built in procedure for testing hypotheses
+with binomial 
+outcomes.  
+
+```{r tryz, cache=TRUE}
+brej = function(deck, nullval=.25, alpha=0.05, NSIM, N) {
+ replicate(NSIM, {
+   dat = replicate(N, suits(top_draw(deck))==heart_sign())
+   binom.test(sum(dat), N, nullval)$p.value < alpha
+   })
+}
+mean(brej(d,NSIM=1000, N=100))
+mean(brej(d,NSIM=1000, N=500))
+mean(brej(d,NSIM=1000, N=100, alpha=0.01))
+```
+
+We have an indication here that the procedure stabilizes the Type I error
+rate for different designs (sample sizes) and can accommodate different
+significance levels.
+
+# Power curve
+
+Now we want to understand how good a given experimental design
+is at identifying departures from the null.  Make a biased deck.
+
+```{r dobi}
+bd = d
+bd[18] = bd[4]
+table(suits(bd), faces(bd))
+```
+What kind of sample size do we need to get good power to detect this
+exception?
+
+```{r docur, cache=TRUE}
+ssizes = c(10,50, 100, 300,750)
+rejps = sapply(ssizes, function(x) mean(brej(bd, NSIM=100, N=x)))
+plot(ssizes, rejps, main="detect one extra heart")
+```
+
+More bias:
+```{r domor, cache=TRUE}
+bd[19] = bd[5]
+table(suits(bd), faces(bd))
+rejps = sapply(ssizes, function(x) mean(brej(bd, NSIM=100, N=x)))
+plot(ssizes, rejps, main="detect two extra hearts")
+rejps_n = sapply(ssizes, function(x) mean(brej(d, NSIM=100, N=x)))
+plot(ssizes, rejps_n, main="preserve Type I error rate")
+```
