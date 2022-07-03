@@ -21,3 +21,11 @@ data science:
 - Exploratory data analysis and visualization
 - Hypothesis testing
 - Linear models
+
+MultiAssayExperiment applications with SingleCellMultimodal (for convenience)
+
+[CITEseq](https://bioconductor.org/packages/release/data/experiment/vignettes/SingleCellMultiModal/inst/doc/CITEseq.html)
+
+[TENx MultiOme](https://bioconductor.org/packages/release/data/experiment/vignettes/SingleCellMultiModal/inst/doc/scMultiome.html)
+
+[seqFISH](https://bioconductor.org/packages/release/data/experiment/vignettes/SingleCellMultiModal/inst/doc/seqFISH.html)
