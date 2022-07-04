@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.18</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,7 +159,7 @@ population parameter of interest with a specified probability.</p>
 <span class="va">low</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">tests</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="va">conf.int</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">hi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">tests</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="va">conf.int</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
 <span class="va">ests</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">tests</span>, <span class="st">"[["</span>, <span class="st">"statistic"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span>, <span class="va">ests</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.6</span><span class="op">)</span>, main<span class="op">=</span><span class="st">"95% Confidence intervals"</span>, xlab<span class="op">=</span><span class="st">"# hearts seen in 100 draws"</span>,
+<span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span>, <span class="va">ests</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.6</span><span class="op">)</span>, main<span class="op">=</span><span class="st">"95% Confidence intervals"</span>, xlab<span class="op">=</span><span class="st">"# hearts seen in 100 draws"</span>,
   ylab<span class="op">=</span><span class="st">"estimated proportion of hearts"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/segments.html" class="external-link">segments</a></span><span class="op">(</span> <span class="va">stats</span>, <span class="va">low</span>, <span class="va">stats</span>, <span class="va">hi</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">.25</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
@@ -177,10 +177,12 @@ probability 1/4 for heart?</p>
 of the large number of features and hypotheses in play.</p>
 <p>Fact: When many tests are conducted on true null hypotheses, the distribution
 of the collection of p-values thereby obtained is uniform on (0,1].</p>
+<p>To illustrate this we will produce 10000 samples from N(100,1) and conduct
+the t test with null mean 100, yielding 10000 p-values.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">many_x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="va">many_p</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">many_x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">x</span>, mu<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">many_p</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">many_p</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="S5_linear_models_files/figure-html/lknull-1.png" width="672"></p>
 <p>This display shows a limitation of density estimation on a fixed interval –
 a “boundary effect”, because data “up against” the boundary
@@ -209,51 +211,334 @@ see shortly.</p>
 <h3 id="false-discovery-rate">False discovery rate<a class="anchor" aria-label="anchor" href="#false-discovery-rate"></a>
 </h3>
 <p>Referring to the table above, the false discovery rate (FDR) is
-the expected value of <span class="math inline">\(V/max(R,1)\)</span>. If <span class="math inline">\(R = 0\)</span></p>
+the expected value of <span class="math inline">\(V/max(R,1)\)</span>. If <span class="math inline">\(R = 0\)</span>, <span class="math inline">\(V = 0\)</span> and FDR is zero.
+Otherwise, we can think of FDR as a kind of budget: we will reject <span class="math inline">\(R\)</span>
+hypotheses and our expection is that <span class="math inline">\(V\)</span> will be false. If we are
+“following up” with confirmatory experiments on <span class="math inline">\(R\)</span> genes and can
+afford “wasting” <span class="math inline">\(V\)</span> tests, we would accept an FDR of <span class="math inline">\(V/R\)</span>.</p>
+<p>Of course these are probabilistic characteristics of procedures that
+hold with stated probabilities when assumptions are satisfied.</p>
+</div>
+<div class="section level3">
+<h3 id="adjusted-p-values">Adjusted p-values<a class="anchor" aria-label="anchor" href="#adjusted-p-values"></a>
+</h3>
+<p>Since we are so accustomed to the single-number summary <span class="math inline">\(p\)</span>, it is
+typical to base rejection decisions on transformed <span class="math inline">\(p\)</span>-values. The
+multtest package takes care of this.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">multtest</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">tab</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/multtest/man/mt.rawp2adjp.html" class="external-link">mt.rawp2adjp</a></span><span class="op">(</span><span class="va">many_p</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="fl">10</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##           rawp Bonferroni  Holm Hochberg SidakSS SidakSD    BH BY   ABH</span>
+<span class="co">##  [1,] 5.73e-05      0.573 0.573    0.573   0.436   0.436 0.573  1 0.573</span>
+<span class="co">##  [2,] 1.17e-04      1.000 1.000    1.000   0.689   0.689 0.585  1 0.585</span>
+<span class="co">##  [3,] 1.99e-04      1.000 1.000    1.000   0.864   0.864 0.665  1 0.665</span>
+<span class="co">##  [4,] 3.97e-04      1.000 1.000    1.000   0.981   0.981 0.744  1 0.744</span>
+<span class="co">##  [5,] 4.25e-04      1.000 1.000    1.000   0.986   0.986 0.744  1 0.744</span>
+<span class="co">##  [6,] 4.76e-04      1.000 1.000    1.000   0.991   0.991 0.744  1 0.744</span>
+<span class="co">##  [7,] 6.35e-04      1.000 1.000    1.000   0.998   0.998 0.744  1 0.744</span>
+<span class="co">##  [8,] 6.74e-04      1.000 1.000    1.000   0.999   0.999 0.744  1 0.744</span>
+<span class="co">##  [9,] 6.87e-04      1.000 1.000    1.000   0.999   0.999 0.744  1 0.744</span>
+<span class="co">## [10,] 7.55e-04      1.000 1.000    1.000   0.999   0.999 0.744  1 0.744</span>
+<span class="co">##       TSBH_0.05</span>
+<span class="co">##  [1,]     0.573</span>
+<span class="co">##  [2,]     0.585</span>
+<span class="co">##  [3,]     0.665</span>
+<span class="co">##  [4,]     0.744</span>
+<span class="co">##  [5,]     0.744</span>
+<span class="co">##  [6,]     0.744</span>
+<span class="co">##  [7,]     0.744</span>
+<span class="co">##  [8,]     0.744</span>
+<span class="co">##  [9,]     0.744</span>
+<span class="co">## [10,]     0.744</span></code></pre>
+<p>By default, <code>mt.rawp2adp</code> produces a number of adjustments – we are concerned
+at present with the columns rawp (the p-values sorted from lowest on), Bonferroni
+(which gives the transformation <span class="math inline">\(p\)</span> to min(1, mp)$ for <span class="math inline">\(m\)</span> tests),
+and BH (the Benjamini-Hochberg FDR transformation). The implication
+of this table is that with FWER control at 0.05, our data
+would not support rejection of any of our
+hypotheses (all of which assert that the mean of a sample of 10 random
+normals is equal to 100). Likewise with FDR control at any value up to
+0.77. However, we see that had we accepted an FDR control at 0.8,
+we could reject 8 hypotheses.</p>
+<p>Exercise: replace the first p-value in <code>many_p</code> with <code>1e-6</code> and obtain the
+associated adjusted p-values.</p>
+</div>
+<div class="section level3">
+<h3 id="considerations-on-bayesian-multiple-testing">Considerations on Bayesian multiple testing<a class="anchor" aria-label="anchor" href="#considerations-on-bayesian-multiple-testing"></a>
+</h3>
+<p>Various comments and references in this <a href="https://stats.stackexchange.com/questions/203378/why-dont-bayesian-methods-require-multiple-testing-corrections" class="external-link">stackexchange</a> address the relationship
+between inferential framework and approach to multiple testing. A <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf" class="external-link">paper
+by Gelman and Loken</a>
+surveys the concept in an illuminating way.</p>
+<p>A paper in the <a href="https://doi.org/10.1007/s10654-019-00517-2" class="external-link">European Journal of Epidemiology</a>
+presents considerations on multiple comparisons from a Bayesian perspective, arguing
+that the issue is “surrounded by confusion and controversy”.</p>
+<p>Here is a simple approach to visualizing 20 tests, assumed independent,
+in a frequenist framework, focusing on 95% confidence intervals.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># from https://link.springer.com/content/pdf/10.1007/s10654-019-00517-2.pdf</span>
+<span class="co"># Sjolander and vanSteenlandt 2019 Eur J Epi</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gforge.se/packages/" class="external-link">forestplot</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.perossi.org/home/bsm-1" class="external-link">bayesm</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+
+<span class="va">n</span> <span class="op">=</span> <span class="fl">10</span>
+<span class="va">J</span> <span class="op">=</span> <span class="fl">20</span>
+<span class="va">beta</span> <span class="op">=</span> <span class="fl">0</span>
+<span class="va">Y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">*</span><span class="va">J</span>, mean<span class="op">=</span><span class="va">beta</span><span class="op">)</span>, nrow<span class="op">=</span><span class="va">n</span>, ncol<span class="op">=</span><span class="va">J</span><span class="op">)</span>
+<span class="va">est</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span>
+<span class="va">se</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span>X<span class="op">=</span><span class="va">Y</span>, MARGIN<span class="op">=</span><span class="fl">2</span>, FUN<span class="op">=</span><span class="va">sd</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
+<span class="va">q</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">qt</a></span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.975</span>, df<span class="op">=</span><span class="va">n</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">ci.l</span> <span class="op">=</span> <span class="va">est</span><span class="op">-</span><span class="va">q</span><span class="op">*</span><span class="va">se</span>
+<span class="va">ci.u</span> <span class="op">=</span> <span class="va">est</span><span class="op">+</span><span class="va">q</span><span class="op">*</span><span class="va">se</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/forestplot.html" class="external-link">forestplot</a></span><span class="op">(</span>
+ labeltext<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">""</span>, <span class="va">J</span><span class="op">)</span>,
+ mean<span class="op">=</span><span class="va">est</span>, lower<span class="op">=</span><span class="va">ci.l</span>,
+ upper<span class="op">=</span><span class="va">ci.u</span>, ci.vertices<span class="op">=</span><span class="cn">TRUE</span>,
+ boxsize<span class="op">=</span><span class="fl">0.3</span>, txt_gp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/fpTxtGp.html" class="external-link">fpTxtGp</a></span><span class="op">(</span>cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,
+ xticks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">.5</span><span class="op">)</span>, title<span class="op">=</span><span class="st">"Frequentist 95% confidence intervals"</span><span class="op">)</span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/lkfor1-1.png" width="672"></p>
+<p>One hypothesis is rejected.</p>
+<p>The authors also use the <code>bayesm</code> package to produce
+Bayesian credible intervals <strong>under the assumption that all tests are independent</strong>.</p>
+<p><img src="S5_linear_models_files/figure-html/lkfp1-1.png" width="672"></p>
+<p>Finally, allowing high correlatedness among test statistics,
+the Bayesian approach is found to avoid any false rejections.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/forestplot.html" class="external-link">forestplot</a></span><span class="op">(</span>
+ labeltext<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">""</span>, <span class="va">J</span><span class="op">)</span>,
+ mean<span class="op">=</span><span class="va">est</span>, lower<span class="op">=</span><span class="va">ci.l</span>,
+ upper<span class="op">=</span><span class="va">ci.u</span>, ci.vertices<span class="op">=</span><span class="cn">TRUE</span>,
+ boxsize<span class="op">=</span><span class="fl">0.3</span>, txt_gp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/fpTxtGp.html" class="external-link">fpTxtGp</a></span><span class="op">(</span>cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,
+ xticks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">.5</span><span class="op">)</span>, title<span class="op">=</span><span class="st">"Bayesian, assume correlated tests"</span><span class="op">)</span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/lkatnew-1.png" width="672"></p>
+<p>The Bayesian computations involve Monte Carlo Markov Chain simulation.
+Background can be obtained from <a href="https://xcelab.net/rm/statistical-rethinking/" class="external-link">Statistical Rethinking</a>
+by R. McElreath.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="linear-models">Linear models<a class="anchor" aria-label="anchor" href="#linear-models"></a>
 </h2>
 <div class="section level3">
-<h3 id="confounding">Confounding<a class="anchor" aria-label="anchor" href="#confounding"></a>
+<h3 id="data-setup">Data setup<a class="anchor" aria-label="anchor" href="#data-setup"></a>
 </h3>
+<p>Let’s return to the TCGA ACC FOS and EGR1 data that we used to study correlation.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span>
+<span class="va">fedf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>FOS<span class="op">=</span><span class="va">fos_ex</span>, EGR1<span class="op">=</span><span class="va">egr1_ex</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">fedf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">EGR1</span>, y<span class="op">=</span><span class="va">FOS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/lkfos-1.png" width="672"></p>
+<p>We found that log transformation was useful for ameliorating
+the overplotting near the origin:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">fedf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">EGR1</span>, y<span class="op">=</span><span class="va">FOS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/dopl2-1.png" width="672"></p>
+<p>The ACC data are annotated in a MultiAssayExperiment, and a mutation
+summary called OncoSign is available.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">accex</span><span class="op">)</span>
+<span class="va">accex</span></code></pre></div>
+<pre><code><span class="co">## A MultiAssayExperiment object of 1 listed</span>
+<span class="co">##  experiment with a user-defined name and respective class.</span>
+<span class="co">##  Containing an ExperimentList class object of length 1:</span>
+<span class="co">##  [1] ACC_RNASeq2GeneNorm-20160128: SummarizedExperiment with 20501 rows and 79 columns</span>
+<span class="co">## Functionality:</span>
+<span class="co">##  experiments() - obtain the ExperimentList instance</span>
+<span class="co">##  colData() - the primary/phenotype DataFrame</span>
+<span class="co">##  sampleMap() - the sample coordination DataFrame</span>
+<span class="co">##  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class="co">##  *Format() - convert into a long or wide DataFrame</span>
+<span class="co">##  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class="co">##  exportClass() - save data to flat files</span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">accex</span><span class="op">$</span><span class="va">OncoSign</span>, exclude<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##          CN1          CN2       CTNNB1   TERT/ZNRF3     TP53/NF1 Unclassified </span>
+<span class="co">##            4           13            5           17           21           14 </span>
+<span class="co">##         &lt;NA&gt; </span>
+<span class="co">##            5</span></code></pre>
+<pre><code><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ndf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ndf</span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oncosign</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53/NF1"</span>, <span class="st">"TERT/ZNRF3"</span><span class="op">)</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">tpvtert</span> <span class="op">=</span> <span class="va">ndf</span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oncosign</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53/NF1"</span>, <span class="st">"TERT/ZNRF3"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span>, var.equal<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span>, var.equal<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># more general</span>
+
+<span class="va">ndf</span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oncosign</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53/NF1"</span>, <span class="st">"TERT/ZNRF3"</span><span class="op">)</span><span class="op">)</span> |&gt; 
+         <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span>_<span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="re-expressing-the-two-sample-test">Re-expressing the two-sample test<a class="anchor" aria-label="anchor" href="#re-expressing-the-two-sample-test"></a>
 </h3>
+<p>We will focus on two OncoSign classes, asking whether average log EGR1
+expression is different between them.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">hasonc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">accex</span><span class="op">$</span><span class="va">OncoSign</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ndf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>logEGR1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">[</span><span class="va">hasonc</span><span class="op">]</span><span class="op">)</span>, oncosign<span class="op">=</span><span class="va">accex</span><span class="op">$</span><span class="va">OncoSign</span><span class="op">[</span><span class="va">hasonc</span><span class="op">]</span><span class="op">)</span>
+<span class="va">tpvtert</span> <span class="op">=</span> <span class="va">ndf</span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oncosign</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53/NF1"</span>, <span class="st">"TERT/ZNRF3"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tpvtert</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/reform-1.png" width="672"></p>
+<div class="section level4">
+<h4 id="there-are-two-t-tests">There are two t tests<a class="anchor" aria-label="anchor" href="#there-are-two-t-tests"></a>
+</h4>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">6</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span>, var.equal<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##  Two Sample t-test</span>
+<span class="co">## </span>
+<span class="co">## data:  logEGR1 by oncosign</span>
+<span class="co">## t = 1.038, df = 36, p-value = 0.306</span>
+<span class="co">## alternative hypothesis: true difference in means between group TERT/ZNRF3 and group TP53/NF1 is not equal to 0</span>
+<span class="co">## 95 percent confidence interval:</span>
+<span class="co">##  -0.374199  1.158895</span>
+<span class="co">## sample estimates:</span>
+<span class="co">## mean in group TERT/ZNRF3   mean in group TP53/NF1 </span>
+<span class="co">##                  7.35317                  6.96083</span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span>, var.equal<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># more general</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##  Welch Two Sample t-test</span>
+<span class="co">## </span>
+<span class="co">## data:  logEGR1 by oncosign</span>
+<span class="co">## t = 1.046, df = 35.19, p-value = 0.303</span>
+<span class="co">## alternative hypothesis: true difference in means between group TERT/ZNRF3 and group TP53/NF1 is not equal to 0</span>
+<span class="co">## 95 percent confidence interval:</span>
+<span class="co">##  -0.369343  1.154039</span>
+<span class="co">## sample estimates:</span>
+<span class="co">## mean in group TERT/ZNRF3   mean in group TP53/NF1 </span>
+<span class="co">##                  7.35317                  6.96083</span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="the-linear-model-has-one-of-these-as-a-special-case">The linear model has one of these as a special case<a class="anchor" aria-label="anchor" href="#the-linear-model-has-one-of-these-as-a-special-case"></a>
+</h4>
+<p>The general form of linear model in statistics has
+“dependent variable” <span class="math inline">\(y\)</span>
+<span class="math display">\[
+y = \alpha + x' \beta + e
+\]</span>
+where <span class="math inline">\(x\)</span> is a p-vector of “covariates” – measurements that
+are believed to affect the mean value of <span class="math inline">\(y\)</span>, also
+known as “independent variables”, and <span class="math inline">\(e\)</span> is a zero-mean
+disturbance or residual with a fixed dispersion. The parameters
+of interest are <span class="math inline">\(\alpha\)</span> (often called intercept) and <span class="math inline">\(\beta\)</span>.
+<strong>Parameter interpretation in terms of units of the response
+relative to differences between samples with different values of <span class="math inline">\(x\)</span>
+should always be explicit.</strong></p>
+<div class="section level5">
+<h5 id="a-dummy-variable-design-matrix">A dummy variable design matrix<a class="anchor" aria-label="anchor" href="#a-dummy-variable-design-matrix"></a>
+</h5>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   (Intercept) oncosignTP53/NF1</span>
+<span class="co">## 1           1                1</span>
+<span class="co">## 2           1                1</span>
+<span class="co">## 3           1                0</span>
+<span class="co">## 4           1                1</span>
+<span class="co">## 5           1                0</span>
+<span class="co">## 6           1                1</span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##    (Intercept) oncosignTP53/NF1</span>
+<span class="co">## 33           1                0</span>
+<span class="co">## 34           1                1</span>
+<span class="co">## 35           1                0</span>
+<span class="co">## 36           1                0</span>
+<span class="co">## 37           1                1</span>
+<span class="co">## 38           1                1</span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="recovering-the-t-test-with-lm">Recovering the t test with <code>lm</code><a class="anchor" aria-label="anchor" href="#recovering-the-t-test-with-lm"></a>
+</h5>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">tpvtert</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span>_<span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Call:</span>
+<span class="co">## lm(formula = logEGR1 ~ oncosign, data = tpvtert)</span>
+<span class="co">## </span>
+<span class="co">## Residuals:</span>
+<span class="co">##    Min     1Q Median     3Q    Max </span>
+<span class="co">## -2.287 -0.721  0.167  0.625  2.549 </span>
+<span class="co">## </span>
+<span class="co">## Coefficients:</span>
+<span class="co">##                  Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">## (Intercept)         7.353      0.281   26.17   &lt;2e-16 ***</span>
+<span class="co">## oncosignTP53/NF1   -0.392      0.378   -1.04     0.31    </span>
+<span class="co">## ---</span>
+<span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">## </span>
+<span class="co">## Residual standard error: 1.16 on 36 degrees of freedom</span>
+<span class="co">## Multiple R-squared:  0.0291, Adjusted R-squared:  0.00209 </span>
+<span class="co">## F-statistic: 1.08 on 1 and 36 DF,  p-value: 0.306</span></code></pre>
+<p>Exercise: Which t test is recovered in this analysis?</p>
+<p>Exercise: Conduct the associated Wilcoxon test.</p>
+<p>Exercise: Conduct the Gaussian rank test mentioned in the Gelman blog “Don’t do the Wilcoxon”.</p>
+<p>Extra goody: To produce the coefficients “by hand”:</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">mm</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">tpvtert</span><span class="op">$</span><span class="va">logEGR1</span></code></pre></div>
+<pre><code><span class="co">##                       [,1]</span>
+<span class="co">## (Intercept)       7.353174</span>
+<span class="co">## oncosignTP53/NF1 -0.392348</span></code></pre>
+<p>programs <span class="math inline">\((X'X)^{-1}X'y\)</span></p>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="analysis-of-variance-f-test">Analysis of variance: F test<a class="anchor" aria-label="anchor" href="#analysis-of-variance-f-test"></a>
 </h3>
+<p>The analysis of variance is focused on comparison of multiple groups. The
+EGR1-OncoSign relationship is a reasonable example where this could be used.</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ndf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/lkggaov-1.png" width="672"></p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nda</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html" class="external-link">aov</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span>, data<span class="op">=</span><span class="va">ndf</span><span class="op">)</span>
+<span class="va">nda</span></code></pre></div>
+<pre><code><span class="co">## Call:</span>
+<span class="co">##    aov(formula = logEGR1 ~ factor(oncosign), data = ndf)</span>
+<span class="co">## </span>
+<span class="co">## Terms:</span>
+<span class="co">##                 factor(oncosign) Residuals</span>
+<span class="co">## Sum of Squares           11.3084   92.1642</span>
+<span class="co">## Deg. of Freedom                5        68</span>
+<span class="co">## </span>
+<span class="co">## Residual standard error: 1.1642</span>
+<span class="co">## Estimated effects may be unbalanced</span></code></pre>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">nda</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##                  Df Sum Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="co">## factor(oncosign)  5   11.3    2.26    1.67   0.15</span>
+<span class="co">## Residuals        68   92.2    1.35</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="linear-regression-parameter-estimation-goodness-of-fit">Linear regression, parameter estimation, goodness of fit<a class="anchor" aria-label="anchor" href="#linear-regression-parameter-estimation-goodness-of-fit"></a>
 </h3>
-<div class="section level4">
-<h4 id="model-equation-data-fit-residual">Model equation: Data = Fit + Residual<a class="anchor" aria-label="anchor" href="#model-equation-data-fit-residual"></a>
-</h4>
-</div>
-<div class="section level4">
-<h4 id="design-matrix">Design matrix<a class="anchor" aria-label="anchor" href="#design-matrix"></a>
-</h4>
-</div>
-<div class="section level4">
-<h4 id="algebra-of-least-squares-estimates">Algebra of least-squares estimates<a class="anchor" aria-label="anchor" href="#algebra-of-least-squares-estimates"></a>
-</h4>
-</div>
 </div>
 <div class="section level3">
-<h3 id="glms-binary-counted-non-gaussian-responses">GLMs: binary, counted, non-Gaussian responses<a class="anchor" aria-label="anchor" href="#glms-binary-counted-non-gaussian-responses"></a>
+<h3 id="confounding">Confounding<a class="anchor" aria-label="anchor" href="#confounding"></a>
 </h3>
 </div>
-<div class="section level3">
-<h3 id="hierarchical-models-alternatives-to-independence">Hierarchical models: alternatives to independence<a class="anchor" aria-label="anchor" href="#hierarchical-models-alternatives-to-independence"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="glms-binary-counted-non-gaussian-responses">GLMs: binary, counted, non-Gaussian responses<a class="anchor" aria-label="anchor" href="#glms-binary-counted-non-gaussian-responses"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="hierarchical-models-alternatives-to-independence">Hierarchical models: alternatives to independence<a class="anchor" aria-label="anchor" href="#hierarchical-models-alternatives-to-independence"></a>
+</h2>
 <div class="section level4">
 <h4 id="random-effects-models-for-clustered-observations">Random effects models for clustered observations<a class="anchor" aria-label="anchor" href="#random-effects-models-for-clustered-observations"></a>
 </h4>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
