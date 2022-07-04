@@ -76,6 +76,7 @@ of interest are the pairs of columns (x1, y1), (x2, y2), ....
 
 ```{r lkans}
 library(DT)
+data(anscombe)
 datatable(anscombe)
 ```
 

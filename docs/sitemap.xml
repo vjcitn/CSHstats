@@ -4,6 +4,15 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/CITEseq.html</loc>
+  </url>
+  <url>
+    <loc>/articles/ECCITEseq.html</loc>
+  </url>
+  <url>
+    <loc>/articles/GTseq.html</loc>
+  </url>
+  <url>
     <loc>/articles/S1_probability.html</loc>
   </url>
   <url>
@@ -31,6 +40,9 @@
     <loc>/articles/S5_linear_models.html</loc>
   </url>
   <url>
+    <loc>/articles/SCoPE2.html</loc>
+  </url>
+  <url>
     <loc>/articles/cnv-heatmap.html</loc>
   </url>
   <url>
@@ -40,7 +52,7 @@
     <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/scCluster.html</loc>
+    <loc>/articles/seqFISH.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>

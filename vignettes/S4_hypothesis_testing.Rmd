@@ -34,6 +34,8 @@ $$
 H_0: Pr(C_1 = \heartsuit) = Pr(C_1 = \diamondsuit) = Pr(C_1 = \clubsuit) = Pr(C_1 = \spadesuit) = 1/4
 $$
 
+## Operating characteristics: Type I and Type II errors
+
 In a frequentist framework for statistical inference, we
 define procedures for testing (null) hypotheses with specified
 error probabilities.  
@@ -47,16 +49,22 @@ below 5\%.
 null hypothesis is false but the test does not result in an
 assertion that it is false.  Traditionally we try to keep the
 probability of Type II errors below 20\%.
+ 
+- Synonyms: We often use **size** as synonymous with Type I error probability,
+and **power** as one minus the Type II error probability
 
 ### Exercise
 
 **1: Propose a procedure for testing $H_0: Pr(C_1 = \heartsuit) = 1/4$.  Assume you have
 the results of top card draws from N shuffles.  What would such a procedure look like?**
 
+## Simulating a series of experiments; parameter estimate
+
 ```{r dosim}
 suppressPackageStartupMessages({
 suppressMessages({
 library(CSHstats)
+library(EnvStats)
 })
 })
 d = build_deck()
@@ -79,8 +87,10 @@ mydat = replicate(N, suits(top_draw(d))==heart_sign())
 sum(mydat)/length(mydat)
 ```
 
+## An improvised test
+
 Let's use the procedure `|phat(dat)-.25|>.01` as our criterion for
-rejecting $H_0 : $Pr(C_1 = \heartsuit)$.  What is the Type I error rate
+rejecting $ H_0 : $Pr(C_1 = \heartsuit) $.  What is the Type I error rate
 for a fair deck for the experiment based on 100 shuffles?
 
 ```{r chknull, cache=TRUE}
@@ -106,9 +116,23 @@ prej(delta=.02, NSIM=1000, N=500)
 Our home-cooked test has a Type I error rate that is much too high
 for standard practice, and depends on the sample size.
 
+## A properly calibrated procedure
+
 Let's instead use the built in procedure for testing hypotheses
 with binomial 
 outcomes.  
+
+The `brej` function defined below has two layers:
+- inner: given N draws, test that the sum of the number of
+hearts is consistent with a specified null value (1/4 by
+default), with a specified Type I error rate (argument alpha)
+- outer: replicate the inner process NSIM times to obtain
+NSIM indicator variables taking value 1 if the test rejected
+and 0 otherwise
+
+We then estimate rejection probabilities by taking the means
+of the indicator variables for different experimental and
+replication setups.
 
 ```{r tryz, cache=TRUE}
 brej = function(deck, nullval=.25, alpha=0.05, NSIM, N) {
@@ -128,8 +152,14 @@ significance levels.
 
 # Power curve
 
-Now we want to understand how good a given experimental design
-is at identifying departures from the null.  Make a biased deck.
+It is often useful to sketch the power of a test procedure
+over a series of values of an element of the experimental/testing
+setup.  We'll consider how the power to reject the null
+varies with the sample size, for two alternatives to the null.
+
+We make a biased deck by switching one diamond to a heart.
+For such a deck, the probability of a heart is 14/52, greater
+than 1/4.
 
 ```{r dobi}
 bd = d
@@ -145,7 +175,8 @@ rejps = sapply(ssizes, function(x) mean(brej(bd, NSIM=100, N=x)))
 plot(ssizes, rejps, main="detect one extra heart")
 ```
 
-More bias:
+With two switches, the probability of a heart increases to 15/52.
+
 ```{r domor, cache=TRUE}
 bd[19] = bd[5]
 table(suits(bd), faces(bd))
@@ -154,3 +185,51 @@ plot(ssizes, rejps, main="detect two extra hearts")
 rejps_n = sapply(ssizes, function(x) mean(brej(d, NSIM=100, N=x)))
 plot(ssizes, rejps_n, main="preserve Type I error rate")
 ```
+
+# Conclusions
+
+- Classical frequentist inference aims to control probabilities of
+errors of Type I (reject a null hypothesis that is true) and Type II
+(fail to reject a false null).  The power of a test procedure is
+one minus its Type II error probability.
+
+- Typically the null hypothesis specifies the value of a parameter
+of a population distribution 
+    - in the case of the card deck, the
+hypothesis of fairness of deck and shuffling procedure entails
+the probability of drawing a heart after a shuffle is 1/4 
+    - the experimental setup entails that the probability distribution
+of the sum of the number of hearts drawn as top card under N shuffling events
+is binomial(N,1/4)
+
+- R's `binom.test` is given 
+    - the sum of the number of hearts observed,
+    - the number of trials, 
+    - the parameter value defining the
+ null hypothesis, 
+    - the desired type I error rate,
+
+and produces a
+critical region using the binomial distribution
+
+When the sum falls in the critical region, the null hypothesis is rejected
+
+- Verification of achievement of the desired Type I and Type II error
+probabilities for a testing procedure can be pursued via simulation
+
+- The power curve for a sequence of experimental conditions can be produced
+via simulation
+
+- Analytical tools for power computation are also available.  For example,
+in the EnvStats package, we find
+```{r dopow}
+library(EnvStats)
+propTestPower(750, p.or.p1=13/52, p0=.25 )
+propTestPower(750, p.or.p1=14/52, p0=.25 )
+propTestPower(750, p.or.p1=15/52, p0=.25 )
+```
+An exercise is to reconcile these results with the simulation-based
+results given above.
+
+Another is to find the sample size needed to achieve 80% power to detect
+a single switch from diamond to heart in an otherwise fair deck.

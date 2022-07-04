@@ -75,7 +75,7 @@
       <img src="" class="logo" alt=""><h1>S4_inference: Definitions and exercises</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">July 03, 2022</h4>
+            <h4 data-toc-skip class="date">July 04, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S4_hypothesis_testing.Rmd" class="external-link"><code>vignettes/S4_hypothesis_testing.Rmd</code></a></small>
       <div class="d-none name"><code>S4_hypothesis_testing.Rmd</code></div>
@@ -95,6 +95,10 @@ under repeated draws of top card after shuffling as</p>
 <p><span class="math display">\[
 H_0: Pr(C_1 = \heartsuit) = Pr(C_1 = \diamondsuit) = Pr(C_1 = \clubsuit) = Pr(C_1 = \spadesuit) = 1/4
 \]</span></p>
+</div>
+<div class="section level3">
+<h3 id="operating-characteristics-type-i-and-type-ii-errors">Operating characteristics: Type I and Type II errors<a class="anchor" aria-label="anchor" href="#operating-characteristics-type-i-and-type-ii-errors"></a>
+</h3>
 <p>In a frequentist framework for statistical inference, we
 define procedures for testing (null) hypotheses with specified
 error probabilities.</p>
@@ -107,16 +111,24 @@ below 5%.</p></li>
 null hypothesis is false but the test does not result in an
 assertion that it is false. Traditionally we try to keep the
 probability of Type II errors below 20%.</p></li>
+<li><p>Synonyms: We often use <strong>size</strong> as synonymous with Type I error probability,
+and <strong>power</strong> as one minus the Type II error probability</p></li>
 </ul>
 <div class="section level4">
 <h4 id="exercise">Exercise<a class="anchor" aria-label="anchor" href="#exercise"></a>
 </h4>
 <p><strong>1: Propose a procedure for testing <span class="math inline">\(H_0: Pr(C_1 = \heartsuit) = 1/4\)</span>. Assume you have
 the results of top card draws from N shuffles. What would such a procedure look like?</strong></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="simulating-a-series-of-experiments-parameter-estimate">Simulating a series of experiments; parameter estimate<a class="anchor" aria-label="anchor" href="#simulating-a-series-of-experiments-parameter-estimate"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
 <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="op">{</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alexkowa/EnvStats" class="external-link">EnvStats</a></span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="../reference/build_deck.html">build_deck</a></span><span class="op">(</span><span class="op">)</span>
@@ -137,8 +149,12 @@ heart. Is our experimental result consistent with <span class="math inline">\(H_
 <span class="va">mydat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] 0.243</span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="an-improvised-test">An improvised test<a class="anchor" aria-label="anchor" href="#an-improvised-test"></a>
+</h3>
 <p>Let’s use the procedure <code>|phat(dat)-.25|&gt;.01</code> as our criterion for
-rejecting $H_0 : <span class="math inline">\(Pr(C_1 = \heartsuit)\)</span>. What is the Type I error rate
+rejecting $ H_0 : $Pr(C_1 = ) $. What is the Type I error rate
 for a fair deck for the experiment based on 100 shuffles?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">100</span>
@@ -161,9 +177,23 @@ get the rejection rate estimates for two sample sizes:</p>
 <pre><code><span class="co">## [1] 0.323</span></code></pre>
 <p>Our home-cooked test has a Type I error rate that is much too high
 for standard practice, and depends on the sample size.</p>
+</div>
+<div class="section level3">
+<h3 id="a-properly-calibrated-procedure">A properly calibrated procedure<a class="anchor" aria-label="anchor" href="#a-properly-calibrated-procedure"></a>
+</h3>
 <p>Let’s instead use the built in procedure for testing hypotheses
 with binomial
 outcomes.</p>
+<p>The <code>brej</code> function defined below has two layers:
+- inner: given N draws, test that the sum of the number of
+hearts is consistent with a specified null value (1/4 by
+default), with a specified Type I error rate (argument alpha)
+- outer: replicate the inner process NSIM times to obtain
+NSIM indicator variables taking value 1 if the test rejected
+and 0 otherwise</p>
+<p>We then estimate rejection probabilities by taking the means
+of the indicator variables for different experimental and
+replication setups.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">brej</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">deck</span>, <span class="va">nullval</span><span class="op">=</span><span class="fl">.25</span>, <span class="va">alpha</span><span class="op">=</span><span class="fl">0.05</span>, <span class="va">NSIM</span>, <span class="va">N</span><span class="op">)</span> <span class="op">{</span>
  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>, <span class="op">{</span>
@@ -184,12 +214,16 @@ rate for different designs (sample sizes) and can accommodate different
 significance levels.</p>
 </div>
 </div>
-</div>
 <div class="section level2">
 <h2 id="power-curve">Power curve<a class="anchor" aria-label="anchor" href="#power-curve"></a>
 </h2>
-<p>Now we want to understand how good a given experimental design
-is at identifying departures from the null. Make a biased deck.</p>
+<p>It is often useful to sketch the power of a test procedure
+over a series of values of an element of the experimental/testing
+setup. We’ll consider how the power to reject the null
+varies with the sample size, for two alternatives to the null.</p>
+<p>We make a biased deck by switching one diamond to a heart.
+For such a deck, the probability of a heart is 14/52, greater
+than 1/4.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bd</span> <span class="op">=</span> <span class="va">d</span>
 <span class="va">bd</span><span class="op">[</span><span class="fl">18</span><span class="op">]</span> <span class="op">=</span> <span class="va">bd</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>
@@ -207,7 +241,7 @@ exception?</p>
 <span class="va">rejps</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">bd</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps</span>, main<span class="op">=</span><span class="st">"detect one extra heart"</span><span class="op">)</span></code></pre></div>
 <p><img src="S4_hypothesis_testing_files/figure-html/docur-1.png" width="672"></p>
-<p>More bias:</p>
+<p>With two switches, the probability of a heart increases to 15/52.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bd</span><span class="op">[</span><span class="fl">19</span><span class="op">]</span> <span class="op">=</span> <span class="va">bd</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span>, <span class="fu"><a href="../reference/faces.html">faces</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -225,6 +259,61 @@ exception?</p>
 <code class="sourceCode R"><span class="va">rejps_n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps_n</span>, main<span class="op">=</span><span class="st">"preserve Type I error rate"</span><span class="op">)</span></code></pre></div>
 <p><img src="S4_hypothesis_testing_files/figure-html/domor-2.png" width="672"></p>
+</div>
+<div class="section level2">
+<h2 id="conclusions">Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"></a>
+</h2>
+<ul>
+<li><p>Classical frequentist inference aims to control probabilities of
+errors of Type I (reject a null hypothesis that is true) and Type II
+(fail to reject a false null). The power of a test procedure is
+one minus its Type II error probability.</p></li>
+<li>Typically the null hypothesis specifies the value of a parameter
+of a population distribution
+<ul>
+<li>in the case of the card deck, the
+hypothesis of fairness of deck and shuffling procedure entails
+the probability of drawing a heart after a shuffle is 1/4</li>
+<li>the experimental setup entails that the probability distribution
+of the sum of the number of hearts drawn as top card under N shuffling events
+is binomial(N,1/4)</li>
+</ul>
+</li>
+<li>R’s <code>binom.test</code> is given
+<ul>
+<li>the sum of the number of hearts observed,</li>
+<li>the number of trials,</li>
+<li>the parameter value defining the
+null hypothesis,</li>
+<li>the desired type I error rate,</li>
+</ul>
+</li>
+</ul>
+<p>and produces a
+critical region using the binomial distribution</p>
+<p>When the sum falls in the critical region, the null hypothesis is rejected</p>
+<ul>
+<li><p>Verification of achievement of the desired Type I and Type II error
+probabilities for a testing procedure can be pursued via simulation</p></li>
+<li><p>The power curve for a sequence of experimental conditions can be produced
+via simulation</p></li>
+<li><p>Analytical tools for power computation are also available. For example,
+in the EnvStats package, we find</p></li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alexkowa/EnvStats" class="external-link">EnvStats</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">13</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.05</span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">14</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.2348789</span></code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">15</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.6742566</span></code></pre>
+<p>An exercise is to reconcile these results with the simulation-based
+results given above.</p>
+<p>Another is to find the sample size needed to achieve 80% power to detect
+a single switch from diamond to heart in an otherwise fair deck.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
