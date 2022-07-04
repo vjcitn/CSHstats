@@ -22,6 +22,7 @@ suppressPackageStartupMessages({
   library(multtest)
   library(bayesm)
   library(forestplot)
+  library(ggplot2)
   library(CSHstats)
 })
 })
@@ -315,10 +316,121 @@ by R. McElreath.
 
 # Linear models
 
+## Data setup
+
+Let's return to the TCGA ACC FOS and EGR1 data that we used to study correlation.
+```{r lkfos}
+data(fos_ex)
+data(egr1_ex)
+fedf = data.frame(FOS=fos_ex, EGR1=egr1_ex)
+library(ggplot2)
+ggplot(fedf, aes(x=EGR1, y=FOS)) + geom_point()
+```
+We found that log transformation was useful for ameliorating
+the overplotting near the origin:
+
+```{r dopl2}
+ggplot(fedf, aes(x=EGR1, y=FOS)) + geom_point() + scale_x_log10() + scale_y_log10()
+```
+
+The ACC data are annotated in a MultiAssayExperiment, and a mutation
+summary called OncoSign is available.
+```{r lkmae}
+library(MultiAssayExperiment)
+library(CSHstats)
+data(accex)
+accex
+table(accex$OncoSign, exclude=NULL)
+```
+
+
+```
+ggplot(ndf, aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
+ggplot(ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3")), 
+    aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
+tpvtert = ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3"))
+t.test(logEGR1~oncosign, data=tpvtert, var.equal=TRUE)
+t.test(logEGR1~oncosign, data=tpvtert, var.equal=FALSE) # more general
+
+ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3")) |> 
+         lm(logEGR1~oncosign, data=_) |> summary()
+```
+
 
 ## Re-expressing the two-sample test
 
+We will focus on two OncoSign classes, asking whether average log EGR1
+expression is different between them.
+
+```{r reform}
+hasonc = which(!is.na(accex$OncoSign))
+ndf = data.frame(logEGR1 = log(egr1_ex[hasonc]), oncosign=accex$OncoSign[hasonc])
+tpvtert = ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3"))
+ggplot(tpvtert, aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
+```
+
+### There are two t tests
+
+```{r lkbo}
+options(digits=6)
+t.test(logEGR1~oncosign, data=tpvtert, var.equal=TRUE)
+t.test(logEGR1~oncosign, data=tpvtert, var.equal=FALSE) # more general
+```
+
+### The linear model has one of these as a special case
+
+The general form of linear model in statistics has
+"dependent variable" $y$
+$$
+y = \alpha + x' \beta + e
+$$
+where $x$ is a p-vector of "covariates" -- measurements that
+are believed to affect the mean value of $y$, also
+known as "independent variables", and $e$ is a zero-mean
+disturbance or residual with a fixed dispersion.  The parameters
+of interest are $\alpha$ (often called intercept) and $\beta$.
+**Parameter interpretation in terms of units of the response
+relative to differences between samples with different values of $x$
+should always be explicit.**
+
+#### A dummy variable design matrix
+
+```{r lkdes}
+mm = model.matrix(~oncosign, data=tpvtert)
+head(mm)
+tail(mm)
+```
+
+#### Recovering the t test with `lm`
+
+```{r dolm}
+tpvtert |> lm(logEGR1~oncosign, data=_) |> summary()
+```
+
+Exercise: Which t test is recovered in this analysis?
+
+Exercise: Conduct the associated Wilcoxon test.
+
+Exercise: Conduct the Gaussian rank test mentioned in the Gelman blog "Don't do the Wilcoxon".
+
+Extra goody: To produce the coefficients "by hand":
+
+```{r domat}
+solve(t(mm)%*%mm)%*%t(mm)%*%tpvtert$logEGR1
+```
+programs $(X'X)^{-1}X'y$
+
 ## Analysis of variance: F test
+
+The analysis of variance is focused on comparison of multiple groups.  The
+EGR1-OncoSign relationship is a reasonable example where this could be used.
+
+```{r lkggaov}
+ggplot(ndf, aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
+nda = aov(logEGR1~factor(oncosign), data=ndf)
+nda
+summary(nda)
+```
 
 ## Linear regression, parameter estimation, goodness of fit
 
