@@ -20,6 +20,8 @@ pkgdown:
 suppressPackageStartupMessages({
  suppressMessages({
   library(multtest)
+  library(bayesm)
+  library(forestplot)
   library(CSHstats)
 })
 })
@@ -101,6 +103,9 @@ of the large number of features and hypotheses in play.
 Fact: When many tests are conducted on true null hypotheses, the distribution
 of the collection of p-values thereby obtained is uniform on (0,1].
 
+To illustrate this we will produce 10000 samples from N(100,1) and conduct
+the t test with null mean 100, yielding 10000 p-values.
+
 ```{r lknull}
 many_x = replicate(10000, rnorm(10, 100))
 many_p = apply(many_x, 2, function(x) t.test(x, mu=100)$p.value)
@@ -136,12 +141,180 @@ see shortly.
 ## False discovery rate
 
 Referring to the table above, the false discovery rate (FDR) is
-the expected value of $V/max(R,1)$.  If $R = 0$
+the expected value of $V/max(R,1)$.  If $R = 0$, $V = 0$ and FDR is zero.
+Otherwise, we can think of FDR as a kind of budget: we will reject $R$
+hypotheses and our expection is that $V$ will be false.  If we are
+"following up" with confirmatory experiments on $R$ genes and can
+afford "wasting" $V$ tests, we would accept an FDR of $V/R$.
+
+Of course these are probabilistic characteristics of procedures that
+hold with stated probabilities when assumptions are satisfied.
+
+## Adjusted p-values
+
+Since we are so accustomed to the single-number summary $p$, it is
+typical to base rejection decisions on transformed $p$-values.  The
+multtest package takes care of this.
+
+```{r domt}
+library(multtest)
+options(digits=3)
+tab = mt.rawp2adjp(many_p)
+head(tab[[1]],10)
+```
+
+By default, `mt.rawp2adp` produces a number of adjustments -- we are concerned
+at present with the columns rawp (the p-values sorted from lowest on), Bonferroni
+(which gives the transformation $p$ to min(1, mp)$ for $m$ tests),
+and BH (the Benjamini-Hochberg FDR transformation).  The implication
+of this table is that with FWER control at 0.05, our data
+would not support rejection of any of our
+hypotheses (all of which assert that the mean of a sample of 10 random
+normals is equal to 100).  Likewise with FDR control at any value up to
+0.77.  However, we see that had we accepted an FDR control at 0.8,
+we could reject 8 hypotheses.
+
+Exercise: replace the first p-value in `many_p` with `1e-6` and obtain the
+associated adjusted p-values.
+
+## Considerations on Bayesian multiple testing
+
+Various comments and references in this [stackexchange](https://stats.stackexchange.com/questions/203378/why-dont-bayesian-methods-require-multiple-testing-corrections) address the relationship
+between inferential framework and approach to multiple testing.  A [paper
+by Gelman and Loken](http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf)
+surveys the concept in an illuminating way.
+
+A paper in the [European Journal of Epidemiology](https://doi.org/10.1007/s10654-019-00517-2)
+presents considerations on multiple comparisons from a Bayesian perspective, arguing
+that the issue is "surrounded by confusion and controversy".
+
+Here is a simple approach to visualizing 20 tests, assumed independent,
+in a frequenist framework, focusing on 95% confidence intervals.
+
+```{r lkfor1}
+# from https://link.springer.com/content/pdf/10.1007/s10654-019-00517-2.pdf
+# Sjolander and vanSteenlandt 2019 Eur J Epi
+
+library(forestplot)
+library(bayesm)
+set.seed(1)
+
+n = 10
+J = 20
+beta = 0
+Y = matrix(rnorm(n*J, mean=beta), nrow=n, ncol=J)
+est = colMeans(Y)
+se = apply(X=Y, MARGIN=2, FUN=sd)/sqrt(n)
+q = qt(p=0.975, df=n-1)
+ci.l = est-q*se
+ci.u = est+q*se
+
+forestplot(
+ labeltext=rep("", J),
+ mean=est, lower=ci.l,
+ upper=ci.u, ci.vertices=TRUE,
+ boxsize=0.3, txt_gp=fpTxtGp(cex=2),
+ xticks=seq(-1.5,1.5,.5), title="Frequentist 95% confidence intervals")
+```
+
+One hypothesis is rejected.
+
+The authors also use the `bayesm` package to produce
+Bayesian credible intervals **under the assumption that all tests are independent**.
+
+```{r show1, echo=FALSE, results="hide", cache=TRUE}
+# from https://link.springer.com/content/pdf/10.1007/s10654-019-00517-2.pdf
+# Sjolander and vanSteenlandt 2019 Eur J Epi
+
+library(forestplot)
+library(bayesm)
+set.seed(1)
+
+n = 10
+J = 20
+beta = 0
+
+Y = matrix(rnorm(n*J, mean=beta), nrow=n, ncol=J)
+
+X = matrix(0, nrow=J*n, ncol=J)
+for (j in 1:J) {
+  X[(n*(j-1)+1):(n*j), j] = 1
+  }
+Ainv = diag(J) # cor(betaj, betak) = 0
+
+fit = runireg( Data = list(y=as.vector(Y),
+   X=X), Prior=list(A=solve(Ainv)),
+   Mcmc = list(R=10000, nprint=0))
+
+q = apply(X=fit$betadraw,
+  MARGIN=2, FUN=quantile, probs=c(.025, .5, .975))
+est = q[2,]
+ci.l = q[1,]
+ci.u = q[3,]
+```
+
+
+```{r lkfp1, echo=FALSE}
+forestplot(
+ labeltext=rep("", J),
+ mean=est, lower=ci.l,
+ upper=ci.u, ci.vertices=TRUE,
+ boxsize=0.3, txt_gp=fpTxtGp(cex=2),
+ xticks=seq(-1.5,1.5,.5), title="Bayesian credible intervals, assume ind.")
+```
+
+
+Finally, allowing high correlatedness among test statistics,
+the Bayesian approach is found to avoid any false rejections.
+
+```{r dofp2, echo=FALSE, cache=TRUE, results="hide"}
+
+# from https://link.springer.com/content/pdf/10.1007/s10654-019-00517-2.pdf
+# Sjolander and vanSteenlandt 2019 Eur J Epi
+
+library(forestplot)
+library(bayesm)
+set.seed(1)
+
+n = 10
+J = 20
+beta = 0
+
+Y = matrix(rnorm(n*J, mean=beta), nrow=n, ncol=J)
+
+X = matrix(0, nrow=J*n, ncol=J)
+for (j in 1:J) {
+  X[(n*(j-1)+1):(n*j), j] = 1
+  }
+Ainv = diag(J)*(1-.95)+.95 # cor(betaj, betak) = .95
+
+fit = runireg( Data = list(y=as.vector(Y),
+   X=X), Prior=list(A=solve(Ainv)),
+   Mcmc = list(R=10000))
+
+q = apply(X=fit$betadraw,
+  MARGIN=2, FUN=quantile, probs=c(.025, .5, .975))
+est = q[2,]
+ci.l = q[1,]
+ci.u = q[3,]
+```
+
+```{r lkatnew}
+forestplot(
+ labeltext=rep("", J),
+ mean=est, lower=ci.l,
+ upper=ci.u, ci.vertices=TRUE,
+ boxsize=0.3, txt_gp=fpTxtGp(cex=2),
+ xticks=seq(-1.5,1.5,.5), title="Bayesian, assume correlated tests")
+```
+
+The Bayesian computations involve Monte Carlo Markov Chain simulation.
+Background can be obtained from [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/)
+by R. McElreath.
 
 
 # Linear models
 
-## Confounding
 
 ## Re-expressing the two-sample test
 
@@ -149,15 +322,12 @@ the expected value of $V/max(R,1)$.  If $R = 0$
 
 ## Linear regression, parameter estimation, goodness of fit
 
-### Model equation: Data = Fit + Residual
+## Confounding
 
-### Design matrix
 
-### Algebra of least-squares estimates
+# GLMs: binary, counted, non-Gaussian responses
 
-## GLMs: binary, counted, non-Gaussian responses
-
-## Hierarchical models: alternatives to independence
+# Hierarchical models: alternatives to independence
 
 ### Random effects models for clustered observations
 
