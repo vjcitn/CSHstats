@@ -1,5 +1,5 @@
 ---
-title: "S5_inference: Linear models and GLMs"
+title: "S5_inference: FDR, linear models, and GLMs"
 shorttitle: "linear models for CSHL"
 author: "Vincent J. Carey, stvjc at channing.harvard.edu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
@@ -15,6 +15,129 @@ output:
 pkgdown:
   as_is: true
 ---
+
+```{r setup,echo=FALSE,results="hide"}
+suppressPackageStartupMessages({
+ suppressMessages({
+  library(multtest)
+  library(CSHstats)
+})
+})
+```
+
+# Review of some inference concepts
+
+## Error rates: size and power
+
+- Null hypothesis testing framework: we typically aim to assess whether
+an intervention affects a parameter value for a certain population
+    - does the average value of some quantity change after treatment?
+    - does changing the composition of a deck of cards affect the
+probability of seeing a given suit when drawing a card?
+
+- Type I error: reject the null when it is actually true
+
+- Type II error: fail to reject null when it is actually false
+
+## p-value: a condensation of the data and assumptions
+
+The p-value for a test is the probability of observing the
+statistic seen in the experiment **or any more extreme
+value of the statistic** given that the null hypothesis is true.
+
+```{r dobin}
+binom.test(27, 100, 1/4)
+```
+
+This two-sided p-value is obtained via
+```{r lkww}
+sum(dbinom(27:100, 100, .25))+sum(dbinom(1:22,100, .25))
+```
+because all the results of 27 or more hearts seen, or 22 or fewer
+hearts seen are "as or more extreme" as what we have observed.
+
+Because the p-value is a probability, its value reflects uncertainty
+in our assessment of the relation of the data to null hypothesis.
+Large p-values suggest that there is not much reason to use the
+data to reject the null hypothesis; small p-values suggest that either
+the null hypothesis is false or a very rare event has occurred.
+
+## Confidence interval: an alternative expression of uncertainty
+
+
+If we observed 30 hearts in 100 top-card draws, our test report would be:
+```{r dobin2}
+binom.test(30, 100, 1/4)
+```
+
+The confidence interval is a random interval derived from the data
+that has the property that it will include the true value of the
+population parameter of interest with a specified probability.
+
+```{r lkcis}
+stats = c(27:42)
+tests = lapply(stats, function(x) binom.test(x, 100, .25))
+low = sapply(tests, function(x) x$conf.int[1])
+hi = sapply(tests, function(x) x$conf.int[2])
+ests = sapply(tests, "[[", "statistic")
+plot(stats, ests, ylim=c(0, .6), main="95% Confidence intervals", xlab="# hearts seen in 100 draws",
+  ylab="estimated proportion of hearts")
+segments( stats, low, stats, hi)
+abline(h=.25, lty=2)
+```
+
+Exercise: For what value of the statistic would you reject the null hypothesis of
+probability 1/4 for heart?
+
+Exercise: Use 99% as the coverage probability and produce the display.
+
+# Multiple comparisons
+
+Everything we've seen thus far looks at **a single test** in various ways.
+
+A hallmark of work in genomics is the necessity of performing many tests, because
+of the large number of features and hypotheses in play.
+
+Fact: When many tests are conducted on true null hypotheses, the distribution
+of the collection of p-values thereby obtained is uniform on (0,1].
+
+```{r lknull}
+many_x = replicate(10000, rnorm(10, 100))
+many_p = apply(many_x, 2, function(x) t.test(x, mu=100)$p.value)
+plot(density(many_p, from=0, to=1))
+```
+
+This display shows a limitation of density estimation on a fixed interval --
+a "boundary effect", because data "up against" the boundary
+get sparser as you get closer to the boundary.  But it is consistent with
+the property of a uniform distribution on [0,1]: the true density is 1.
+
+## Bonferroni's correction to achieve Family-Wise Error Rate (FWER) control
+
+The concept of Type I error is very general, and could be deployed
+to define operating characteristics for any kind of inference procedure.
+
+This table is frequently seen in discussions of multiple testing, it is
+from Holmes and Huber's Modern Statistics for Modern Biology.
+
+![decisiontab](MTESTTAB.jpg)
+
+Suppose we have $m$ hypotheses to test and we wish the overall
+probability of our family of tests to have Type I error rate $\alpha$.
+Using the table symbols, this is $Pr(V>0) < \alpha$.
+
+Bonferroni's method is to declare significance only for
+those tests with $p$-value less than $\alpha/m$.
+
+This procedure (and related improvements
+for FWER control) also implies a transformation of $p$-values, that we will
+see shortly.
+
+## False discovery rate
+
+Referring to the table above, the false discovery rate (FDR) is
+the expected value of $V/max(R,1)$.  If $R = 0$
+
 
 # Linear models
 
