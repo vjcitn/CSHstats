@@ -25,6 +25,7 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(CSHstats)
   library(dplyr)
+  library(knitr)
 })
 })
 ```
@@ -556,8 +557,51 @@ informative on FOS activation.
 
 ## General case: link and variance functions
 
+The family of generalized linear models can accommodate many
+forms of variation in a response of interest, to which are
+associated a number of "predictor" variables.
+
+```{r setglm, echo=FALSE, results="hide"}
+glmtab = structure(list(dists = c("gaussian", "binomial", "poisson", "gamma", 
+"negbin"), links = c("identity", "logit", "log", "reciprocal", 
+"log"), varfuns = c("const", "np(1-p)", "mu", "mu^2", "mu+mu^2/theta"
+)), class = "data.frame", row.names = c(NA, -5L))
+```
+```{r lktaglm}
+kable(glmtab)
+```
+
+DESeq2 and edgeR use the negative binomial GLM for inference on differential
+expression in RNA-seq.  You will hear much more about this.  The `glm.nb` function
+in the MASS package allows you to fit negative binomial regressions with
+data in data.frames.
+
+
 # Hierarchical models: alternatives to independence
 
-### Random effects models for clustered observations
+A very strong assumption in the use of linear and generalized linear
+models is the mutual independence of reponses.  When clustering
+of responses is present (for example, when analyzing
+data collected on human families, or pairs of eyes, or mice in litters), additional model structure
+should be introduced to accommodate lack of independence.
+
+## Random effects models for clustered observations
+
+A framework approach developed in [1982 (Laird and Ware)](https://pubmed.ncbi.nlm.nih.gov/7168798/)
+expands the linear model to a model known as "mixed effects":
+
+$$
+y_{ij} = \alpha + \beta x_{ij} + a_i + e_{ij}
+$$
+
+with $i$ indexing clusters and $j$ responses within clusters.  The "random effect"
+$a_i$ is assumed to follow $N(0, \sigma^2_b)$ (between-cluster variance), and
+is independent of $e_{ij} \sim N(0, \sigma^2_w)$.
+
+The intraclass correlation coefficient measures the departure from independence, and
+has form $\rho = \sigma^2_b/(\sigma^2_b + \sigma^2_w)$.
+
+Approximate mixed effects models for the GLM families can be fit using glmmPQL in MASS.
+
 
 
