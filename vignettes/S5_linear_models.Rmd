@@ -24,6 +24,7 @@ suppressPackageStartupMessages({
   library(forestplot)
   library(ggplot2)
   library(CSHstats)
+  library(dplyr)
 })
 })
 ```
@@ -326,6 +327,7 @@ fedf = data.frame(FOS=fos_ex, EGR1=egr1_ex)
 library(ggplot2)
 ggplot(fedf, aes(x=EGR1, y=FOS)) + geom_point()
 ```
+
 We found that log transformation was useful for ameliorating
 the overplotting near the origin:
 
@@ -344,19 +346,6 @@ table(accex$OncoSign, exclude=NULL)
 ```
 
 
-```
-ggplot(ndf, aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
-ggplot(ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3")), 
-    aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
-tpvtert = ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3"))
-t.test(logEGR1~oncosign, data=tpvtert, var.equal=TRUE)
-t.test(logEGR1~oncosign, data=tpvtert, var.equal=FALSE) # more general
-
-ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3")) |> 
-         lm(logEGR1~oncosign, data=_) |> summary()
-```
-
-
 ## Re-expressing the two-sample test
 
 We will focus on two OncoSign classes, asking whether average log EGR1
@@ -365,7 +354,7 @@ expression is different between them.
 ```{r reform}
 hasonc = which(!is.na(accex$OncoSign))
 ndf = data.frame(logEGR1 = log(egr1_ex[hasonc]), oncosign=accex$OncoSign[hasonc])
-tpvtert = ndf |> filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3"))
+tpvtert = ndf |> dplyr::filter(oncosign %in% c("TP53/NF1", "TERT/ZNRF3"))
 ggplot(tpvtert, aes(y=logEGR1, x=factor(oncosign))) + geom_boxplot()
 ```
 
@@ -434,10 +423,138 @@ summary(nda)
 
 ## Linear regression, parameter estimation, goodness of fit
 
+More common applications of linear modeling take advantage
+of continuity of a predictor.  For a simple linear regression (one continuous
+covariate), the interpretation of $\beta$ is: the difference in mean of $y$
+associated with a unit difference in $x$.
+
+Regarding log EGR1 as a predictor of log FOS, we have
+```{r doreg}
+m1 = lm(log(fos_ex)~log(egr1_ex))
+summary(m1)
+plot(m1)
+```
+
+
 ## Confounding
 
 
 # GLMs: binary, counted, non-Gaussian responses
+
+The family of generalized linear models (GLM) embraces a number
+of approaches to statistical inference on associations between
+non-Gaussian responses and general configurations of covariates.
+
+## Prologue: Fisher's exact test for 2 x 2 table
+
+We'll work with FOS and EGR1 in an artificial way.  We'll
+suppose that we have criteria for "activation":
+
+- FOS is activated if our RNA-seq measurement in ACC exceeds 1000
+- EGR1 is activated if our RNA-seq measurement in ACC exceeds 2000
+
+```{r lkact}
+library(CSHstats)
+data(fos_ex)
+data(egr1_ex)
+fos_act = 1*(fos_ex > 1000)
+egr1_act = 1*(egr1_ex > 2000)
+```
+
+We form a 2 x 2 cross classification of tumors using these definitions:
+
+```{r tab1}
+acttab = table(fos_act=fos_act, egr1_act=egr1_act)
+acttab
+```
+
+A basic question is whether the two events "EGR1 activated" and "FOS activated"
+are statistically associated in ACC tumors.
+
+Fisher's exact test evaluates the hypergeometric distribution of the
+(1,1) cell of the table, given the marginal totals.
+
+```{r lkfish}
+fisher.test(acttab, alternative="greater") # one-sided
+sum(dhyper(26:31, 51, 28, 31))
+```
+
+The odds of an event that occurs with probability $p$ is given by $p/(1-p)$.
+Abbreviate to $odds(p)$
+
+The odds ratio for two events with probabilities $p_1$ and $p_2$
+is $odds(p_1)/odds(p_2)$.  With a 2x2 table this can be estimated with
+the cross ratio "ad/bc".  But the odds ratio estimated in `fisher.test`
+is different, a conditional maximum likelihood estimate.  The difference
+is seldom meaningful.
+
+```{r lkor}
+odds = function(x) {p=mean(x); p/(1-p)}
+odds(fos_act[egr1_act==TRUE])/odds(fos_act[egr1_act==FALSE])
+acttab[1,1]*acttab[2,2]/(acttab[1,2]*acttab[2,1])
+```
+
+
+## Binary response: logistic regression
+
+
+We model the conditional probability that FOS is activated,
+depending on whether or note EGR1 is activated, using the
+definitions given above.
+The model has the form
+
+$$
+\mbox{logit} Pr(FOS > 1000|EGR1>2000) = \alpha + \beta x
+$$
+
+Here logit(p) = log(p/(1-p)) is called a "link function".  It
+transforms the outcome of interest (a probability) from the
+interval (0,1) to the whole real line.  The interpretation of
+$\beta$ is: "log odds ratio".  If we exponentiate beta, we
+obtain the effect of a change in x of one unit on the odds
+of the response event.
+
+
+```{r illusb}
+g1 = glm(fos_act ~ egr1_act, family=binomial())
+summary(g1)
+```
+
+Parameter interpretation.  The intercept parameter has value 
+`r round(g1$coef[1],4)`, which is the logit of the probability
+that FOS is activated, given that EGR1 is NOT activated.
+
+The "beta" parameter is the log odds ratio (comparing probability
+of FOS activation between the EGR1 conditions -- not activated and
+activated).
+
+```{r lkoooo}
+log(4.784)
+```
+
+## Multiple logistic regression
+
+Fisher's exact test and simple logistic regression are
+seen to be consistent with one another in this example.
+The advantage of the logistic regression framework is that
+more potential sources of variation in probability of response
+can be incorporated.
+
+We have data on YY1 expression in ACC and will declare it activated
+when expressed at a level greater than 1500.
+
+```{r lkyy1}
+data(yy1_ex)
+yy1_act = yy1_ex > 1500
+g2 = glm(fos_act ~ egr1_act+yy1_act, family=binomial())
+summary(g2)
+```
+
+The inclusion of information on YY1 does not seem to be
+informative on FOS activation.
+
+
+## General case: link and variance functions
 
 # Hierarchical models: alternatives to independence
 
