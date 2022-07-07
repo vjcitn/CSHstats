@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.18</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.19</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,7 @@
       <img src="" class="logo" alt=""><h1>S4_inference: Definitions and exercises</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">July 04, 2022</h4>
+            <h4 data-toc-skip class="date">July 07, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S4_hypothesis_testing.Rmd" class="external-link"><code>vignettes/S4_hypothesis_testing.Rmd</code></a></small>
       <div class="d-none name"><code>S4_hypothesis_testing.Rmd</code></div>
@@ -125,30 +125,30 @@ the results of top card draws from N shuffles. What would such a procedure look 
 <h3 id="simulating-a-series-of-experiments-parameter-estimate">Simulating a series of experiments; parameter estimate<a class="anchor" aria-label="anchor" href="#simulating-a-series-of-experiments-parameter-estimate"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
-<span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="op">{</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alexkowa/EnvStats" class="external-link">EnvStats</a></span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="../reference/build_deck.html">build_deck</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">shuffle_deck</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">d</span>, size<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, replace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">heart_sign</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"\U2661"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4141</span><span class="op">)</span>
-<span class="va">top_draw</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="fu">shuffle_deck</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-<span class="va">N</span> <span class="op">=</span> <span class="fl">100</span>
-<span class="va">mydat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">phat</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>
-<span class="fu">phat</span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.35</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="op">{</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alexkowa/EnvStats" class="external-link">EnvStats</a></span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="../reference/build_deck.html">build_deck</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">shuffle_deck</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">d</span>, size<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, replace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">heart_sign</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"\U2661"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4141</span><span class="op">)</span></span>
+<span><span class="va">top_draw</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="fu">shuffle_deck</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">N</span> <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="va">mydat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">phat</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span><span class="fu">phat</span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.35</span></span></code></pre>
 <p>With 100 shuffles we have an estimate of the probability of a
 heart. Is our experimental result consistent with <span class="math inline">\(H_0\)</span>?</p>
 <p>With a larger sample size:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span>
-<span class="va">mydat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.243</span></code></pre>
+<code class="sourceCode R"><span><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="va">mydat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mydat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.243</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="an-improvised-test">An improvised test<a class="anchor" aria-label="anchor" href="#an-improvised-test"></a>
@@ -157,24 +157,24 @@ heart. Is our experimental result consistent with <span class="math inline">\(H_
 rejecting $ H_0 : $Pr(C_1 = ) $. What is the Type I error rate
 for a fair deck for the experiment based on 100 shuffles?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">100</span>
-<span class="va">NSIM</span> <span class="op">=</span> <span class="fl">1000</span>
-<span class="va">tsts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>,
-   <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fl">.25</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">.01</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">tsts</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.911</span></code></pre>
+<code class="sourceCode R"><span><span class="va">N</span> <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="va">NSIM</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="va">tsts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>,</span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fl">.25</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">.01</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">tsts</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.911</span></span></code></pre>
 <p>Parameterize the “delta”, which was 0.01 in the previous run. Let’s
 get the rejection rate estimates for two sample sizes:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prej</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">delta</span><span class="op">=</span><span class="fl">.01</span>, <span class="va">nullval</span><span class="op">=</span><span class="fl">.25</span>, <span class="va">NSIM</span>, <span class="va">N</span><span class="op">)</span> <span class="op">{</span>
- <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>,
-   <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="va">nullval</span><span class="op">)</span><span class="op">&gt;</span><span class="va">delta</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="fu">prej</span><span class="op">(</span>delta<span class="op">=</span><span class="fl">.02</span>, NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">100</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.655</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prej</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">delta</span><span class="op">=</span><span class="fl">.01</span>, <span class="va">nullval</span><span class="op">=</span><span class="fl">.25</span>, <span class="va">NSIM</span>, <span class="va">N</span><span class="op">)</span> <span class="op">{</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>,</span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="va">nullval</span><span class="op">)</span><span class="op">&gt;</span><span class="va">delta</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">prej</span><span class="op">(</span>delta<span class="op">=</span><span class="fl">.02</span>, NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.655</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">prej</span><span class="op">(</span>delta<span class="op">=</span><span class="fl">.02</span>, NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">500</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.323</span></code></pre>
+<code class="sourceCode R"><span><span class="fu">prej</span><span class="op">(</span>delta<span class="op">=</span><span class="fl">.02</span>, NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">500</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.323</span></span></code></pre>
 <p>Our home-cooked test has a Type I error rate that is much too high
 for standard practice, and depends on the sample size.</p>
 </div>
@@ -195,20 +195,20 @@ and 0 otherwise</p>
 of the indicator variables for different experimental and
 replication setups.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">brej</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">deck</span>, <span class="va">nullval</span><span class="op">=</span><span class="fl">.25</span>, <span class="va">alpha</span><span class="op">=</span><span class="fl">0.05</span>, <span class="va">NSIM</span>, <span class="va">N</span><span class="op">)</span> <span class="op">{</span>
- <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>, <span class="op">{</span>
-   <span class="va">dat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">deck</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-   <span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html" class="external-link">binom.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, <span class="va">N</span>, <span class="va">nullval</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&lt;</span> <span class="va">alpha</span>
-   <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>,NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.054</span></code></pre>
+<code class="sourceCode R"><span><span class="va">brej</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">deck</span>, <span class="va">nullval</span><span class="op">=</span><span class="fl">.25</span>, <span class="va">alpha</span><span class="op">=</span><span class="fl">0.05</span>, <span class="va">NSIM</span>, <span class="va">N</span><span class="op">)</span> <span class="op">{</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">NSIM</span>, <span class="op">{</span></span>
+<span>   <span class="va">dat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">N</span>, <span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="fu">top_draw</span><span class="op">(</span><span class="va">deck</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fu">heart_sign</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html" class="external-link">binom.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, <span class="va">N</span>, <span class="va">nullval</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&lt;</span> <span class="va">alpha</span></span>
+<span>   <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>,NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.054</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>,NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.06</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>,NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.06</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>,NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">100</span>, alpha<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.006</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>,NSIM<span class="op">=</span><span class="fl">1000</span>, N<span class="op">=</span><span class="fl">100</span>, alpha<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.006</span></span></code></pre>
 <p>We have an indication here that the procedure stabilizes the Type I error
 rate for different designs (sample sizes) and can accommodate different
 significance levels.</p>
@@ -225,39 +225,39 @@ varies with the sample size, for two alternatives to the null.</p>
 For such a deck, the probability of a heart is 14/52, greater
 than 1/4.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bd</span> <span class="op">=</span> <span class="va">d</span>
-<span class="va">bd</span><span class="op">[</span><span class="fl">18</span><span class="op">]</span> <span class="op">=</span> <span class="va">bd</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span>, <span class="fu"><a href="../reference/faces.html">faces</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##    </span>
-<span class="co">##     10 2 3 4 5 6 7 8 9 A J K Q</span>
-<span class="co">##   ♡  1 1 1 1 2 1 1 1 1 1 1 1 1</span>
-<span class="co">##   ♢  1 1 1 1 1 0 1 1 1 1 1 1 1</span>
-<span class="co">##   ♣  1 1 1 1 1 1 1 1 1 1 1 1 1</span>
-<span class="co">##   ♤  1 1 1 1 1 1 1 1 1 1 1 1 1</span></code></pre>
+<code class="sourceCode R"><span><span class="va">bd</span> <span class="op">=</span> <span class="va">d</span></span>
+<span><span class="va">bd</span><span class="op">[</span><span class="fl">18</span><span class="op">]</span> <span class="op">=</span> <span class="va">bd</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span>, <span class="fu"><a href="../reference/faces.html">faces</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    </span></span>
+<span><span class="co">##     10 2 3 4 5 6 7 8 9 A J K Q</span></span>
+<span><span class="co">##   ♡  1 1 1 1 2 1 1 1 1 1 1 1 1</span></span>
+<span><span class="co">##   ♢  1 1 1 1 1 0 1 1 1 1 1 1 1</span></span>
+<span><span class="co">##   ♣  1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
+<span><span class="co">##   ♤  1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre>
 <p>What kind of sample size do we need to get good power to detect this
 exception?</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ssizes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">300</span>,<span class="fl">750</span><span class="op">)</span>
-<span class="va">rejps</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">bd</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps</span>, main<span class="op">=</span><span class="st">"detect one extra heart"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ssizes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">300</span>,<span class="fl">750</span><span class="op">)</span></span>
+<span><span class="va">rejps</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">bd</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps</span>, main<span class="op">=</span><span class="st">"detect one extra heart"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="S4_hypothesis_testing_files/figure-html/docur-1.png" width="672"></p>
 <p>With two switches, the probability of a heart increases to 15/52.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bd</span><span class="op">[</span><span class="fl">19</span><span class="op">]</span> <span class="op">=</span> <span class="va">bd</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span>, <span class="fu"><a href="../reference/faces.html">faces</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##    </span>
-<span class="co">##     10 2 3 4 5 6 7 8 9 A J K Q</span>
-<span class="co">##   ♡  1 1 1 1 2 2 1 1 1 1 1 1 1</span>
-<span class="co">##   ♢  1 1 1 1 1 0 0 1 1 1 1 1 1</span>
-<span class="co">##   ♣  1 1 1 1 1 1 1 1 1 1 1 1 1</span>
-<span class="co">##   ♤  1 1 1 1 1 1 1 1 1 1 1 1 1</span></code></pre>
+<code class="sourceCode R"><span><span class="va">bd</span><span class="op">[</span><span class="fl">19</span><span class="op">]</span> <span class="op">=</span> <span class="va">bd</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/suits.html">suits</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span>, <span class="fu"><a href="../reference/faces.html">faces</a></span><span class="op">(</span><span class="va">bd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    </span></span>
+<span><span class="co">##     10 2 3 4 5 6 7 8 9 A J K Q</span></span>
+<span><span class="co">##   ♡  1 1 1 1 2 2 1 1 1 1 1 1 1</span></span>
+<span><span class="co">##   ♢  1 1 1 1 1 0 0 1 1 1 1 1 1</span></span>
+<span><span class="co">##   ♣  1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
+<span><span class="co">##   ♤  1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rejps</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">bd</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps</span>, main<span class="op">=</span><span class="st">"detect two extra hearts"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rejps</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">bd</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps</span>, main<span class="op">=</span><span class="st">"detect two extra hearts"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="S4_hypothesis_testing_files/figure-html/domor-1.png" width="672"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rejps_n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/multtest/man/MTP-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps_n</span>, main<span class="op">=</span><span class="st">"preserve Type I error rate"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rejps_n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">brej</span><span class="op">(</span><span class="va">d</span>, NSIM<span class="op">=</span><span class="fl">100</span>, N<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ssizes</span>, <span class="va">rejps_n</span>, main<span class="op">=</span><span class="st">"preserve Type I error rate"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="S4_hypothesis_testing_files/figure-html/domor-2.png" width="672"></p>
 </div>
 <div class="section level2">
@@ -301,15 +301,15 @@ via simulation</p></li>
 in the EnvStats package, we find</p></li>
 </ul>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alexkowa/EnvStats" class="external-link">EnvStats</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">13</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.05</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alexkowa/EnvStats" class="external-link">EnvStats</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">13</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.05</span></span></code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">14</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.2348789</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">14</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.2348789</span></span></code></pre>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">15</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.6742566</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/EnvStats/man/propTestPower.html" class="external-link">propTestPower</a></span><span class="op">(</span><span class="fl">750</span>, p.or.p1<span class="op">=</span><span class="fl">15</span><span class="op">/</span><span class="fl">52</span>, p0<span class="op">=</span><span class="fl">.25</span> <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.6742566</span></span></code></pre>
 <p>An exercise is to reconcile these results with the simulation-based
 results given above.</p>
 <p>Another is to find the sample size needed to achieve 80% power to detect
@@ -328,7 +328,7 @@ a single switch from diamond to heart in an otherwise fair deck.</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>
