@@ -1,5 +1,5 @@
 pandoc: '2.5'
-pkgdown: 2.0.5
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   S1_probability: S1_probability.html
@@ -8,5 +8,5 @@ articles:
   S4_hypothesis_testing: S4_hypothesis_testing.html
   S5_linear_models: S5_linear_models.html
   S6_hca_onto: S6_hca_onto.html
-last_built: 2022-07-07T15:45Z
+last_built: 2023-06-30T15:54Z
 

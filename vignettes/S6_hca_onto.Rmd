@@ -177,7 +177,7 @@ datatable(dd)
 
 ```{r lkonto}
 library(ontoProc)
-co = getCellOnto() # not current
+co = getOnto("cellOnto")
 head(co$name)
 ```
 
@@ -187,9 +187,7 @@ about the concept in focus
 Limitation: the OBO representation in use is outdated and out-links are sparse
 
 ```
-library(ontoProc)
-cl = getCellOnto()
-chk = ctmarks(cl)
+chk = ctmarks(co)
 ```
 
 Projects: 
