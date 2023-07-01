@@ -18,6 +18,84 @@ pkgdown:
 
 # Inference
 
+## Basic concepts
+
+We are going to focus on the framework known "null hypothesis significance
+testing".  A "null hypothesis" is typically denoted $H_0$ and expresses
+a claim that often involves a _lack_ of effect of an experimental intervention
+on an outcome of interest.  An "alternative hypothesis" is denoted
+$H_1$, and
+it should express a specific measurable impact of an intervention.
+
+In the case of our card deck from chapter S1, it would be typical to
+postulate
+
+- $H_0$: deck is fair, one card of each combination of face and suit
+- $H_1$: deck has been tampered with and has an excess of hearts
+
+Note that in this case, $H_1$ is fairly vague -- it could be less specific,
+referring only to lack of fairness.  $H_1$ specifies which suit has an
+excess representation in the deck, but it is not specific about how
+severe the tampering has been.
+
+In experimental design, it is important to have a clear view of 
+
+- *sources of variation* in the outcome of interest, and 
+- the *magnitude of effect* of intervention that is scientifically important.  
+
+Only when both of these are in focus can we establish the
+*operating characteristics* of our proposed experiment.
+
+In the significance testing framework, we formalize operating characteristics
+as probabilities of inferential error, described below.
+
+Before we plunge in to more formalities, let's recall how to work
+with the deck of cards.
+
+Here we create a fair deck:
+```{r dod1,message=FALSE}
+library(CSHstats)
+d = build_deck()
+table(suits(d), faces(d))
+
+```
+
+Now let's create a severely biased deck:
+```{r dod2}
+bd = d  # just a copy
+bd[18] = bd[3]
+bd[19] = bd[3]
+bd[20] = bd[4]
+bd[21] = bd[5]
+table(suits(bd), faces(bd))
+```
+
+Here are our tools for shuffling and drawing the top card:
+```{r dod3}
+shuffle_deck = function(d) sample(d, size=length(d), replace=FALSE)
+top_draw = function(d) shuffle_deck(d)[1]
+```
+Let's make a reproducible random draw:
+```{r dod4}
+set.seed(1234)
+t1 = top_draw(bd)
+t1
+```
+
+Exercise: create a vector holding 100 draws from the biased deck.
+Estimate the probability that the suit of the top card is diamond.
+Use
+```{r diam}
+diamond_sign = function() "\U2662"
+```
+to test the suit of each draw.  For example:
+```{r lkt}
+t1 == diamond_sign()
+```
+
+Note: starting with set.seed(2345), the estimated probability of diamond as suit of top draw
+that I found was 0.16.
+
 ## The fairness hypothesis
 
 Let $C_1$ denote the suit of the top card revealed after a fair shuffle.
@@ -184,8 +262,14 @@ bd[19] = bd[5]
 table(suits(bd), faces(bd))
 rejps = sapply(ssizes, function(x) mean(brej(bd, NSIM=100, N=x)))
 plot(ssizes, rejps, main="detect two extra hearts")
+```
+
+Finally, we show that under the null hypothesis (deck is fair)
+the rejection rate is approximately 0.05 for a range of sample sizes.
+```{r showpres}
 rejps_n = sapply(ssizes, function(x) mean(brej(d, NSIM=100, N=x)))
-plot(ssizes, rejps_n, main="preserve Type I error rate")
+plot(ssizes, rejps_n, main="preserve Type I error rate", ylim=c(0,1))
+abline(h=0.05, lty=2)
 ```
 
 # Conclusions
