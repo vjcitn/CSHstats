@@ -90,7 +90,9 @@ sum(mydat)/length(mydat)
 ## An improvised test
 
 Let's use the procedure `|phat(dat)-.25|>.01` as our criterion for
-rejecting $ H_0 : $Pr(C_1 = \heartsuit) $.  What is the Type I error rate
+rejecting
+$H_0: Pr(C_1 = \heartsuit) = 1/4$
+What is the Type I error rate
 for a fair deck for the experiment based on 100 shuffles?
 
 ```{r chknull, cache=TRUE}

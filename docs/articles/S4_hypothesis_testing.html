@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.21</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.22</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,7 +155,9 @@ heart. Is our experimental result consistent with <span class="math inline">\(H_
 <h3 id="an-improvised-test">An improvised test<a class="anchor" aria-label="anchor" href="#an-improvised-test"></a>
 </h3>
 <p>Let’s use the procedure <code>|phat(dat)-.25|&gt;.01</code> as our criterion for
-rejecting $ H_0 : $Pr(C_1 = ) $. What is the Type I error rate
+rejecting
+<span class="math inline">\(H_0: Pr(C_1 = \heartsuit) = 1/4\)</span>
+What is the Type I error rate
 for a fair deck for the experiment based on 100 shuffles?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">N</span> <span class="op">=</span> <span class="fl">100</span></span>

@@ -440,7 +440,7 @@ sum(foss$nspec * foss$freq)/30
 to obtain the average number of fossils per square.  The Poisson model with
 mean $\lambda$ is
 $$
-Pr(X = x; \lambda) = \frac{e^{-\lambda}\lambda^k}{k!}
+Pr(X = k; \lambda) = \frac{e^{-\lambda}\lambda^k}{k!}
 $$
 
 ### Exercise
