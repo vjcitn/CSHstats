@@ -180,7 +180,90 @@ we could reject 8 hypotheses.
 Exercise: replace the first p-value in `many_p` with `1e-6` and obtain the
 associated adjusted p-values.
 
-## Considerations on Bayesian multiple testing
+## Adjustments via weighted FDR
+
+A [useful review](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10276986/) is
+available.  This section addresses only one of the methods in the review, which
+is found to have good performance, though in some contexts the authors' alternatives
+appear superior.
+
+### Setup
+
+We need the IHW package and will do some visualization as well.
+
+```{r getpacks, message=FALSE}
+ library(CSHstats)
+ library(ggplot2)
+ library(plotly)
+ library(IHW)
+ library(multtest)
+```
+
+Here's the key resource with p-values that we want to interpret.
+```{r getdat}
+data(gtex_exc_chr20_b38)
+gtdat = gtex_exc_chr20_b38
+head(gtdat,3)
+```
+What we have here are variant-expression association tests conducted
+in the [GTEx project](https://gtexportal.org).  Thus this is a small
+excerpt from a collection of "GWAS", in which the outcome is tissue-specific
+expression of a gene, and predictors are formed by SNP genotypes and
+adjustments carried out in the GTEx analysis pipeline.
+
+Here's a composite manhattan plot:
+```{r lkmanh}
+pl1 = ggplot(gtdat[gtdat$p<.1,], aes(x=pos_b38, y=-log10(p), colour=Gene)) + geom_point(alpha=.5)
+ggplotly(pl1)
+```
+
+### Demonstration 1: Use allele frequency to form strata for FDR weighting
+
+The `eaf` field is the frequency with which the "effect allele" was
+reported by SNP-Nexus.
+```{r lkef}
+covariate1 = cut(gtdat$eaf, c(0,.01,.05,.1,.3,.6))
+table(covariate1)
+```
+
+We run the IHW algorithm using the variant frequency strata, with
+a conjecture that very rare or very common variants may be downweighted
+in a way that is advantageous to discovery.
+
+```{r doihw}
+demo1 = ihw(gtdat$p, covariate1, alpha=0.05)
+basic_fdr = mt.rawp2adjp(gtdat$p)
+```
+
+The weighting procedure involves random resampling from the data, 
+to reduce risk of overfitting, and to allow assessment of 
+consistency across multiple "folds" or random subsets.
+```{r lkwts1}
+plot(demo1)
+```
+
+Compare the weighted, unweighted, and conventional
+rejection numbers:
+
+```{r lkad1}
+newp = adj_pvalues(demo1)
+sum(newp < 0.05)
+sum(basic_fdr$adjp[,"BH"] < 0.05)
+sum(gtdat$p < 5e-8)
+```
+
+### Demonstration 2: Use distance to gene to weight
+```{r lkposi}
+dist2gene = abs(gtdat$pos_b38-gtdat$start)
+covariate2 = cut(dist2gene, 5)
+ok = which(!is.na(covariate2))
+demo2 = ihw(gtdat$p[ok], covariate2[ok], alpha=0.05)
+plot(demo2)
+newp2 = adj_pvalues(demo2)
+sum(newp2 < 0.05)
+```
+
+## Optional: Considerations on Bayesian multiple testing
 
 Various comments and references in this [stackexchange](https://stats.stackexchange.com/questions/203378/why-dont-bayesian-methods-require-multiple-testing-corrections) address the relationship
 between inferential framework and approach to multiple testing.  A [paper

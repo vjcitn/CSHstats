@@ -42,3 +42,8 @@
 #' @docType data
 #' @format MultiAssayExperiment
 "accex"
+
+#' data.frame with GTEx lung eQTL data and metadata, a selection from chr20
+#' @docType data
+#' @format data.frame
+"gtex_exc_chr20_b38"
