@@ -97,6 +97,9 @@
     <loc>/reference/full_house.html</loc>
   </url>
   <url>
+    <loc>/reference/gtex_exc_chr20_b38.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -104,6 +107,9 @@
   </url>
   <url>
     <loc>/reference/one_pair.html</loc>
+  </url>
+  <url>
+    <loc>/reference/queryCHCA.html</loc>
   </url>
   <url>
     <loc>/reference/suits.html</loc>

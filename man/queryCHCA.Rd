@@ -18,6 +18,9 @@ dplyr::tbl for metadata
 use a snapshot of CuratedQueryAtlasR through duckdb
 }
 \examples{
+if (interactive()) {
 con = DBI::dbConnect(duckdb::duckdb())
-queryCHCA(con) 
+queryCHCA(con) |> select(sample_) |> head()
+DBI::dbDisconnect(con)
+}
 }

@@ -3,8 +3,11 @@
 #' @param inst logical(1) if TRUE install httpfs in duckdb
 #' @return dplyr::tbl for metadata
 #' @examples
+#' if (interactive()) {
 #' con = DBI::dbConnect(duckdb::duckdb())
-#' queryCHCA(con) 
+#' queryCHCA(con) |> select(sample_) |> head()
+#' DBI::dbDisconnect(con)
+#' }
 #' @export
 queryCHCA = function (con, inst = FALSE) 
 {

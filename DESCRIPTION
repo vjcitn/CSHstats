@@ -1,6 +1,6 @@
 Package: CSHstats
 Title: discussions and exercises on classical statistics for CSHL 2022
-Version: 0.0.22
+Version: 0.0.26
 Authors@R:
     person(given = "Vince",
            family = "Carey",
@@ -11,12 +11,13 @@ Description: Discussions and exercises on classical statistics for CSHL 2022.
 Depends: R (>= 4.0.0), tools, utils, survival, mvtnorm, ggplot2,
 	rmarkdown, knitr, MultiAssayExperiment, bayesm, forestplot,
 	EnvStats, multtest, csamaDist
+Imports: duckdb, dplyr, DBI
 Suggests: BiocStyle, testthat, rmarkdown
 License: Artistic-2.0
 VignetteBuilder: knitr
 biocViews: StatisticalMethod
 Remotes: github::vjcitn/csamaDist
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Encoding: UTF-8
 BugReports: https://github.com/vjcitn/CSHstats/issues
 URL: https://github.com/vjcitn/CSHstats
