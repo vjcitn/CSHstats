@@ -1,0 +1,162 @@
+---
+title: "S2a: Elements of PCA"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S2a: Elements of PCA}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Overview
+
+This vignette explores basic aspects of PCA in bivariate and
+5-dimensional data.  It concludes with some remarks about
+"eigengenes", which can be verified using the
+computations shown in the simpler cases.
+
+# Make a bivariate dataset with positive correlation and heterogeneous variance
+
+First we create a covariance matrix with greater variance 
+for second variable of our pair.
+
+```{r lk1,message=FALSE}
+library(MASS)
+set.seed(1234)
+options(digits=3)
+cm = matrix(c(1,1,1,4), nr=2)
+cm
+```
+
+Then we generate a 20000 x 2 matrix of bivariate normal
+deviates.
+
+```{r lk2}
+sim1 = mvrnorm(20000, c(0,0), cm)
+cov(sim1)
+cor(sim1)
+```
+
+The data in the original units is easy to visualize:
+```{r lk3}
+plot(sim1,xlim=c(-10,10), ylim=c(-10,10))
+```
+
+Now we will perform a PCA.  We don't have to
+reduce dimensions, but we can get a handle on
+how the components are formed and interpreted.
+
+```{r lk4}
+prc = prcomp(sim1, center=FALSE)
+plot(prc$x, xlim=c(-10,10), ylim=c(-10,10))
+```
+
+PC1 is produced by taking *linear combinations* of
+the rows of sim1.
+
+We'll illustrate the linear combination concept.
+The data vector for the first row may be written $(x_1, x_2)$,
+and a linear combination has the form $ax_1 + bx_2$ for
+some coefficients $a$ and $b$.
+
+The coefficients are derived from the rotation component
+of the PCA.
+```{r lklinco}
+prc$rotation
+c11 = prc$rotation[1,1]
+c21 = prc$rotation[2,1]
+sim1[1,1]*c11 + sim1[1,2]*c21
+prc$x[1,1]
+```
+
+This can be done wholesale using matrix multiplication `%*%`:
+
+```{r lk5}
+(sim1 %*% prc$rotation)[1:5,]
+prc$x[1:5,]
+all.equal(prc$x, sim1%*% prc$rotation)
+```
+
+Exercises.  
+
+- Recover the value of `prc$x[1,2]` using the second column of `prc$rotation`.
+
+- Examine these plots
+```{r lkm}
+par(mfrow=c(2,2))
+plot(sim1, xlim=c(-10,10), ylim=c(-10,10))
+plot(sim1 %*% prc$rotation, xlim=c(-10,10), ylim=c(-10,10))
+plot(prc$x, xlim=c(-10,10), ylim=c(-10,10))
+plot(sim1 %*% 
+ prc$rotation %*% t(prc$rotation), xlim=c(-10,10), ylim=c(-10,10))
+```
+The rotation has been undone.
+
+# A larger covariance matrix
+
+Here we have a 5-dimensional dataset.
+We set up the covariance matrix so that
+columns 1 and 2 have negative correlation,
+columns 3 and 4 have positive correlation,
+column 2 has greatest overall variance, and
+columns 1 and 3 have elevated variance.
+
+```{r bigcm}
+cm = diag(5)
+cm[3,4] = cm[4,3] = .8
+cm[1,2] = cm[2,1] = -.6
+A = diag(5)
+A[1,1] = 2
+A[2,2] = 3
+A[3,3] = 2
+covm = A%*%cm%*%A
+myd = mvrnorm(2000, rep(0,5), covm)
+```
+
+The pairs plot shows the data in original units.
+```{r lkpa}
+pairs(myd, xlim=c(-10,10), ylim=c(-10,10))
+```
+We verify the multivariate structure:
+```{r lkcoir}
+cor(myd)
+cov(myd)
+dim(myd)
+```
+
+Compute PCA
+```{r lkpc2}
+pp = prcomp(myd)
+pairs(pp$x)
+```
+
+The biplot shows the projection to PC1-PC2 and
+shows how the different variables are related,
+and how they drive the projection.
+```{r lkbip}
+par(lwd=2)
+biplot(pp, xlabs=rep(".", 2000), expand=.8)
+```
+
+Exercise: Explain the configuration of arrows in the biplot.
+
+# "Eigengenes" derived from PCA
+
+When the rows are samples and columns are genes, the
+x components of prcomp's output are linear combinations
+of all genes.  The coefficients of the combination are
+derived from the PCA rotation matrix, which is constructed
+so as to
+
+- order the PCs so that the components capturing
+the most variation come first
+- construct the PCs so they are mutually orthogonal
+
+Note that the simple reconstructions above have required
+that prcomp be used with center=FALSE.

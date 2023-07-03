@@ -213,8 +213,9 @@ adjustments carried out in the GTEx analysis pipeline.
 
 Here's a composite manhattan plot:
 ```{r lkmanh}
-pl1 = ggplot(gtdat[gtdat$p<.1,], aes(x=pos_b38, y=-log10(p), colour=Gene)) + geom_point(alpha=.5)
-ggplotly(pl1)
+pl1 = ggplot(gtdat[gtdat$p<.1,], aes(x=pos_b38, y=-log10(p), colour=Gene)) + geom_point()
+#ggplotly(pl1)
+pl1
 ```
 
 ### Demonstration 1: Use allele frequency to form strata for FDR weighting

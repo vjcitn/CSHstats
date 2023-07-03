@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.26</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.27</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/S1_probability.html">S1_probability: Definitions and exercises</a>
     <a class="dropdown-item" href="../articles/S2_EDA.html">S2_EDA: Exploratory data analysis and visualization</a>
+    <a class="dropdown-item" href="../articles/S2a_PCAelem.html">S2a: Elements of PCA</a>
     <a class="dropdown-item" href="../articles/S3_distclust.html">S3: Distances, clustering</a>
     <a class="dropdown-item" href="../articles/S4_hypothesis_testing.html">S4_inference: Definitions and exercises</a>
     <a class="dropdown-item" href="../articles/S5_linear_models.html">S5_inference: FDR, linear models, and GLMs</a>
@@ -149,8 +150,8 @@ of interest are the pairs of columns (x1, y1), (x2, y2), ….</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">anscombe</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">anscombe</span><span class="op">)</span></span></code></pre></div>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e4da2824f11719e331bb" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e4da2824f11719e331bb">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[10,8,13,9,11,14,6,4,12,7,5],[10,8,13,9,11,14,6,4,12,7,5],[10,8,13,9,11,14,6,4,12,7,5],[8,8,8,8,8,8,8,19,8,8,8],[8.039999999999999,6.95,7.58,8.81,8.33,9.960000000000001,7.24,4.26,10.84,4.82,5.68],[9.140000000000001,8.140000000000001,8.74,8.77,9.26,8.1,6.13,3.1,9.130000000000001,7.26,4.74],[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73],[6.58,5.76,7.71,8.84,8.470000000000001,7.04,5.25,12.5,5.56,7.91,6.89]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>x1<\/th>\n      <th>x2<\/th>\n      <th>x3<\/th>\n      <th>x4<\/th>\n      <th>y1<\/th>\n      <th>y2<\/th>\n      <th>y3<\/th>\n      <th>y4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>In our discussion of probability we provided definitions of
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a8dc20978ed88883cb85" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a8dc20978ed88883cb85">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[10,8,13,9,11,14,6,4,12,7,5],[10,8,13,9,11,14,6,4,12,7,5],[10,8,13,9,11,14,6,4,12,7,5],[8,8,8,8,8,8,8,19,8,8,8],[8.039999999999999,6.95,7.58,8.81,8.33,9.960000000000001,7.24,4.26,10.84,4.82,5.68],[9.140000000000001,8.140000000000001,8.74,8.77,9.26,8.1,6.13,3.1,9.130000000000001,7.26,4.74],[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73],[6.58,5.76,7.71,8.84,8.470000000000001,7.04,5.25,12.5,5.56,7.91,6.89]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>x1<\/th>\n      <th>x2<\/th>\n      <th>x3<\/th>\n      <th>x4<\/th>\n      <th>y1<\/th>\n      <th>y2<\/th>\n      <th>y3<\/th>\n      <th>y4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>In our discussion of probability we provided definitions of
 mean, variance, covariance, correlation. Here is a quick check
 on the means of the variables in the quartet.</p>
 <ul>
