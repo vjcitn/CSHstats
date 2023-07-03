@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.27</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.28</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,7 @@
       <img src="" class="logo" alt=""><h1>S5_inference: FDR, linear models, and GLMs</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">July 02, 2023</h4>
+            <h4 data-toc-skip class="date">July 03, 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S5_linear_models.Rmd" class="external-link"><code>vignettes/S5_linear_models.Rmd</code></a></small>
       <div class="d-none name"><code>S5_linear_models.Rmd</code></div>
@@ -233,27 +233,27 @@ multtest package takes care of this.</p>
 <span><span class="va">tab</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/multtest/man/mt.rawp2adjp.html" class="external-link">mt.rawp2adjp</a></span><span class="op">(</span><span class="va">many_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           rawp Bonferroni Holm Hochberg SidakSS SidakSD    BH BY   ABH</span></span>
-<span><span class="co">##  [1,] 0.000147          1    1        1   0.770   0.770 0.714  1 0.714</span></span>
-<span><span class="co">##  [2,] 0.000162          1    1        1   0.802   0.802 0.714  1 0.714</span></span>
-<span><span class="co">##  [3,] 0.000214          1    1        1   0.883   0.883 0.714  1 0.714</span></span>
-<span><span class="co">##  [4,] 0.000473          1    1        1   0.991   0.991 0.819  1 0.819</span></span>
-<span><span class="co">##  [5,] 0.000480          1    1        1   0.992   0.992 0.819  1 0.819</span></span>
-<span><span class="co">##  [6,] 0.000536          1    1        1   0.995   0.995 0.819  1 0.819</span></span>
-<span><span class="co">##  [7,] 0.000650          1    1        1   0.998   0.998 0.819  1 0.819</span></span>
-<span><span class="co">##  [8,] 0.000655          1    1        1   0.999   0.999 0.819  1 0.819</span></span>
-<span><span class="co">##  [9,] 0.000854          1    1        1   1.000   1.000 0.855  1 0.855</span></span>
-<span><span class="co">## [10,] 0.001049          1    1        1   1.000   1.000 0.855  1 0.855</span></span>
+<span><span class="co">##  [1,] 0.000107          1    1        1   0.657   0.657 0.614  1 0.614</span></span>
+<span><span class="co">##  [2,] 0.000123          1    1        1   0.707   0.707 0.614  1 0.614</span></span>
+<span><span class="co">##  [3,] 0.000339          1    1        1   0.966   0.966 0.879  1 0.879</span></span>
+<span><span class="co">##  [4,] 0.000448          1    1        1   0.989   0.989 0.879  1 0.879</span></span>
+<span><span class="co">##  [5,] 0.000528          1    1        1   0.995   0.995 0.879  1 0.879</span></span>
+<span><span class="co">##  [6,] 0.000637          1    1        1   0.998   0.998 0.879  1 0.879</span></span>
+<span><span class="co">##  [7,] 0.000884          1    1        1   1.000   1.000 0.879  1 0.879</span></span>
+<span><span class="co">##  [8,] 0.000991          1    1        1   1.000   1.000 0.879  1 0.879</span></span>
+<span><span class="co">##  [9,] 0.001113          1    1        1   1.000   1.000 0.879  1 0.879</span></span>
+<span><span class="co">## [10,] 0.001113          1    1        1   1.000   1.000 0.879  1 0.879</span></span>
 <span><span class="co">##       TSBH_0.05</span></span>
-<span><span class="co">##  [1,]     0.714</span></span>
-<span><span class="co">##  [2,]     0.714</span></span>
-<span><span class="co">##  [3,]     0.714</span></span>
-<span><span class="co">##  [4,]     0.819</span></span>
-<span><span class="co">##  [5,]     0.819</span></span>
-<span><span class="co">##  [6,]     0.819</span></span>
-<span><span class="co">##  [7,]     0.819</span></span>
-<span><span class="co">##  [8,]     0.819</span></span>
-<span><span class="co">##  [9,]     0.855</span></span>
-<span><span class="co">## [10,]     0.855</span></span></code></pre>
+<span><span class="co">##  [1,]     0.614</span></span>
+<span><span class="co">##  [2,]     0.614</span></span>
+<span><span class="co">##  [3,]     0.879</span></span>
+<span><span class="co">##  [4,]     0.879</span></span>
+<span><span class="co">##  [5,]     0.879</span></span>
+<span><span class="co">##  [6,]     0.879</span></span>
+<span><span class="co">##  [7,]     0.879</span></span>
+<span><span class="co">##  [8,]     0.879</span></span>
+<span><span class="co">##  [9,]     0.879</span></span>
+<span><span class="co">## [10,]     0.879</span></span></code></pre>
 <p>By default, <code>mt.rawp2adp</code> produces a number of adjustments – we are concerned
 at present with the columns rawp (the p-values sorted from lowest on), Bonferroni
 (which gives the transformation <span class="math inline">\(p\)</span> to min(1, mp)$ for <span class="math inline">\(m\)</span> tests),

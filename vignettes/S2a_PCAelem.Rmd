@@ -89,14 +89,26 @@ Exercises.
 
 - Examine these plots
 ```{r lkm}
-par(mfrow=c(2,2))
-plot(sim1, xlim=c(-10,10), ylim=c(-10,10))
-plot(sim1 %*% prc$rotation, xlim=c(-10,10), ylim=c(-10,10))
-plot(prc$x, xlim=c(-10,10), ylim=c(-10,10))
+par(mfrow=c(2,2), mar=c(4,4,3,1))
+plot(sim1, xlim=c(-10,10), ylim=c(-10,10), main="raw data",
+  xlab="data column 1", ylab="data col. 2")
+plot(sim1 %*% prc$rotation, xlim=c(-10,10), ylim=c(-10,10),
+  main="data %*% prc$rotation", xlab="PC1 via rotation",
+   ylab="PC2 via rotation")
+plot(prc$x, xlim=c(-10,10), ylim=c(-10,10), main="x from prcomp",
+    )
 plot(sim1 %*% 
- prc$rotation %*% t(prc$rotation), xlim=c(-10,10), ylim=c(-10,10))
+ prc$rotation %*% t(prc$rotation), xlim=c(-10,10), ylim=c(-10,10),
+  main="data %*% rot %*% t(rot)", xlab="data %*% VVt (col 1)",
+  ylab = "data %*% VVt (col 2)")
 ```
-The rotation has been undone.
+
+The rotation has been "undone".  Letting $V$ denote the
+'rotation' component of the PCA, this shows that the
+matrix product $VV^t = I$, where $I$ is a diagonal matrix
+with 1 on the diagonal.  More background on the underlying
+computations can be gleaned from the [Wikipedia entry
+on singular value decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition).
 
 # A larger covariance matrix
 
@@ -123,7 +135,9 @@ The pairs plot shows the data in original units.
 ```{r lkpa}
 pairs(myd, xlim=c(-10,10), ylim=c(-10,10))
 ```
+
 We verify the multivariate structure:
+
 ```{r lkcoir}
 cor(myd)
 cov(myd)
