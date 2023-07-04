@@ -1,0 +1,90 @@
+---
+title: "S5a: Diagnostics of a differential gene expression exercise"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S5a: Diagnostics of a differential gene expression exercise}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Fast forward
+
+[This document](https://lcolladotor.github.io/cshl_rstats_genome_scale_2023/differential-gene-expression-analysis-with-limma.html#differential-expression) shows how SRP045638 can be retrieved
+and analyzed.  We start with filtered and normalized data in the `vGene` object.
+
+```{r work1,message=FALSE}
+library(edgeR)
+library(CSHstats)
+data(vGene)
+names(vGene)
+head(vGene$E[,1:5])
+```
+
+The model matrix is also important:
+```{r lkn}
+data(mod)
+head(mod)
+```
+
+Here are the top results from the limma-voom analysis:
+```{r lklim}
+data(de_results)
+options(digits=3)
+de_results[1:5, c("gene_name", "logFC", "t", "P.Value", "adj.P.Val")]
+```
+This is a little different from the `de_results` computed in the
+class document -- because we sort by p and take the most significant
+results.
+
+
+# Assessing the association "by hand"
+
+The `vGene$E` structure holds the 
+estimated expression values, and `vGene$weights` are
+quantities that measure relative variability of
+the quantities in `E`.  We can pick a gene of
+interest and examine the marginal distribution
+and estimate association.
+
+The top DE gene was
+"ENSG00000121210.15".  Let's make a data.frame with the E
+values, the covariates, and the weights.
+
+```{r getit}
+target = "ENSG00000121210.15"
+ind = which(rownames(vGene$E)==target)
+mydf = data.frame(cbind(KIAA0922=vGene$E[ind,],
+      mod[,-1], wts=vGene$weights[ind,]))
+```
+
+Now examine the marginal distribution:
+```{r lkdist}
+hist(mydf$KIAA0922)
+```
+   
+Interesting.  There's a big gap in the KIAA0922
+expression distribution.  
+
+Exercise: Is that true for the
+"raw" data, or is it an artifact of all the
+computations we've done?
+
+```{r lkbs}
+library(beeswarm)
+beeswarm(mydf$KIAA0922, pwcol=as.numeric(factor(mydf$prenatalprenatal)))
+legend(.6,6,legend=c("postnatal", "prenatal"), col=c(1,2), pch=19)
+```
+
+Finally, we fit the linear model:
+```{r lklm}
+m1 = lm(KIAA0922~.-wts, data=mydf, weights=wts)
+summary(m1)
+plot(m1, which=2, col=(as.numeric(mydf$prenatalprenatal)+1), pch=19)
+```

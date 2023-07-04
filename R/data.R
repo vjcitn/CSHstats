@@ -47,3 +47,16 @@
 #' @docType data
 #' @format data.frame
 "gtex_exc_chr20_b38"
+
+#' vGene result for a recount dataset, SRP045638
+#' @note see https://lcolladotor.github.io/cshl_rstats_genome_scale_2023/differential-gene-expression-analysis-with-limma.html#differential-expression
+#' @format limma EList
+"vGene"
+
+#' topTable excerpt for SRP045638, see vGene
+#' @format data.frame
+"de_results"
+
+#' model matrix for SRP045638, see vGene
+#' @format data.frame
+"mod"
