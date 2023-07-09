@@ -79,7 +79,17 @@ y2 = predict(nl1, newdata=nd2)
 lines(1:8, y2, lty=2, col="red")
 ```
 
-In summary, there is some evidence of a shift, with a p-value of 0.073.
+In summary, there is some evidence of a shift, location of
+inflection point shifted by about 0.24 in units of x, with a p-value of about 0.079.
+It seems clear that the model fits one condition much better than the
+other.
+
+Exercise:  The abline function can be used to sketch aspects of
+the model over the plot just given.  For example, `abline(h=4.4419, lty=2)`
+draws a dashed line representing the fitted upper asymptote.
+Use the estimated a, b, d parameters to draw "cross-hairs" showing
+the location of the inflection point for the black curve, by
+filling in the appropriate values of `abline(v=?, h=?)`.
 
 Exercise (advanced): Test the hypothesis that the two conditions
 have different asymptotic values as x increases.
