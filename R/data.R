@@ -60,3 +60,10 @@
 #' model matrix for SRP045638, see vGene
 #' @format data.frame
 "mod"
+
+#' a data frame with y and x in a sigmoidal relationship (with error and a covariate z)
+#' @format data.frame
+#' @examples
+#' data(nonlindat)
+#' plot(y~x, data=nonlindat, col=z+1, pch=19)
+"nonlindat"

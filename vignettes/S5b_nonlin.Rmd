@@ -1,0 +1,84 @@
+---
+title: "S5b: hypothesis testing in nonlinear regression"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S5b: hypothesis testing in nonlinear regression}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Logistic curve with response decreasing in x
+
+Let a denote the asymptotic response at large values of x
+and b denote the response at x=0.  c will denote a
+slope-like parameter, and d the midpoint of transition
+between asymptotes.
+
+```{r lklo}
+a = 4
+b = 1
+c = 0.8
+d = 4.5
+x = 0:10
+y = a + (b-a)/(1+exp(-c*(x-d)))
+plot(x,y,type="b", ylim=c(0,5))
+```
+
+A variety of S-shaped curves can be produced depending
+on choices of the parameters.
+
+Exercise: Increase the value of the parameter c, recompute
+y, and overlay on the plot with lines() and lty=2.
+
+# Fitting the model to data
+
+The `nls` function can fit this model.  We have some data
+that were crafted to illustrate a "pair" of curves
+that can be regarded as shifted instances of common shape.
+Here the color distinguishes the elements of the pair.
+
+```{r lkdat}
+data(nonlindat)
+plot(y~x,data=nonlindat, col=nonlindat$z+1, pch=19)
+```
+
+We are modeling a pair of experiments in which the
+red points arise from a different condition than
+the black points.  The null hypothesis that the curves
+are identical is tested using a parameter 'del'
+measuring the shift in the response curve.
+An indicator variable z takes value 0 for control
+condition and 1 for the active treatment.
+
+```{r donls}
+nl1 <- nls(y ~ 
+ a + ((b - a)/(1 + exp(-c * (x - d*(1+del*z))))), 
+ start = list(a = min(y), b = max(y), c = 1, 
+ d = round(median(x)), del=0), data=nonlindat)
+summary(nl1)
+```
+
+Let's use the model to overlay predicted response curves
+on the original data.
+
+```{r relook}
+plot(y~x,data=nonlindat, col=nonlindat$z+1, pch=19)
+nd = data.frame(x=1:8,z=0)
+y1 = predict(nl1, newdata=nd)
+lines(1:8, y1, lty=2)
+nd2 = data.frame(x=1:8,z=1)
+y2 = predict(nl1, newdata=nd2)
+lines(1:8, y2, lty=2, col="red")
+```
+
+In summary, there is some evidence of a shift, with a p-value of 0.073.
+
+Exercise (advanced): Test the hypothesis that the two conditions
+have different asymptotic values as x increases.
