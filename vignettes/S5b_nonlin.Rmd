@@ -44,7 +44,8 @@ that were crafted to illustrate a "pair" of curves
 that can be regarded as shifted instances of common shape.
 Here the color distinguishes the elements of the pair.
 
-```{r lkdat}
+```{r lkdat, message=FALSE}
+library(CSHstats)
 data(nonlindat)
 plot(y~x,data=nonlindat, col=nonlindat$z+1, pch=19)
 ```
