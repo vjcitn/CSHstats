@@ -1,0 +1,74 @@
+---
+title: "S7 Neural net concepts and applications"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S7 Neural net concepts and applications}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+```{r setuppp, echo=FALSE,results="hide"}
+suppressPackageStartupMessages({
+suppressMessages({
+library(littleDeep)  # vjcitn/littleDeep, includes python interface
+library(DT)
+})
+})
+```
+# Introductory remarks
+
+- learning a nonlinear regression model and putting it to use
+- "layers" of a multilayer neural net and their correspondence to
+patient characteristics (molecular, clinical) and treatment outcomes
+    - input, output, loss function
+- [excellent high level overview](https://stats.stackexchange.com/questions/114385/what-is-the-difference-between-convolutional-neural-networks-restricted-boltzma) comparing convolutional neural nets and autoencoders
+
+# Road map
+
+- ImageArray
+- [ISLR](https://hastie.su.domains/ISLR2/ISLRv2_corrected_June_2023.pdf)
+(also a [python version](https://hastie.su.domains/ISLP/ISLP_website.pdf) Convolutional Neural Net example (also see [Jeremy Jordan](https://www.jeremyjordan.me/convolutional-neural-networks/)
+
+- Sfaira model zoo of embeddings and classifiers
+
+# Images and categories
+
+```{r librar}
+library(littleDeep)
+data(ciftrain1k)
+ciftrain1k
+n <- preview(ciftrain1k)
+```
+
+We can filter an ImageArray
+```{r lkty}
+preview(filterByType(ciftrain1k, "orange"))
+```
+
+Question on bias: Does the machine recognize the orange or just the "more orange" color distribution?
+How do you "normalize" images so that the "object itself" presents only the "essential features"?
+
+# A trained classifier that ingests JPGs as arrays and returns scores for resemblance to
+pre-trained categories
+
+Check [here](https://vjcitn.github.io/littleDeep/articles/A1_three_cl.html)
+
+I'll demonstrate 'jpeg_shrinker' which could be installed on intel macs but not on M1 macs at
+this time.  This program will convert a jpeg image to 32x32 resolution and use a trained
+CNN to classify the content.
+
+```{r lkcode}
+islr_cnn
+```
+
+# Sfaira: a model zoo of pretrained embedders and cell-type classifiers from Theis Lab
+
+We'll look at [the pkgdown site](https://vjcitn.github.io/BiocSfaira), specifically "get started"
+tab.
