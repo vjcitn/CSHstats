@@ -236,28 +236,28 @@ multtest package takes care of this.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">tab</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/multtest/man/mt.rawp2adjp.html" class="external-link">mt.rawp2adjp</a></span><span class="op">(</span><span class="va">many_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##           rawp Bonferroni Holm Hochberg SidakSS SidakSD    BH BY   ABH</span></span>
-<span><span class="co">##  [1,] 0.000202          1    1        1   0.867   0.867 0.849  1 0.849</span></span>
-<span><span class="co">##  [2,] 0.000206          1    1        1   0.872   0.872 0.849  1 0.849</span></span>
-<span><span class="co">##  [3,] 0.000622          1    1        1   0.998   0.998 0.849  1 0.849</span></span>
-<span><span class="co">##  [4,] 0.000665          1    1        1   0.999   0.999 0.849  1 0.849</span></span>
-<span><span class="co">##  [5,] 0.000702          1    1        1   0.999   0.999 0.849  1 0.849</span></span>
-<span><span class="co">##  [6,] 0.000803          1    1        1   1.000   1.000 0.849  1 0.849</span></span>
-<span><span class="co">##  [7,] 0.000894          1    1        1   1.000   1.000 0.849  1 0.849</span></span>
-<span><span class="co">##  [8,] 0.000908          1    1        1   1.000   1.000 0.849  1 0.849</span></span>
-<span><span class="co">##  [9,] 0.000941          1    1        1   1.000   1.000 0.849  1 0.849</span></span>
-<span><span class="co">## [10,] 0.000966          1    1        1   1.000   1.000 0.849  1 0.849</span></span>
+<pre><code><span><span class="co">##           rawp Bonferroni   Holm Hochberg SidakSS SidakSD     BH    BY    ABH</span></span>
+<span><span class="co">##  [1,] 1.07e-06     0.0107 0.0107   0.0107  0.0106  0.0106 0.0107 0.104 0.0107</span></span>
+<span><span class="co">##  [2,] 7.94e-05     0.7944 0.7943   0.7943  0.5481  0.5481 0.3972 1.000 0.3972</span></span>
+<span><span class="co">##  [3,] 2.75e-04     1.0000 1.0000   1.0000  0.9359  0.9359 0.6588 1.000 0.6588</span></span>
+<span><span class="co">##  [4,] 3.00e-04     1.0000 1.0000   1.0000  0.9502  0.9502 0.6588 1.000 0.6588</span></span>
+<span><span class="co">##  [5,] 3.29e-04     1.0000 1.0000   1.0000  0.9629  0.9629 0.6588 1.000 0.6588</span></span>
+<span><span class="co">##  [6,] 5.51e-04     1.0000 1.0000   1.0000  0.9959  0.9959 0.8190 1.000 0.8190</span></span>
+<span><span class="co">##  [7,] 5.97e-04     1.0000 1.0000   1.0000  0.9974  0.9974 0.8190 1.000 0.8190</span></span>
+<span><span class="co">##  [8,] 7.80e-04     1.0000 1.0000   1.0000  0.9996  0.9996 0.8190 1.000 0.8190</span></span>
+<span><span class="co">##  [9,] 9.25e-04     1.0000 1.0000   1.0000  0.9999  0.9999 0.8190 1.000 0.8190</span></span>
+<span><span class="co">## [10,] 9.44e-04     1.0000 1.0000   1.0000  0.9999  0.9999 0.8190 1.000 0.8190</span></span>
 <span><span class="co">##       TSBH_0.05</span></span>
-<span><span class="co">##  [1,]     0.849</span></span>
-<span><span class="co">##  [2,]     0.849</span></span>
-<span><span class="co">##  [3,]     0.849</span></span>
-<span><span class="co">##  [4,]     0.849</span></span>
-<span><span class="co">##  [5,]     0.849</span></span>
-<span><span class="co">##  [6,]     0.849</span></span>
-<span><span class="co">##  [7,]     0.849</span></span>
-<span><span class="co">##  [8,]     0.849</span></span>
-<span><span class="co">##  [9,]     0.849</span></span>
-<span><span class="co">## [10,]     0.849</span></span></code></pre>
+<span><span class="co">##  [1,]    0.0107</span></span>
+<span><span class="co">##  [2,]    0.3971</span></span>
+<span><span class="co">##  [3,]    0.6587</span></span>
+<span><span class="co">##  [4,]    0.6587</span></span>
+<span><span class="co">##  [5,]    0.6587</span></span>
+<span><span class="co">##  [6,]    0.8189</span></span>
+<span><span class="co">##  [7,]    0.8189</span></span>
+<span><span class="co">##  [8,]    0.8189</span></span>
+<span><span class="co">##  [9,]    0.8189</span></span>
+<span><span class="co">## [10,]    0.8189</span></span></code></pre>
 <p>By default, <code>mt.rawp2adp</code> produces a number of adjustments – we are concerned
 at present with the columns rawp (the p-values sorted from lowest on), Bonferroni
 (which gives the transformation <span class="math inline">\(p\)</span> to min(1, mp)$ for <span class="math inline">\(m\)</span> tests),
