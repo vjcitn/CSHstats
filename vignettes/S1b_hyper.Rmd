@@ -1,0 +1,141 @@
+---
+title: "S1a: A look at the hypergeometric distribution"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{S1a: A look at the hypergeometric distribution}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+# The "null" situation
+
+Here are two variables that are
+independent.  Let's think of x as an "exposure"
+indicator, and y as an "outcome".
+
+```{r simple}
+set.seed(234)
+x = rbinom(100,1,.3)
+y = rbinom(100,1,.4)
+```
+
+The 2x2 table relating exposure and outcome is:
+
+```{r lktab,message=FALSE}
+library(gmodels)
+CrossTable(x,y)
+```
+
+Notice that the marginal frequencies (column and row proportions
+for 0 and 1) are very similar for x and y.  This arises by
+construction, because the two variables here were simulated
+separately.  
+
+Exercise: What is the interpretation of the numbers
+0.389 and 0.393 in this table?
+
+A test for independence of x and y was produced by R.A. Fisher.
+
+```{r lkf}
+fisher.test(table(x,y))
+```
+
+Exercise: What is the interpretation of this p-value?
+
+# How to produce "correlated binomial" responses?
+
+A very simple way of producing dependent binary
+responses is via a logistic regression relationship.
+We produce x, which can be random or deterministic,
+and then let the probability of y=1 depend on the
+value of x.  R's vectorized computations make this
+very simple.
+
+
+```{r start}
+x = rbinom(100,1,.3)
+y = rbinom(100,1, plogis(.2+x))
+# summary(glm(y~x, fam=binomial))
+```
+
+Now the cross-tab is
+```{r lkct}
+CrossTable(x,y)
+```
+
+and Fisher's test is
+
+```{r lkfis2}
+fisher.test(table(x,y))
+```
+
+Exercise: What is the interpretation of the numbers 0.56
+and 0.812 in this table?  What is the interpretation of the
+Fisher's test p-value?  What features of the simulation could
+be changed to make the p-value smaller?
+
+Note: the odds ratio reported in the Fisher test is
+recovered (some discrepancy owing to rounding):
+```{r lkor}
+(.812/(1-.812))/(.56/(1-.56))
+```
+
+# Connection to the hypergeometric distribution
+
+We'll start with a very simple problem.  An urn contains
+10 balls, some red, some blue.  We pick three balls _without replacement_ and
+note their color.  The table below shows that two balls were red, one blue.
+
+```{r urn1}
+color = rep(c("red", "blue"), each=5)
+picked = c(1,1,0,0,0,1,0,0,0,0)
+ta = table(color,picked)
+ta
+```
+The hypergeometric distribution is used to model such a situation, in which
+a draw of $n$ balls from an urn holding $N$ balls yields $r$
+balls in a given condition.  For this table, the probability
+of this draw is given by
+
+$\frac{{5 \choose 2} \cdot {5 \choose 1}}{10 \choose 3}$.  In
+this case, Fisher's test indicates no association between
+color and presence in the draw.  
+
+```{r lkf2}
+fisher.test(ta)
+```
+
+We can use a 1-sided test:
+```{r lkf3}
+fisher.test(ta, alt="less")
+```
+
+Use the hypergeometric probability function to
+produce this p-value:
+```{r lkhy}
+sum(dhyper(0:2,5,5,3))
+```
+
+Note that if the proportions are preserved but
+the frequencies are multiplied by 10, we have
+a different two-sided p-value, but similar odds ratio.
+
+```{r lktttt}
+ta2 = 10*ta
+fisher.test(ta2)
+```
+
+Exercise: A reformulation of the analysis of the larger 2x2 table is:
+```{r doglm}
+g = glm(formula = ta2[, 2:1] ~ factor(rownames(ta2)), family = binomial)
+summary(g)
+```
+Show that the log of the cross product ratio of the elements of ta2
+is given by the coefficient of 'red' in the binomial model above.
+

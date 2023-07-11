@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.31</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.32</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/S1_probability.html">S1_probability: Definitions and exercises</a>
+    <a class="dropdown-item" href="../articles/S1b_hyper.html">S1a: A look at the hypergeometric distribution</a>
     <a class="dropdown-item" href="../articles/S2_EDA.html">S2_EDA: Exploratory data analysis and visualization</a>
     <a class="dropdown-item" href="../articles/S2a_PCAelem.html">S2a: Elements of PCA</a>
     <a class="dropdown-item" href="../articles/S3_distclust.html">S3: Distances, clustering</a>
@@ -79,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>S5_inference: FDR, linear models, and GLMs</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">July 09, 2023</h4>
+            <h4 data-toc-skip class="date">July 10, 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S5_linear_models.Rmd" class="external-link"><code>vignettes/S5_linear_models.Rmd</code></a></small>
       <div class="d-none name"><code>S5_linear_models.Rmd</code></div>
@@ -234,28 +235,28 @@ multtest package takes care of this.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">tab</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/multtest/man/mt.rawp2adjp.html" class="external-link">mt.rawp2adjp</a></span><span class="op">(</span><span class="va">many_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##           rawp Bonferroni  Holm Hochberg SidakSS SidakSD    BH BY   ABH</span></span>
-<span><span class="co">##  [1,] 8.25e-05      0.825 0.825    0.825   0.562   0.562 0.825  1 0.825</span></span>
-<span><span class="co">##  [2,] 4.15e-04      1.000 1.000    1.000   0.984   0.984 0.889  1 0.889</span></span>
-<span><span class="co">##  [3,] 9.80e-04      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">##  [4,] 1.13e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">##  [5,] 1.49e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">##  [6,] 1.49e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">##  [7,] 1.70e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">##  [8,] 1.79e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">##  [9,] 1.83e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
-<span><span class="co">## [10,] 1.86e-03      1.000 1.000    1.000   1.000   1.000 0.889  1 0.889</span></span>
+<pre><code><span><span class="co">##           rawp Bonferroni Holm Hochberg SidakSS SidakSD    BH BY   ABH</span></span>
+<span><span class="co">##  [1,] 0.000207          1    1        1   0.873   0.873 0.961  1 0.961</span></span>
+<span><span class="co">##  [2,] 0.000540          1    1        1   0.995   0.995 0.961  1 0.961</span></span>
+<span><span class="co">##  [3,] 0.000605          1    1        1   0.998   0.998 0.961  1 0.961</span></span>
+<span><span class="co">##  [4,] 0.000614          1    1        1   0.998   0.998 0.961  1 0.961</span></span>
+<span><span class="co">##  [5,] 0.000734          1    1        1   0.999   0.999 0.961  1 0.961</span></span>
+<span><span class="co">##  [6,] 0.000781          1    1        1   1.000   1.000 0.961  1 0.961</span></span>
+<span><span class="co">##  [7,] 0.000824          1    1        1   1.000   1.000 0.961  1 0.961</span></span>
+<span><span class="co">##  [8,] 0.000862          1    1        1   1.000   1.000 0.961  1 0.961</span></span>
+<span><span class="co">##  [9,] 0.000950          1    1        1   1.000   1.000 0.961  1 0.961</span></span>
+<span><span class="co">## [10,] 0.001016          1    1        1   1.000   1.000 0.961  1 0.961</span></span>
 <span><span class="co">##       TSBH_0.05</span></span>
-<span><span class="co">##  [1,]     0.825</span></span>
-<span><span class="co">##  [2,]     0.889</span></span>
-<span><span class="co">##  [3,]     0.889</span></span>
-<span><span class="co">##  [4,]     0.889</span></span>
-<span><span class="co">##  [5,]     0.889</span></span>
-<span><span class="co">##  [6,]     0.889</span></span>
-<span><span class="co">##  [7,]     0.889</span></span>
-<span><span class="co">##  [8,]     0.889</span></span>
-<span><span class="co">##  [9,]     0.889</span></span>
-<span><span class="co">## [10,]     0.889</span></span></code></pre>
+<span><span class="co">##  [1,]     0.961</span></span>
+<span><span class="co">##  [2,]     0.961</span></span>
+<span><span class="co">##  [3,]     0.961</span></span>
+<span><span class="co">##  [4,]     0.961</span></span>
+<span><span class="co">##  [5,]     0.961</span></span>
+<span><span class="co">##  [6,]     0.961</span></span>
+<span><span class="co">##  [7,]     0.961</span></span>
+<span><span class="co">##  [8,]     0.961</span></span>
+<span><span class="co">##  [9,]     0.961</span></span>
+<span><span class="co">## [10,]     0.961</span></span></code></pre>
 <p>By default, <code>mt.rawp2adp</code> produces a number of adjustments – we are concerned
 at present with the columns rawp (the p-values sorted from lowest on), Bonferroni
 (which gives the transformation <span class="math inline">\(p\)</span> to min(1, mp)$ for <span class="math inline">\(m\)</span> tests),
