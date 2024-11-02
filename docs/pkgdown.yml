@@ -1,5 +1,5 @@
-pandoc: '2.5'
-pkgdown: 2.0.7
+pandoc: '2.13'
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   S1_probability: S1_probability.html
@@ -13,5 +13,4 @@ articles:
   S5b_nonlin: S5b_nonlin.html
   S6_hca_onto: S6_hca_onto.html
   S7_cnn: S7_cnn.html
-last_built: 2023-07-11T14:36Z
-
+last_built: 2024-11-02T11:37Z

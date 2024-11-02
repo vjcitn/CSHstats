@@ -1,7 +1,6 @@
 # CSHstats
 R vignettes/pkgdown for elementary statistics for a summer course
 
-DRAFT!  Very preliminary as of 19 May 2022
 
 One view of the conceptual scheme of the course has three
 main vertices:
@@ -21,8 +20,10 @@ data science:
 - Exploratory data analysis and visualization
 - Hypothesis testing
 - Linear models
+- Ontology as a branch of information science
+- Brief introduction to convolutional neural nets
 
-MultiAssayExperiment applications with SingleCellMultimodal (for convenience)
+TBD: MultiAssayExperiment applications with SingleCellMultimodal (for convenience)
 
 [CITEseq](https://bioconductor.org/packages/release/data/experiment/vignettes/SingleCellMultiModal/inst/doc/CITEseq.html)
 

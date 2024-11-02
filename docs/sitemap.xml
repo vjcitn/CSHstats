@@ -1,150 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/CITEseq.html</loc>
-  </url>
-  <url>
-    <loc>/articles/ECCITEseq.html</loc>
-  </url>
-  <url>
-    <loc>/articles/GTseq.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S1_probability.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S1b_hyper.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S2_EDA.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S2_hypothesis_testing.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S2a_PCAelem.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S3_distclust.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S3_hypothesis_testing.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S3_linear_models.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S4_hypothesis_testing.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S4_linear_models.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S5_linear_models.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S5a_lmdiagnostics.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S5b_nonlin.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S6_hca_onto.html</loc>
-  </url>
-  <url>
-    <loc>/articles/S7_cnn.html</loc>
-  </url>
-  <url>
-    <loc>/articles/SCoPE2.html</loc>
-  </url>
-  <url>
-    <loc>/articles/cnv-heatmap.html</loc>
-  </url>
-  <url>
-    <loc>/articles/distplus.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/seqFISH.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/accex.html</loc>
-  </url>
-  <url>
-    <loc>/reference/build_deck.html</loc>
-  </url>
-  <url>
-    <loc>/reference/c50.html</loc>
-  </url>
-  <url>
-    <loc>/reference/c5000.html</loc>
-  </url>
-  <url>
-    <loc>/reference/de_results.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doubsim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doubsim2.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doubsim3.html</loc>
-  </url>
-  <url>
-    <loc>/reference/egr1_ex.html</loc>
-  </url>
-  <url>
-    <loc>/reference/faces.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fos_ex.html</loc>
-  </url>
-  <url>
-    <loc>/reference/full_house.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gtex_exc_chr20_b38.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_flush.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nonlindat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/one_pair.html</loc>
-  </url>
-  <url>
-    <loc>/reference/queryCHCA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/suits.html</loc>
-  </url>
-  <url>
-    <loc>/reference/two_pairs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vGene.html</loc>
-  </url>
-  <url>
-    <loc>/reference/yy1_ex.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/CITEseq.html</loc></url>
+<url><loc>/articles/ECCITEseq.html</loc></url>
+<url><loc>/articles/GTseq.html</loc></url>
+<url><loc>/articles/S1_probability.html</loc></url>
+<url><loc>/articles/S1b_hyper.html</loc></url>
+<url><loc>/articles/S2_EDA.html</loc></url>
+<url><loc>/articles/S2_hypothesis_testing.html</loc></url>
+<url><loc>/articles/S2a_PCAelem.html</loc></url>
+<url><loc>/articles/S3_distclust.html</loc></url>
+<url><loc>/articles/S3_hypothesis_testing.html</loc></url>
+<url><loc>/articles/S3_linear_models.html</loc></url>
+<url><loc>/articles/S4_hypothesis_testing.html</loc></url>
+<url><loc>/articles/S4_linear_models.html</loc></url>
+<url><loc>/articles/S5_linear_models.html</loc></url>
+<url><loc>/articles/S5a_lmdiagnostics.html</loc></url>
+<url><loc>/articles/S5b_nonlin.html</loc></url>
+<url><loc>/articles/S6_hca_onto.html</loc></url>
+<url><loc>/articles/S7_cnn.html</loc></url>
+<url><loc>/articles/SCoPE2.html</loc></url>
+<url><loc>/articles/cnv-heatmap.html</loc></url>
+<url><loc>/articles/distplus.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/seqFISH.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/accex.html</loc></url>
+<url><loc>/reference/build_deck.html</loc></url>
+<url><loc>/reference/c50.html</loc></url>
+<url><loc>/reference/c5000.html</loc></url>
+<url><loc>/reference/de_results.html</loc></url>
+<url><loc>/reference/doubsim.html</loc></url>
+<url><loc>/reference/doubsim2.html</loc></url>
+<url><loc>/reference/doubsim3.html</loc></url>
+<url><loc>/reference/egr1_ex.html</loc></url>
+<url><loc>/reference/faces.html</loc></url>
+<url><loc>/reference/fos_ex.html</loc></url>
+<url><loc>/reference/full_house.html</loc></url>
+<url><loc>/reference/gtex_exc_chr20_b38.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/is_flush.html</loc></url>
+<url><loc>/reference/mod.html</loc></url>
+<url><loc>/reference/nonlindat.html</loc></url>
+<url><loc>/reference/one_pair.html</loc></url>
+<url><loc>/reference/queryCHCA.html</loc></url>
+<url><loc>/reference/suits.html</loc></url>
+<url><loc>/reference/two_pairs.html</loc></url>
+<url><loc>/reference/vGene.html</loc></url>
+<url><loc>/reference/yy1_ex.html</loc></url>
 </urlset>
+

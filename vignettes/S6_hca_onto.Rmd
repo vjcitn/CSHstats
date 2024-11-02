@@ -88,8 +88,8 @@ litsf2 = logNormCounts(litsf2)
 litsf2 = runPCA(litsf2)
 ```
 
-Whatchaget:
-```{r lkstuf}
+This code is blocked until a bucket is made available with the filtered data.
+```{r lkstuf, eval=FALSE}
 library(SingleCellExperiment)
 if (!exists("litsf2")) load("litsf2.rda") # run code above, must have HDF5 in cache
 metadata(litsf2)
