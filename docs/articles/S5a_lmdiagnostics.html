@@ -8,11 +8,9 @@
 <title>S5a: Diagnostics of a differential gene expression exercise • CSHstats</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/Courier_Prime-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="S5a: Diagnostics of a differential gene expression exercise">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="../deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="S5a: Diagnostics of a differential gene expression exercise">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -70,7 +68,7 @@
       <h1>S5a: Diagnostics of a differential gene expression exercise</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">November 02, 2024</h4>
+            <h4 data-toc-skip class="date">January 09, 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S5a_lmdiagnostics.Rmd" class="external-link"><code>vignettes/S5a_lmdiagnostics.Rmd</code></a></small>
       <div class="d-none name"><code>S5a_lmdiagnostics.Rmd</code></div>
@@ -84,11 +82,14 @@
 <p><a href="https://lcolladotor.github.io/cshl_rstats_genome_scale_2023/differential-gene-expression-analysis-with-limma.html#differential-expression" class="external-link">This document</a> shows how SRP045638 can be retrieved and analyzed. We start with filtered and normalized data in the <code>vGene</code> object.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/edgeR/" class="external-link">edgeR</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">vGene</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">vGene</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">vGene</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "genes"   "targets" "E"       "weights" "design"</span></span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">vGene</span><span class="op">$</span><span class="va">E</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                   SRR2071341  SRR2071345 SRR2071346 SRR2071347 SRR2071348</span></span>
 <span><span class="co">## ENSG00000223972.5 -1.6548376 -3.43059162 -3.3104740  -2.641761 -3.9493303</span></span>
@@ -98,7 +99,7 @@
 <span><span class="co">## ENSG00000243485.5 -0.3668569 -0.02459926 -0.6475089  -3.378727  0.6310008</span></span>
 <span><span class="co">## ENSG00000237613.2 -5.4961399 -3.43059162 -4.1584709  -2.641761 -6.0648075</span></span></code></pre>
 <p>The model matrix is also important:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##            (Intercept) prenatalprenatal sra_attribute.RIN sra_attribute.sexmale</span></span>
@@ -116,7 +117,7 @@
 <span><span class="co">## SRR2071348          0.6956363</span></span>
 <span><span class="co">## SRR2071349          0.6855766</span></span></code></pre>
 <p>Here are the top results from the limma-voom analysis:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">de_results</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gene_name"</span>, <span class="st">"logFC"</span>, <span class="st">"t"</span>, <span class="st">"P.Value"</span>, <span class="st">"adj.P.Val"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
@@ -133,24 +134,24 @@
 </h2>
 <p>The <code>vGene$E</code> structure holds the estimated expression values, and <code>vGene$weights</code> are quantities that measure relative variability of the quantities in <code>E</code>. We can pick a gene of interest and examine the marginal distribution and estimate association.</p>
 <p>The top DE gene was “ENSG00000121210.15”. Let’s make a data.frame with the E values, the covariates, and the weights.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">target</span> <span class="op">=</span> <span class="st">"ENSG00000121210.15"</span></span>
 <span><span class="va">ind</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">vGene</span><span class="op">$</span><span class="va">E</span><span class="op">)</span><span class="op">==</span><span class="va">target</span><span class="op">)</span></span>
 <span><span class="va">mydf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>KIAA0922<span class="op">=</span><span class="va">vGene</span><span class="op">$</span><span class="va">E</span><span class="op">[</span><span class="va">ind</span>,<span class="op">]</span>,</span>
 <span>      <span class="va">mod</span><span class="op">[</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span>, wts<span class="op">=</span><span class="va">vGene</span><span class="op">$</span><span class="va">weights</span><span class="op">[</span><span class="va">ind</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now examine the marginal distribution:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">mydf</span><span class="op">$</span><span class="va">KIAA0922</span><span class="op">)</span></span></code></pre></div>
 <p><img src="S5a_lmdiagnostics_files/figure-html/lkdist-1.png" width="700"></p>
 <p>Interesting. There’s a big gap in the KIAA0922 expression distribution.</p>
 <p>Exercise: Is that true for the “raw” data, or is it an artifact of all the computations we’ve done?</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/aroneklund/beeswarm" class="external-link">beeswarm</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/beeswarm/man/beeswarm.html" class="external-link">beeswarm</a></span><span class="op">(</span><span class="va">mydf</span><span class="op">$</span><span class="va">KIAA0922</span>, pwcol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mydf</span><span class="op">$</span><span class="va">prenatalprenatal</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">.6</span>,<span class="fl">6</span>,legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"postnatal"</span>, <span class="st">"prenatal"</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">19</span><span class="op">)</span></span></code></pre></div>
 <p><img src="S5a_lmdiagnostics_files/figure-html/lkbs-1.png" width="700"></p>
 <p>Finally, we fit the linear model:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">KIAA0922</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">wts</span>, data<span class="op">=</span><span class="va">mydf</span>, weights<span class="op">=</span><span class="va">wts</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -174,7 +175,7 @@
 <span><span class="co">## Residual standard error: 0.547 on 60 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.973,  Adjusted R-squared:  0.971 </span></span>
 <span><span class="co">## F-statistic:  545 on 4 and 60 DF,  p-value: &lt;2e-16</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m1</span>, which<span class="op">=</span><span class="fl">2</span>, col<span class="op">=</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">mydf</span><span class="op">$</span><span class="va">prenatalprenatal</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">19</span><span class="op">)</span></span></code></pre></div>
 <p><img src="S5a_lmdiagnostics_files/figure-html/lklm-1.png" width="700"></p>
 </div>
