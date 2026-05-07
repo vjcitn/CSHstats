@@ -6,11 +6,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>S5_inference: FDR, linear models, and GLMs • CSHstats</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="../deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="S5_inference: FDR, linear models, and GLMs">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="S5_inference: FDR, linear models, and GLMs">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -20,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CSHstats</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.35</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.36</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +72,7 @@
       <h1>S5_inference: FDR, linear models, and GLMs</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">January 09, 2025</h4>
+            <h4 data-toc-skip class="date">May 07, 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/CSHstats/blob/HEAD/vignettes/S5_linear_models.Rmd" class="external-link"><code>vignettes/S5_linear_models.Rmd</code></a></small>
       <div class="d-none name"><code>S5_linear_models.Rmd</code></div>
@@ -155,7 +161,7 @@ population parameter of interest with a specified probability.</p>
 <span>  ylab<span class="op">=</span><span class="st">"estimated proportion of hearts"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html" class="external-link">segments</a></span><span class="op">(</span> <span class="va">stats</span>, <span class="va">low</span>, <span class="va">stats</span>, <span class="va">hi</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">.25</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkcis-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lkcis-1.png" alt="" width="672"></p>
 <p>Exercise: For what value of the statistic would you reject the null hypothesis of
 probability 1/4 for heart?</p>
 <p>Exercise: Use 99% as the coverage probability and produce the display.</p>
@@ -175,7 +181,7 @@ the t test with null mean 100, yielding 10000 p-values.</p>
 <code class="sourceCode R"><span><span class="va">many_x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">many_p</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">many_x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">x</span>, mu<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">many_p</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lknull-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lknull-1.png" alt="" width="672"></p>
 <p>This display shows a limitation of density estimation on a fixed interval –
 a “boundary effect”, because data “up against” the boundary
 get sparser as you get closer to the boundary. But it is consistent with
@@ -305,7 +311,7 @@ adjustments carried out in the GTEx analysis pipeline.</p>
 <code class="sourceCode R"><span><span class="va">pl1</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gtdat</span><span class="op">[</span><span class="va">gtdat</span><span class="op">$</span><span class="va">p</span><span class="op">&lt;</span><span class="fl">.1</span>,<span class="op">]</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">pos_b38</span>, y<span class="op">=</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, colour<span class="op">=</span><span class="va">Gene</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#ggplotly(pl1)</span></span>
 <span><span class="va">pl1</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkmanh-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lkmanh-1.png" alt="" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="demonstration-1-use-allele-frequency-to-form-strata-for-fdr-weighting">Demonstration 1: Use allele frequency to form strata for FDR weighting<a class="anchor" aria-label="anchor" href="#demonstration-1-use-allele-frequency-to-form-strata-for-fdr-weighting"></a>
@@ -329,31 +335,39 @@ to reduce risk of overfitting, and to allow assessment of
 consistency across multiple “folds” or random subsets.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">demo1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkwts1-1.png" width="672"></p>
+<pre><code><span><span class="co">## Warning: `aes_string()` was deprecated in ggplot2 3.0.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use tidy evaluation idioms with `aes()`.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> See also `vignette("ggplot2-in-packages")` for more information.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">IHW</span> package.</span></span>
+<span><span class="co">##   Please report the issue to the authors.</span></span>
+<span><span class="co">## <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
+<p><img src="S5_linear_models_files/figure-html/lkwts1-1.png" alt="" width="672"></p>
 <p>Compare the weighted, unweighted, and conventional
 rejection numbers:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">newp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IHW/man/ihwResult-class.html" class="external-link">adj_pvalues</a></span><span class="op">(</span><span class="va">demo1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">newp</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 276</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">basic_fdr</span><span class="op">$</span><span class="va">adjp</span><span class="op">[</span>,<span class="st">"BH"</span><span class="op">]</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 257</span></span></code></pre>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">gtdat</span><span class="op">$</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">5e-8</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 68</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="demonstration-2-use-distance-to-gene-to-weight">Demonstration 2: Use distance to gene to weight<a class="anchor" aria-label="anchor" href="#demonstration-2-use-distance-to-gene-to-weight"></a>
 </h4>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist2gene</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">gtdat</span><span class="op">$</span><span class="va">pos_b38</span><span class="op">-</span><span class="va">gtdat</span><span class="op">$</span><span class="va">start</span><span class="op">)</span></span>
 <span><span class="va">covariate2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">dist2gene</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">ok</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">covariate2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">demo2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IHW/man/ihw.default.html" class="external-link">ihw</a></span><span class="op">(</span><span class="va">gtdat</span><span class="op">$</span><span class="va">p</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span>, <span class="va">covariate2</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span>, alpha<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">demo2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkposi-1.png" width="672"></p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<p><img src="S5_linear_models_files/figure-html/lkposi-1.png" alt="" width="672"></p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">newp2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IHW/man/ihwResult-class.html" class="external-link">adj_pvalues</a></span><span class="op">(</span><span class="va">demo2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">newp2</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 379</span></span></code></pre>
@@ -371,7 +385,7 @@ presents considerations on multiple comparisons from a Bayesian perspective, arg
 that the issue is “surrounded by confusion and controversy”.</p>
 <p>Here is a simple approach to visualizing 20 tests, assumed independent,
 in a frequenist framework, focusing on 95% confidence intervals.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># from https://link.springer.com/content/pdf/10.1007/s10654-019-00517-2.pdf</span></span>
 <span><span class="co"># Sjolander and vanSteenlandt 2019 Eur J Epi</span></span>
 <span></span>
@@ -395,21 +409,21 @@ in a frequenist framework, focusing on 95% confidence intervals.</p>
 <span> upper<span class="op">=</span><span class="va">ci.u</span>, ci.vertices<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span> boxsize<span class="op">=</span><span class="fl">0.3</span>, txt_gp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/fpTxtGp.html" class="external-link">fpTxtGp</a></span><span class="op">(</span>cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span> xticks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">.5</span><span class="op">)</span>, title<span class="op">=</span><span class="st">"Frequentist 95% confidence intervals"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkfor1-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lkfor1-1.png" alt="" width="672"></p>
 <p>One hypothesis is rejected.</p>
 <p>The authors also use the <code>bayesm</code> package to produce
 Bayesian credible intervals <strong>under the assumption that all tests are independent</strong>.</p>
-<p><img src="S5_linear_models_files/figure-html/lkfp1-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lkfp1-1.png" alt="" width="672"></p>
 <p>Finally, allowing high correlatedness among test statistics,
 the Bayesian approach is found to avoid any false rejections.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/forestplot.html" class="external-link">forestplot</a></span><span class="op">(</span></span>
 <span> labeltext<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">""</span>, <span class="va">J</span><span class="op">)</span>,</span>
 <span> mean<span class="op">=</span><span class="va">est</span>, lower<span class="op">=</span><span class="va">ci.l</span>,</span>
 <span> upper<span class="op">=</span><span class="va">ci.u</span>, ci.vertices<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span> boxsize<span class="op">=</span><span class="fl">0.3</span>, txt_gp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/forestplot/man/fpTxtGp.html" class="external-link">fpTxtGp</a></span><span class="op">(</span>cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span> xticks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">.5</span><span class="op">)</span>, title<span class="op">=</span><span class="st">"Bayesian, assume correlated tests"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkatnew-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lkatnew-1.png" alt="" width="672"></p>
 <p>The Bayesian computations involve Monte Carlo Markov Chain simulation.
 Background can be obtained from <a href="https://xcelab.net/rm/statistical-rethinking/" class="external-link">Statistical Rethinking</a>
 by R. McElreath.</p>
@@ -422,21 +436,21 @@ by R. McElreath.</p>
 <h3 id="data-setup">Data setup<a class="anchor" aria-label="anchor" href="#data-setup"></a>
 </h3>
 <p>Let’s return to the TCGA ACC FOS and EGR1 data that we used to study correlation.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span></span>
 <span><span class="va">fedf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>FOS<span class="op">=</span><span class="va">fos_ex</span>, EGR1<span class="op">=</span><span class="va">egr1_ex</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">fedf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">EGR1</span>, y<span class="op">=</span><span class="va">FOS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkfos-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/lkfos-1.png" alt="" width="672"></p>
 <p>We found that log transformation was useful for ameliorating
 the overplotting near the origin:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">fedf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">EGR1</span>, y<span class="op">=</span><span class="va">FOS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/dopl2-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/dopl2-1.png" alt="" width="672"></p>
 <p>The ACC data are annotated in a MultiAssayExperiment, and a mutation
 summary called OncoSign is available.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">accex</span><span class="op">)</span></span>
@@ -453,7 +467,7 @@ summary called OncoSign is available.</p>
 <span><span class="co">##  *Format() - convert into a long or wide DataFrame</span></span>
 <span><span class="co">##  assays() - convert ExperimentList to a SimpleList of matrices</span></span>
 <span><span class="co">##  exportClass() - save data to flat files</span></span></code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">accex</span><span class="op">$</span><span class="va">OncoSign</span>, exclude<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##          CN1          CN2       CTNNB1   TERT/ZNRF3     TP53/NF1 Unclassified </span></span>
@@ -466,16 +480,16 @@ summary called OncoSign is available.</p>
 </h3>
 <p>We will focus on two OncoSign classes, asking whether average log EGR1
 expression is different between them.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hasonc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">accex</span><span class="op">$</span><span class="va">OncoSign</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ndf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>logEGR1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">[</span><span class="va">hasonc</span><span class="op">]</span><span class="op">)</span>, oncosign<span class="op">=</span><span class="va">accex</span><span class="op">$</span><span class="va">OncoSign</span><span class="op">[</span><span class="va">hasonc</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">tpvtert</span> <span class="op">=</span> <span class="va">ndf</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oncosign</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53/NF1"</span>, <span class="st">"TERT/ZNRF3"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tpvtert</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/reform-1.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/reform-1.png" alt="" width="672"></p>
 <div class="section level4">
 <h4 id="there-are-two-t-tests">There are two t tests<a class="anchor" aria-label="anchor" href="#there-are-two-t-tests"></a>
 </h4>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span>, var.equal<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -489,7 +503,7 @@ expression is different between them.</p>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## mean in group TERT/ZNRF3   mean in group TP53/NF1 </span></span>
 <span><span class="co">##                  7.35317                  6.96083</span></span></code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span>, var.equal<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># more general</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Welch Two Sample t-test</span></span>
@@ -522,7 +536,7 @@ should always be explicit.</strong></p>
 <div class="section level5">
 <h5 id="a-dummy-variable-design-matrix">A dummy variable design matrix<a class="anchor" aria-label="anchor" href="#a-dummy-variable-design-matrix"></a>
 </h5>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">tpvtert</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   (Intercept) oncosignTP53/NF1</span></span>
@@ -532,7 +546,7 @@ should always be explicit.</strong></p>
 <span><span class="co">## 4           1                1</span></span>
 <span><span class="co">## 5           1                0</span></span>
 <span><span class="co">## 6           1                1</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    (Intercept) oncosignTP53/NF1</span></span>
 <span><span class="co">## 33           1                0</span></span>
@@ -545,7 +559,7 @@ should always be explicit.</strong></p>
 <div class="section level5">
 <h5 id="recovering-the-t-test-with-lm">Recovering the t test with <code>lm</code><a class="anchor" aria-label="anchor" href="#recovering-the-t-test-with-lm"></a>
 </h5>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tpvtert</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="va">oncosign</span>, data<span class="op">=</span><span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -569,7 +583,7 @@ should always be explicit.</strong></p>
 <p>Exercise: Conduct the associated Wilcoxon test.</p>
 <p>Exercise: Conduct the Gaussian rank test mentioned in the Gelman blog “Don’t do the Wilcoxon”.</p>
 <p>Extra goody: To produce the coefficients “by hand”:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">mm</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">tpvtert</span><span class="op">$</span><span class="va">logEGR1</span></span></code></pre></div>
 <pre><code><span><span class="co">##                       [,1]</span></span>
 <span><span class="co">## (Intercept)       7.353174</span></span>
@@ -583,10 +597,10 @@ should always be explicit.</strong></p>
 </h3>
 <p>The analysis of variance is focused on comparison of multiple groups. The
 EGR1-OncoSign relationship is a reasonable example where this could be used.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ndf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/lkggaov-1.png" width="672"></p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ndf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">logEGR1</span>, x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="S5_linear_models_files/figure-html/lkggaov-1.png" alt="" width="672"></p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nda</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html" class="external-link">aov</a></span><span class="op">(</span><span class="va">logEGR1</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">oncosign</span><span class="op">)</span>, data<span class="op">=</span><span class="va">ndf</span><span class="op">)</span></span>
 <span><span class="va">nda</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
@@ -599,7 +613,7 @@ EGR1-OncoSign relationship is a reasonable example where this could be used.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residual standard error: 1.1642</span></span>
 <span><span class="co">## Estimated effects may be unbalanced</span></span></code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">nda</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                  Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
 <span><span class="co">## factor(oncosign)  5   11.3    2.26    1.67   0.15</span></span>
@@ -613,7 +627,7 @@ of continuity of a predictor. For a simple linear regression (one continuous
 covariate), the interpretation of <span class="math inline">\(\beta\)</span> is: the difference in mean of <span class="math inline">\(y\)</span>
 associated with a unit difference in <span class="math inline">\(x\)</span>.</p>
 <p>Regarding log EGR1 as a predictor of log FOS, we have</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -634,9 +648,9 @@ associated with a unit difference in <span class="math inline">\(x\)</span>.</p>
 <span><span class="co">## Residual standard error: 0.727 on 77 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.563,  Adjusted R-squared:  0.557 </span></span>
 <span><span class="co">## F-statistic: 99.1 on 1 and 77 DF,  p-value: 1.75e-15</span></span></code></pre>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="S5_linear_models_files/figure-html/doreg-1.png" width="672"><img src="S5_linear_models_files/figure-html/doreg-2.png" width="672"><img src="S5_linear_models_files/figure-html/doreg-3.png" width="672"><img src="S5_linear_models_files/figure-html/doreg-4.png" width="672"></p>
+<p><img src="S5_linear_models_files/figure-html/doreg-1.png" alt="" width="672"><img src="S5_linear_models_files/figure-html/doreg-2.png" alt="" width="672"><img src="S5_linear_models_files/figure-html/doreg-3.png" alt="" width="672"><img src="S5_linear_models_files/figure-html/doreg-4.png" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="confounding">Confounding<a class="anchor" aria-label="anchor" href="#confounding"></a>
@@ -658,14 +672,14 @@ suppose that we have criteria for “activation”:</p>
 <li>FOS is activated if our RNA-seq measurement in ACC exceeds 1000</li>
 <li>EGR1 is activated if our RNA-seq measurement in ACC exceeds 2000</li>
 </ul>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/CSHstats" class="external-link">CSHstats</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fos_ex</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">egr1_ex</span><span class="op">)</span></span>
 <span><span class="va">fos_act</span> <span class="op">=</span> <span class="fl">1</span><span class="op">*</span><span class="op">(</span><span class="va">fos_ex</span> <span class="op">&gt;</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="va">egr1_act</span> <span class="op">=</span> <span class="fl">1</span><span class="op">*</span><span class="op">(</span><span class="va">egr1_ex</span> <span class="op">&gt;</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
 <p>We form a 2 x 2 cross classification of tumors using these definitions:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">acttab</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span>fos_act<span class="op">=</span><span class="va">fos_act</span>, egr1_act<span class="op">=</span><span class="va">egr1_act</span><span class="op">)</span></span>
 <span><span class="va">acttab</span></span></code></pre></div>
 <pre><code><span><span class="co">##        egr1_act</span></span>
@@ -676,7 +690,7 @@ suppose that we have criteria for “activation”:</p>
 are statistically associated in ACC tumors.</p>
 <p>Fisher’s exact test evaluates the hypergeometric distribution of the
 (1,1) cell of the table, given the marginal totals.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">fisher.test</a></span><span class="op">(</span><span class="va">acttab</span>, alternative<span class="op">=</span><span class="st">"greater"</span><span class="op">)</span> <span class="co"># one-sided</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Fisher's Exact Test for Count Data</span></span>
@@ -689,7 +703,7 @@ are statistically associated in ACC tumors.</p>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## odds ratio </span></span>
 <span><span class="co">##    4.69113</span></span></code></pre>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Hypergeometric.html" class="external-link">dhyper</a></span><span class="op">(</span><span class="fl">26</span><span class="op">:</span><span class="fl">31</span>, <span class="fl">51</span>, <span class="fl">28</span>, <span class="fl">31</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.00339765</span></span></code></pre>
 <p>The odds of an event that occurs with probability <span class="math inline">\(p\)</span> is given by <span class="math inline">\(p/(1-p)\)</span>.
@@ -699,11 +713,11 @@ is <span class="math inline">\(odds(p_1)/odds(p_2)\)</span>. With a 2x2 table th
 the cross ratio “ad/bc”. But the odds ratio estimated in <code>fisher.test</code>
 is different, a conditional maximum likelihood estimate. The difference
 is seldom meaningful.</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">odds</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">p</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>; <span class="va">p</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">p</span><span class="op">)</span><span class="op">}</span></span>
 <span><span class="fu">odds</span><span class="op">(</span><span class="va">fos_act</span><span class="op">[</span><span class="va">egr1_act</span><span class="op">==</span><span class="cn">TRUE</span><span class="op">]</span><span class="op">)</span><span class="op">/</span><span class="fu">odds</span><span class="op">(</span><span class="va">fos_act</span><span class="op">[</span><span class="va">egr1_act</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 4.784</span></span></code></pre>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">acttab</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">acttab</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="op">(</span><span class="va">acttab</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">acttab</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 4.784</span></span></code></pre>
 </div>
@@ -723,7 +737,7 @@ interval (0,1) to the whole real line. The interpretation of
 <span class="math inline">\(\beta\)</span> is: “log odds ratio”. If we exponentiate beta, we
 obtain the effect of a change in x of one unit on the odds
 of the response event.</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">fos_act</span> <span class="op">~</span> <span class="va">egr1_act</span>, family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">g1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -750,7 +764,7 @@ that FOS is activated, given that EGR1 is NOT activated.</p>
 <p>The “beta” parameter is the log odds ratio (comparing probability
 of FOS activation between the EGR1 conditions – not activated and
 activated).</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">4.784</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 1.56528</span></span></code></pre>
 </div>
@@ -764,7 +778,7 @@ more potential sources of variation in probability of response
 can be incorporated.</p>
 <p>We have data on YY1 expression in ACC and will declare it activated
 when expressed at a level greater than 1500.</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yy1_ex</span><span class="op">)</span></span>
 <span><span class="va">yy1_act</span> <span class="op">=</span> <span class="va">yy1_ex</span> <span class="op">&gt;</span> <span class="fl">1500</span></span>
 <span><span class="va">g2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">fos_act</span> <span class="op">~</span> <span class="va">egr1_act</span><span class="op">+</span><span class="va">yy1_act</span>, family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -797,7 +811,7 @@ informative on FOS activation.</p>
 <p>The family of generalized linear models can accommodate many
 forms of variation in a response of interest, to which are
 associated a number of “predictor” variables.</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">glmtab</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -874,7 +888,7 @@ has form <span class="math inline">\(\rho = \sigma^2_b/(\sigma^2_b + \sigma^2_w)
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
