@@ -64,6 +64,7 @@ knitr::kable(caq_summary)
 
 ```{r do1, eval=caq_available}
 caq_examples = caq_metadata |>
+    # sample_ is the upstream harmonized sample identifier, renamed here for display
     dplyr::select(
         dataset_id, tissue, cell_type, assay,
         sample_id = sample_
@@ -89,7 +90,6 @@ library(scuttle)
 
 sf1 = caq_metadata |>
     dplyr::filter(
-        ethnicity == "African",
         stringr::str_like(stringr::str_to_lower(assay), "%10x%"),
         tissue == "lung parenchyma",
         stringr::str_like(cell_type, "%CD4%")
@@ -99,11 +99,11 @@ sf1
 names(colData(sf1))
 assay(sf1[1:4,1:4])
 max_cells = 60000
-subset_sce = sf1[,1:min(max_cells, ncol(sf1))]
-z = DelayedArray::rowSums(assay(subset_sce))
+sce_subset = sf1[,1:min(max_cells, ncol(sf1))]
+z = DelayedArray::rowSums(assay(sce_subset))
 mean(z==0)
 todrop = which(z==0)
-litsf2 = subset_sce[-todrop,]
+litsf2 = sce_subset[-todrop,]
 assay(litsf2)
 litsf2 = logNormCounts(litsf2)
 litsf2 = runPCA(litsf2)
