@@ -90,6 +90,7 @@ library(scuttle)
 
 sf1 = caq_metadata |>
     dplyr::filter(
+        # Match 10x Genomics Chromium assays in the harmonized metadata
         stringr::str_like(stringr::str_to_lower(assay), "%10x%"),
         tissue == "lung parenchyma",
         stringr::str_like(cell_type, "%CD4%")
