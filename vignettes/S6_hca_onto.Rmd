@@ -97,11 +97,11 @@ sf1
 names(colData(sf1))
 assay(sf1[1:4,1:4])
 max_cells = 60000
-litsf1 = sf1[,1:min(max_cells, ncol(sf1))]
-z = DelayedArray::rowSums(assay(litsf1))
+sampled_sce = sf1[,1:min(max_cells, ncol(sf1))]
+z = DelayedArray::rowSums(assay(sampled_sce))
 mean(z==0)
 todrop = which(z==0)
-litsf2 = litsf1[-todrop,]
+litsf2 = sampled_sce[-todrop,]
 assay(litsf2)
 litsf2 = logNormCounts(litsf2)
 litsf2 = runPCA(litsf2)
