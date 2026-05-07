@@ -21,7 +21,7 @@ suppressMessages({
  library(ontoProc)
 })
 })
-caq_ok = requireNamespace("CuratedAtlasQueryR", quietly=TRUE)
+caq_available = requireNamespace("CuratedAtlasQueryR", quietly=TRUE)
 ```
 
 # Road map
@@ -45,7 +45,7 @@ annotation, and other harmonized variables.
 
 ### Surveying the curated atlas
 
-```{r startup, eval=caq_ok}
+```{r startup, eval=caq_available}
 caq_metadata = CuratedAtlasQueryR::get_metadata(
     remote_url = CuratedAtlasQueryR::SAMPLE_DATABASE_URL
 )
@@ -62,7 +62,7 @@ knitr::kable(caq_summary)
 
 ### Looking at available tissue and cell-type combinations
 
-```{r do1, eval=caq_ok}
+```{r do1, eval=caq_available}
 caq_examples = caq_metadata |>
     # sample_ is the upstream harmonized sample identifier used by CuratedAtlasQueryR
     dplyr::select(dataset_id, tissue, cell_type, assay, sample_) |>
