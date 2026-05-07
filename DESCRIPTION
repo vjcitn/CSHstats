@@ -12,7 +12,7 @@ Depends: R (>= 4.0.0), tools, utils, survival, mvtnorm, ggplot2,
 	rmarkdown, knitr, MultiAssayExperiment, bayesm, forestplot,
 	EnvStats, multtest, csamaDist
 Imports: duckdb, dplyr, DBI
-Suggests: BiocStyle, testthat, rmarkdown
+Suggests: BiocStyle, testthat, rmarkdown, CuratedAtlasQueryR
 License: Artistic-2.0
 VignetteBuilder: knitr
 biocViews: StatisticalMethod
