@@ -64,8 +64,10 @@ knitr::kable(caq_summary)
 
 ```{r do1, eval=caq_available}
 caq_examples = caq_metadata |>
-    # sample_ is the upstream harmonized sample identifier used by CuratedAtlasQueryR
-    dplyr::select(dataset_id, tissue, cell_type, assay, sample_) |>
+    dplyr::select(
+        dataset_id, tissue, cell_type, assay,
+        sample_id = sample_
+    ) |>
     dplyr::distinct() |>
     dplyr::arrange(tissue, cell_type) |>
     dplyr::slice_head(n = 12) |>
@@ -88,7 +90,7 @@ library(scuttle)
 sf1 = caq_metadata |>
     dplyr::filter(
         ethnicity == "African",
-        stringr::str_like(assay, "%10x%"),
+        stringr::str_like(stringr::str_to_lower(assay), "%10x%"),
         tissue == "lung parenchyma",
         stringr::str_like(cell_type, "%CD4%")
     ) |>
