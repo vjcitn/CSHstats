@@ -64,6 +64,7 @@ knitr::kable(caq_summary)
 
 ```{r do1, eval=caq_ok}
 caq_examples = caq_metadata |>
+    # sample_ is the harmonized sample identifier used by CuratedAtlasQueryR
     dplyr::select(dataset_id, tissue, cell_type, assay, sample_) |>
     dplyr::distinct() |>
     dplyr::arrange(tissue, cell_type) |>
@@ -95,8 +96,8 @@ sf1 = caq_metadata |>
 sf1
 names(colData(sf1))
 assay(sf1[1:4,1:4])
-cell_cap = 60000
-litsf1 = sf1[,1:min(cell_cap, ncol(sf1))]
+max_cells = 60000
+litsf1 = sf1[,1:min(max_cells, ncol(sf1))]
 z = DelayedArray::rowSums(assay(litsf1))
 mean(z==0)
 todrop = which(z==0)
