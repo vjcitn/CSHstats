@@ -71,8 +71,8 @@ caq_examples = caq_metadata |>
     ) |>
     dplyr::distinct() |>
     dplyr::arrange(tissue, cell_type) |>
-    dplyr::slice_head(n = 12) |>
     dplyr::collect()
+caq_examples = head(caq_examples, 12)
 knitr::kable(caq_examples)
 ```
 
